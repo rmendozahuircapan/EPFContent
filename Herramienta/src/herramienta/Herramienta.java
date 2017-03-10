@@ -8,18 +8,38 @@ public class Herramienta {
     public static void main(String[] args) throws IOException {
         // TODO code application logic here
         System.out.println("Hola");
-        Archivo();
         String ruta_archivo = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso\\plugin.xmi";
-        muestraContenido(ruta_archivo);
+        Contenido_XMI(ruta_archivo);
         
     }
-    public static void Archivo(){
-        System.out.println("Archivo");
     
+    public static void inicio_cierre(String linea){
+        String[] linea_separada = linea.split(" ");
+        String limpieza = "";
+        //System.out.println(limpieza.length() + " jdlakjsdlj");
+        for (int i = 0; i < linea_separada.length; i++) {
+            if (linea_separada[i].length() > 0) {
+                boolean href = linea_separada[i].contains("href");
+                boolean cierre = linea_separada[i].contains("/>");
+                if ( i < (linea_separada.length - 1)){
+                    if(!href){
+                        limpieza = limpieza + linea_separada[i] + " ";
+                    }
+                }else{
+                    if(href && cierre){
+                        limpieza = limpieza + "/>";
+                    }else{
+                        limpieza = limpieza + linea_separada[i];
+                    }
+                }
+            }
+        }
+        System.out.println(limpieza+"*");
     
     }
     
-    public static void muestraContenido(String ruta_archivo) throws FileNotFoundException, IOException {
+    
+    public static void Contenido_XMI(String ruta_archivo) throws FileNotFoundException, IOException {
         File archivo = null;
         FileReader fr = null;
         BufferedReader br = null;
@@ -35,12 +55,7 @@ public class Herramienta {
             String linea;
             while((linea=br.readLine())!=null){
                 System.out.println(linea);
-                String[] linea_separada = linea.split(" ");
-                for (int i = 0; i < linea_separada.length; i++) {
-                    
-                    if(linea_separada[i].length() != 0)
-                        System.out.println(i + linea_separada[i]);
-                }
+                inicio_cierre(linea);
             }
         }
         catch(Exception e){
