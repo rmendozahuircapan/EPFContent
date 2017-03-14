@@ -13,7 +13,7 @@ public class Herramienta {
         
     }
     
-    public static void inicio_cierre(String linea){
+    public static String linea_limpia(String linea){
         String[] linea_separada = linea.split(" ");
         String limpieza = "";
         //System.out.println(limpieza.length() + " jdlakjsdlj");
@@ -34,7 +34,66 @@ public class Herramienta {
                 }
             }
         }
-        System.out.println(limpieza+"*");
+        //System.out.println(limpieza+"*");
+        return limpieza;
+    }
+    
+    
+    public static void Rol(String linea){
+        String[] aux = linea.split(" ");
+        String[] limpio;
+        if (aux[0].contains("contentElements")) {
+            for (int i = 0; i < aux.length; i++) {
+                if (aux[i].contains("org.eclipse.epf.uma:Role")) {
+                    //System.out.println(linea);
+                    for (int j = 0; j < aux.length; j++) {
+                        if (aux[j].contains("name")) {
+                            limpio = aux[j].split("=");
+                            String name = limpio[1];
+                            limpio = name.split("\"");
+                            name = limpio[1];
+                            System.out.println("Name: "+ name);
+                        }
+                        if (aux[j].contains("presentationName")) {
+                            limpio = aux[j].split("=");
+                            String nombre = limpio[1];
+                            if (!nombre.endsWith("\"")) {
+                                boolean flag = true;
+                                int k = j;
+                                while (flag){
+                                    k++;
+                                    nombre = nombre + " " + aux[k];
+                                    if (aux[k].contains("\"")) {
+                                        flag = false;
+                                    }
+                                }
+                            }
+                            limpio = nombre.split("\"");
+                            nombre = limpio[1];
+                            System.out.println("Nombre: "+ nombre);
+                        }
+                        if (aux[j].contains("briefDescription")) {
+                            limpio = aux[j].split("=");
+                            String descripcion = limpio[1];
+                            boolean flag = true;
+                            int k = j;
+                            while (flag){
+                                k++;
+                                descripcion = descripcion + " " + aux[k];
+                                if (aux[k].contains("\"")) {
+                                    flag = false;
+                                }
+                            }
+                            limpio = descripcion.split("\"");
+                            descripcion = limpio[1];
+                            System.out.println("Descripción: "+ descripcion);
+                        }
+                    }
+                }
+            }
+            //System.out.println(linea);
+        }
+    
     
     }
     
@@ -54,8 +113,9 @@ public class Herramienta {
             // Lectura del fichero
             String linea;
             while((linea=br.readLine())!=null){
-                System.out.println(linea);
-                inicio_cierre(linea);
+                //System.out.println(linea);
+                Rol(linea_limpia(linea));
+                
             }
         }
         catch(Exception e){
