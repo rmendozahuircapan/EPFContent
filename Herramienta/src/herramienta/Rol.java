@@ -7,7 +7,7 @@ public class Rol {
     private String nombre;
     private String descripcion;
     private String id;
-
+    
     
     public Rol(String name, String nombre, String descripcion, String id) {
         this.name = name;
