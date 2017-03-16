@@ -90,10 +90,13 @@ public class Herramienta {
                     }
                     else if(aux[i].contains("Template")){   //Se recupera la informacion de los templates
                         for (int j = 0; j < aux.length; j++) {
-                            if (aux[j].contains("name")) {
+                            if (aux[j].contains("xmi:id")) {
+                                id = aux[j].split("=")[1].split("\"")[1];
+                            }
+                            else if (aux[j].contains("name")) {
                                 name = aux[j].split("=")[1].split("\"")[1];
                             }
-                            if (aux[j].contains("presentationName")) {
+                            else if (aux[j].contains("presentationName")) {
                                 nombre = aux[j].split("=")[1];
                                 if (!nombre.endsWith("\"")) {
                                     flag = true;
@@ -109,6 +112,11 @@ public class Herramienta {
                                 nombre = nombre.split("\"")[1];
                             }
                         }
+                        System.out.println(linea);
+                        System.out.println("id: "+id);
+                        System.out.println("name: "+name);
+                        System.out.println("nombre: "+nombre);
+                        System.out.println("--------------------------------------------------------------");
                     }
                     else if(aux[i].contains("Artifact")){ //Falta buscar e identificar cada uno de los templates asociados
                         for (int j = 0; j < aux.length; j++) {
