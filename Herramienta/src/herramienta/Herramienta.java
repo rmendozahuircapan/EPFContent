@@ -33,32 +33,32 @@ public class Herramienta {
         return limpieza;
     }
     
-    public static void Mostrar_todo(String linea){// se buscan roles
+    public static void Mostrar_todo(String linea){// (Cambiar nombre fx) Se recupera la información de roles, templates y artefactos
         String[] aux = linea.split(" ");
-        String[] limpio;
+
+        String name = "";
+        String nombre = "";
+        String descripcion = "";
+        String id = "";
+        
+        boolean flag;
+
+        
         if (aux[0].contains("contentElements")) {
             for (int i = 0; i < aux.length; i++) {
                 if (aux[i].contains("org.eclipse.epf.uma")){
-                    String name = "", nombre = "", descripcion = "", id = "";
-                    if(aux[i].contains("Role")){
+                    if(aux[i].contains("Role")){    // Se recupera la infomación de los roles
                         for (int j = 0; j < aux.length; j++) {
                             if (aux[j].contains("xmi:id")) {
-                                limpio = aux[j].split("=");
-                                id = limpio[1];
-                                limpio = id.split("\"");
-                                id = limpio[1];
+                                id = aux[j].split("=")[1].split("\"")[1];
                             }
                             else if (aux[j].contains("name")) {
-                                limpio = aux[j].split("=");
-                                name = limpio[1];
-                                limpio = name.split("\"");
-                                name = limpio[1];
+                                name = aux[j].split("=")[1].split("\"")[1];
                             }
                             else if (aux[j].contains("presentationName")) {
-                                limpio = aux[j].split("=");
-                                nombre = limpio[1];
+                                nombre = aux[j].split("=")[1];
                                 if (!nombre.endsWith("\"")) {
-                                    boolean flag = true;
+                                    flag = true;
                                     int k = j;
                                     while (flag){
                                         k++;
@@ -68,13 +68,11 @@ public class Herramienta {
                                         }
                                     }
                                 }
-                                limpio = nombre.split("\"");
-                                nombre = limpio[1];
+                                nombre = nombre.split("\"")[1];
                             }
                             else if (aux[j].contains("briefDescription")) {
-                                limpio = aux[j].split("=");
-                                descripcion = limpio[1];
-                                boolean flag = true;
+                                descripcion = aux[j].split("=")[1];
+                                flag = true;
                                 int k = j;
                                 while (flag){
                                     k++;
@@ -83,37 +81,22 @@ public class Herramienta {
                                         flag = false;
                                     }
                                 }
-                                limpio = descripcion.split("\"");
-                                descripcion = limpio[1];
+                                descripcion = descripcion.split("\"")[1];
                             }
                         }
                         Rol r;
                         r = new Rol(name, nombre, descripcion, id);
-                        /*r.setNombre(nombre);
-                        r.setDescripcion(descripcion);
-                        r.setName(name);
-                        r.setId(id);*/
-                        
                         Roles.add(r);
-                        System.out.println(Roles.size());
-                        System.out.println("name: "+name+"\nnombre: " + nombre + "\ndescripción: "+ descripcion+"\nid: "+id
-                        +"\n--------------------------------------------------------------------");
-                    }else if(aux[i].contains("Template")){
-                        //System.out.println(linea);
-                        //System.out.println("Template");
+                    }
+                    else if(aux[i].contains("Template")){   //Se recupera la informacion de los templates
                         for (int j = 0; j < aux.length; j++) {
                             if (aux[j].contains("name")) {
-                                limpio = aux[j].split("=");
-                                name = limpio[1];
-                                limpio = name.split("\"");
-                                name = limpio[1];
-//                                System.out.println("> Name: "+ name);
+                                name = aux[j].split("=")[1].split("\"")[1];
                             }
                             if (aux[j].contains("presentationName")) {
-                                limpio = aux[j].split("=");
-                                nombre = limpio[1];
+                                nombre = aux[j].split("=")[1];
                                 if (!nombre.endsWith("\"")) {
-                                    boolean flag = true;
+                                    flag = true;
                                     int k = j;
                                     while (flag){
                                         k++;
@@ -123,26 +106,19 @@ public class Herramienta {
                                         }
                                     }
                                 }
-                                limpio = nombre.split("\"");
-                                nombre = limpio[1];
-//                                System.out.println("Nombre: "+ nombre);
+                                nombre = nombre.split("\"")[1];
                             }
                         }
-                    }else if(aux[i].contains("Artifact")){ //Falta buscar e identificar cada uno de los templates asociados
-                        //System.out.println("Artifact");
+                    }
+                    else if(aux[i].contains("Artifact")){ //Falta buscar e identificar cada uno de los templates asociados
                         for (int j = 0; j < aux.length; j++) {
                             if (aux[j].contains("name")) {
-                                limpio = aux[j].split("=");
-                                name = limpio[1];
-                                limpio = name.split("\"");
-                                name = limpio[1];
-//                                System.out.println("> Name: "+ name);
+                                name = aux[j].split("=")[1].split("\"")[1];
                             }
                             if (aux[j].contains("presentationName")) {
-                                limpio = aux[j].split("=");
-                                nombre = limpio[1];
+                                nombre = aux[j].split("=")[1];
                                 if (!nombre.endsWith("\"")) {
-                                    boolean flag = true;
+                                    flag = true;
                                     int k = j;
                                     while (flag){
                                         k++;
@@ -152,14 +128,11 @@ public class Herramienta {
                                         }
                                     }
                                 }
-                                limpio = nombre.split("\"");
-                                nombre = limpio[1];
-//                                System.out.println("Nombre: "+ nombre);
+                                nombre = nombre.split("\"")[1];
                             }
                             if (aux[j].contains("briefDescription")) {
-                                limpio = aux[j].split("=");
-                                descripcion = limpio[1];
-                                boolean flag = true;
+                                descripcion = aux[j].split("=")[1];
+                                flag = true;
                                 int k = j;
                                 while (flag){
                                     k++;
@@ -168,25 +141,18 @@ public class Herramienta {
                                         flag = false;
                                     }
                                 }
-                                limpio = descripcion.split("\"");
-                                descripcion = limpio[1];
-//                                System.out.println("Descripción: "+ descripcion);
+                                descripcion = descripcion.split("\"")[1];
                             }
                         }
                     }else if(aux[i].contains("Task")){ //Falta buscar e identificar cada uno de los templates asociados
                         for (int j = 0; j < aux.length; j++) {
                             if (aux[j].contains("name")) {
-                                limpio = aux[j].split("=");
-                                name = limpio[1];
-                                limpio = name.split("\"");
-                                name = limpio[1];
-//                                System.out.println("> Name: "+ name);
+                                name = aux[j].split("=")[1].split("\"")[1];
                             }
                             if (aux[j].contains("presentationName")) {
-                                limpio = aux[j].split("=");
-                                nombre = limpio[1];
+                                nombre = aux[j].split("=")[1];
                                 if (!nombre.endsWith("\"")) {
-                                    boolean flag = true;
+                                    flag = true;
                                     int k = j;
                                     while (flag){
                                         k++;
@@ -196,14 +162,11 @@ public class Herramienta {
                                         }
                                     }
                                 }
-                                limpio = nombre.split("\"");
-                                nombre = limpio[1];
-//                                System.out.println("Nombre: "+ nombre);
+                                nombre = nombre.split("\"")[1];
                             }
                             if (aux[j].contains("briefDescription")) {
-                                limpio = aux[j].split("=");
-                                descripcion = limpio[1];
-                                boolean flag = true;
+                                descripcion = aux[j].split("=")[1];
+                                flag = true;
                                 int k = j;
                                 while (flag){
                                     k++;
@@ -212,9 +175,7 @@ public class Herramienta {
                                         flag = false;
                                     }
                                 }
-                                limpio = descripcion.split("\"");
-                                descripcion = limpio[1];
-//                                System.out.println("Descripción: "+ descripcion);
+                                descripcion = descripcion.split("\"")[1];
                             }
                         }
                     }
