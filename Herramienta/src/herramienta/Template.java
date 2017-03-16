@@ -1,17 +1,15 @@
 
 package herramienta;
 
-public class Rol {
-    private String name;
-    private String nombre;
-    private String descripcion;
-    private String id;
+public class Template {
     
-    
-    public Rol(String name, String nombre, String descripcion, String id) {
+    String name;
+    String nombre;
+    String id;
+
+    public Template(String name, String nombre, String id) {
         this.name = name;
         this.nombre = nombre;
-        this.descripcion = descripcion;
         this.id = id;
     }
 
@@ -31,14 +29,6 @@ public class Rol {
         this.nombre = nombre;
     }
 
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
     public String getId() {
         return id;
     }
@@ -46,4 +36,5 @@ public class Rol {
     public void setId(String id) {
         this.id = id;
     }
+    
 }
