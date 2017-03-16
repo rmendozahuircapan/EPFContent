@@ -86,12 +86,6 @@ public class Herramienta {
                                 limpio = descripcion.split("\"");
                                 descripcion = limpio[1];
                             }
-                            /*if (aux[j].contains("id")) {
-                                limpio = aux[j].split("=");
-                                id = limpio[1];
-                                limpio = id.split("\"");
-                                id = limpio[1];
-                            }*/
                         }
                         Rol r;
                         r = new Rol(name, nombre, descripcion, id);
