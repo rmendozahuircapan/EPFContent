@@ -8,13 +8,17 @@ import javax.management.relation.RoleStatus;
 public class Herramienta {
     
     static ArrayList<Rol> Roles = new ArrayList<Rol>();
+    static ArrayList<Template> Templates = new ArrayList<Template>();
     
     public static void main(String[] args) throws IOException {
-            String ruta_archivo = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso\\plugin.xmi";
-            Contenido_XMI(ruta_archivo);
-            
-            for (int i = 0; i < Roles.size(); i++) {
+        String ruta_archivo = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso\\plugin.xmi";
+        Contenido_XMI(ruta_archivo);
+        
+        for (int i = 0; i < Roles.size(); i++) {
                 System.out.println("Rol: "+Roles.get(i).getNombre());
+        }
+        for (int i = 0; i < Templates.size(); i++) {
+                System.out.println("Template: "+Templates.get(i).getNombre());
         }
     }
     
@@ -84,8 +88,7 @@ public class Herramienta {
                                 descripcion = descripcion.split("\"")[1];
                             }
                         }
-                        Rol r;
-                        r = new Rol(name, nombre, descripcion, id);
+                        Rol r = new Rol(name, nombre, descripcion, id);
                         Roles.add(r);
                     }
                     else if(aux[i].contains("Template")){   //Se recupera la informacion de los templates
@@ -112,11 +115,8 @@ public class Herramienta {
                                 nombre = nombre.split("\"")[1];
                             }
                         }
-                        System.out.println(linea);
-                        System.out.println("id: "+id);
-                        System.out.println("name: "+name);
-                        System.out.println("nombre: "+nombre);
-                        System.out.println("--------------------------------------------------------------");
+                        Template t = new Template(name, nombre, id);
+                        Templates.add(t);
                     }
                     else if(aux[i].contains("Artifact")){ //Falta buscar e identificar cada uno de los templates asociados
                         for (int j = 0; j < aux.length; j++) {
