@@ -9,16 +9,28 @@ public class Herramienta {
     
     static ArrayList<Rol> Roles = new ArrayList<Rol>();
     static ArrayList<Template> Templates = new ArrayList<Template>();
+    static ArrayList<Artifact> Artifacts = new ArrayList<Artifact>();
     
     public static void main(String[] args) throws IOException {
         String ruta_archivo = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso\\plugin.xmi";
         Contenido_XMI(ruta_archivo);
         
+        System.out.println("*******************************************");
+
         for (int i = 0; i < Roles.size(); i++) {
-                System.out.println("Rol: "+Roles.get(i).getNombre());
+            System.out.println("Rol: "+Roles.get(i).getNombre());
         }
+        
+        System.out.println("*******************************************");        
+        
         for (int i = 0; i < Templates.size(); i++) {
-                System.out.println("Template: "+Templates.get(i).getNombre());
+            System.out.println("Template: "+Templates.get(i).getNombre());
+        }
+
+        System.out.println("*******************************************");
+        
+        for (int i = 0; i < Artifacts.size(); i++) {
+            System.out.println("Artifact: "+Artifacts.get(i).getNombre());
         }
     }
     
@@ -44,6 +56,7 @@ public class Herramienta {
         String nombre = "";
         String descripcion = "";
         String id = "";
+        String id_template = "";
         
         boolean flag;
 
@@ -120,10 +133,13 @@ public class Herramienta {
                     }
                     else if(aux[i].contains("Artifact")){ //Falta buscar e identificar cada uno de los templates asociados
                         for (int j = 0; j < aux.length; j++) {
-                            if (aux[j].contains("name")) {
+                            if (aux[j].contains("xmi:id")) {
+                                id = aux[j].split("=")[1].split("\"")[1];
+                            }
+                            else if (aux[j].contains("name")) {
                                 name = aux[j].split("=")[1].split("\"")[1];
                             }
-                            if (aux[j].contains("presentationName")) {
+                            else if (aux[j].contains("presentationName")) {
                                 nombre = aux[j].split("=")[1];
                                 if (!nombre.endsWith("\"")) {
                                     flag = true;
@@ -138,7 +154,7 @@ public class Herramienta {
                                 }
                                 nombre = nombre.split("\"")[1];
                             }
-                            if (aux[j].contains("briefDescription")) {
+                            else if (aux[j].contains("briefDescription")) {
                                 descripcion = aux[j].split("=")[1];
                                 flag = true;
                                 int k = j;
@@ -151,7 +167,20 @@ public class Herramienta {
                                 }
                                 descripcion = descripcion.split("\"")[1];
                             }
+                            else if(aux[j].contains("templates")){
+                                id_template = aux[j].split("=")[1].split("\"")[1];
+                            }
                         }
+                        Artifact a = new Artifact(name, nombre, descripcion, id, id_template);
+                        Artifacts.add(a);
+                        
+                        System.out.println(linea);
+                        System.out.println("name:           "+name);
+                        System.out.println("nombre:         "+nombre);
+                        System.out.println("descripción:    "+descripcion);
+                        System.out.println("id:             "+id);
+                        System.out.println("template:       "+id_template);
+                        System.out.println("-------------------------------------------------");
                     }else if(aux[i].contains("Task")){ //Falta buscar e identificar cada uno de los templates asociados
                         for (int j = 0; j < aux.length; j++) {
                             if (aux[j].contains("name")) {
@@ -193,6 +222,15 @@ public class Herramienta {
                 }
             }
         }
+    }
+    
+    public static String nombreTemplate(String id){
+        for (int i = 0; i < Templates.size(); i++) {
+            if(Templates.get(i).id.equals(id)){
+                return Templates.get(i).nombre;
+            }
+        }
+        return "";
     }
     
     public static void Contenido_XMI(String ruta_archivo) throws FileNotFoundException, IOException {
