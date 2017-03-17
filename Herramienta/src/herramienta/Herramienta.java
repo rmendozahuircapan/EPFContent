@@ -74,7 +74,8 @@ public class Herramienta {
         if (aux[0].contains("contentElements")) {
             for (int i = 0; i < aux.length; i++) {
                 if (aux[i].contains("org.eclipse.epf.uma")){
-                    if(aux[i].contains("Role")){    // Se recupera la infomación de los roles
+/****************************************            ROLES               ****************************************/                    
+                    if(aux[i].contains("Role")){
                         for (int j = 0; j < aux.length; j++) {
                             if (aux[j].contains("xmi:id")) {
                                 id = aux[j].split("=")[1].split("\"")[1];
@@ -116,6 +117,7 @@ public class Herramienta {
                         Rol r = new Rol(name, nombre, descripcion, id);
                         Roles.add(r);
                     }
+/****************************************            TEMPLATE               ****************************************/                    
                     else if(aux[i].contains("Template")){   //Se recupera la informacion de los templates
                         for (int j = 0; j < aux.length; j++) {
                             if (aux[j].contains("xmi:id")) {
@@ -143,6 +145,7 @@ public class Herramienta {
                         Template t = new Template(name, nombre, id);
                         Templates.add(t);
                     }
+/****************************************            ARTIFACT               ****************************************/
                     else if(aux[i].contains("Artifact")){ //Falta buscar e identificar cada uno de los templates asociados
                         for (int j = 0; j < aux.length; j++) {
                             if (aux[j].contains("xmi:id")) {
@@ -188,7 +191,8 @@ public class Herramienta {
                         Artifact a = new Artifact(name, nombre, descripcion, id, id_template);
                         Artifacts.add(a);
                     }
-                    else if(aux[i].contains("Task")){ //Falta buscar e identificar cada uno de los templates asociados
+/****************************************            TASK               ****************************************/                    
+                    else if(aux[i].contains("Task")){ //Falta buscar e identificar cada uno de los tareas asociados
                         for (int j = 0; j < aux.length; j++) {
                             if (aux[j].contains("xmi:id")) {
                                 id = aux[j].split("=")[1].split("\"")[1];
@@ -278,12 +282,10 @@ public class Herramienta {
                                         }
                                     }
                                 }
-                                System.out.println("i:" + input);
                                 input = input.split("\"")[1];
                                 id_input = new ArrayList<String>();
                                 for (int l = 0; l < input.split(" ").length; l++) {
                                     id_input.add(input.split(" ")[l]);
-                                    System.out.println(id_input.size());
                                 }
                             }
                             
@@ -300,23 +302,13 @@ public class Herramienta {
                                         }
                                     }
                                 }
-                                System.out.println("o: " + output);
                                 output = output.split("\"")[1];
                                 id_output = new ArrayList<String>();
                                 for (int l = 0; l < output.split(" ").length; l++) {
                                     id_output.add(output.split(" ")[l]);
-                                    System.out.println(id_output.size());
                                 }
                             }
                         }
-                        
-                        System.out.println("");
-                        System.out.println("name: "+name);
-                        //System.out.println("nombre: "+nombre);
-                        //System.out.println("descripcion: "+descripcion);
-                        //System.out.println("id: "+id);
-                        //System.out.println("realizadores: "+realizadores);
-                        System.out.println("--------------------------------------------------------");
                     }
                     else{
                         //System.out.println(linea);
@@ -358,15 +350,11 @@ public class Herramienta {
             // Lectura del fichero
             String linea;
             while((linea=br.readLine())!=null){
-                //System.out.println(linea);
-                //System.out.println(linea_limpia(linea));
                 Mostrar_todo(linea_limpia(linea));
-                
             }
         }
         catch(Exception e){
             e.printStackTrace();
-            //System.out.println("El archivo no se encuentra.");
         }finally{
             // En el finally cerramos el fichero, para asegurarnos
             // que se cierra tanto si todo va bien como si salta 
