@@ -10,28 +10,35 @@ public class Herramienta {
     static ArrayList<Rol> Roles = new ArrayList<Rol>();
     static ArrayList<Template> Templates = new ArrayList<Template>();
     static ArrayList<Artifact> Artifacts = new ArrayList<Artifact>();
+    static ArrayList<Task> Tasks = new ArrayList<Task>();
     
     public static void main(String[] args) throws IOException {
         String ruta_archivo = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso\\plugin.xmi";
         Contenido_XMI(ruta_archivo);
+        System.out.println("********************************************************************");
+        System.out.println("********************    INFORMACIÓN GENERAL     ********************");
+        System.out.println("********************************************************************");
+        System.out.println("El archivo contiene:");
+        System.out.println("                    > "+Roles.size()+" roles.");
+        System.out.println("                    > "+Templates.size()+" templates.");
+        System.out.println("                    > "+Artifacts.size()+" artefactos.");
+        System.out.println("                    > "+Tasks.size()+" tareas.");
+        System.out.println("********************************************************************");
+        System.out.println("********************            DETALLE         ********************");
+        System.out.println("********************************************************************");
+        System.out.println("********************             ROLES          ********************");
+        imprimirRoles();
+        System.out.println("********************************************************************");
+        System.out.println("********************            TEMPLATE        ********************");
+        imprimirTemplates();
+        System.out.println("********************************************************************");
+        System.out.println("********************            ARTIFACT        ********************");
+        imprimirArtifacts();
+        System.out.println("********************************************************************");
+        System.out.println("********************             TAREAS         ********************");
+        imprimirTasks();
+        System.out.println("********************************************************************");
         
-        System.out.println("*******************************************");
-
-        for (int i = 0; i < Roles.size(); i++) {
-            System.out.println("Rol: "+Roles.get(i).getNombre());
-        }
-        
-        System.out.println("*******************************************");        
-        
-        for (int i = 0; i < Templates.size(); i++) {
-            System.out.println("Template: "+Templates.get(i).getNombre());
-        }
-
-        System.out.println("*******************************************");
-        
-        for (int i = 0; i < Artifacts.size(); i++) {
-            System.out.println("Artifact: "+Artifacts.get(i).getNombre());
-        }
     }
     
     public static String linea_limpia(String linea){
@@ -49,7 +56,7 @@ public class Herramienta {
         return limpieza;
     }
     
-    public static void Mostrar_todo(String linea){// (Cambiar nombre fx) Se recupera la información de roles, templates y artefactos
+    public static void Informacion(String linea){// (Cambiar nombre fx) Se recupera la información de roles, templates y artefactos
         String[] aux = linea.split(" ");
 
         String name = "";
@@ -62,10 +69,10 @@ public class Herramienta {
         String input = "";
         String output = "";
         
-        ArrayList<String> id_realizadores;
-        ArrayList<String> id_colaboradores;
-        ArrayList<String> id_input;
-        ArrayList<String> id_output;
+        ArrayList<String> id_realizadores = new ArrayList<String>();
+        ArrayList<String> id_colaboradores = new ArrayList<String>();
+        ArrayList<String> id_input = new ArrayList<String>();
+        ArrayList<String> id_output = new ArrayList<String>();
         
         
         boolean flag;
@@ -244,7 +251,6 @@ public class Herramienta {
                                     }
                                 }
                                 realizadores = realizadores.split("\"")[1];
-                                id_realizadores = new ArrayList<String>();
                                 for (int l = 0; l < realizadores.split(" ").length; l++) {
                                     id_realizadores.add(realizadores.split(" ")[l]);
                                 }
@@ -263,7 +269,6 @@ public class Herramienta {
                                     }
                                 }
                                 colaboradores = colaboradores.split("\"")[1];
-                                id_colaboradores = new ArrayList<String>();
                                 for (int l = 0; l < colaboradores.split(" ").length; l++) {
                                     id_colaboradores.add(colaboradores.split(" ")[l]);
                                 }
@@ -283,7 +288,6 @@ public class Herramienta {
                                     }
                                 }
                                 input = input.split("\"")[1];
-                                id_input = new ArrayList<String>();
                                 for (int l = 0; l < input.split(" ").length; l++) {
                                     id_input.add(input.split(" ")[l]);
                                 }
@@ -303,15 +307,13 @@ public class Herramienta {
                                     }
                                 }
                                 output = output.split("\"")[1];
-                                id_output = new ArrayList<String>();
                                 for (int l = 0; l < output.split(" ").length; l++) {
                                     id_output.add(output.split(" ")[l]);
                                 }
                             }
                         }
-                    }
-                    else{
-                        //System.out.println(linea);
+                        Task t = new Task(name, nombre, descripcion, id, id_realizadores, id_colaboradores, id_input, id_output);
+                        Tasks.add(t);
                     }
                 }
             }
@@ -320,12 +322,13 @@ public class Herramienta {
     
     public static String nombreTemplate(String id){
         for (int i = 0; i < Templates.size(); i++) {
-            if(Templates.get(i).id.equals(id)){
-                return Templates.get(i).nombre;
+            if(Templates.get(i).getId().equals(id)){
+                return Templates.get(i).getNombre();
             }
         }
         return "";
     }
+    
     public static String nombreRol(String id){
         for (int i = 0; i < Roles.size(); i++) {
             if(Roles.get(i).getId().equals(id)){
@@ -333,6 +336,85 @@ public class Herramienta {
             }
         }
         return "";
+    }
+    
+    public static String nombreArtifact(String id){
+        for (int i = 0; i < Artifacts.size(); i++) {
+            if(Artifacts.get(i).getId().equals(id)){
+                return Artifacts.get(i).getNombre();
+            }
+        }
+        return "";
+    }
+    
+    public static void imprimirRoles(){
+        for (int i = 0; i < Roles.size(); i++) {
+            System.out.println("");
+            System.out.println("Nombre: "+Roles.get(i).getNombre());
+            System.out.println("Descripción: "+Roles.get(i).getDescripcion());
+            if(i < (Roles.size()-1)){
+                System.out.println("--------------------------------------------------------------------");
+            }
+        }
+    }
+    
+    public static void imprimirTemplates(){
+        for (int i = 0; i < Templates.size(); i++) {
+            System.out.println("");
+            System.out.println("Nombre: "+Templates.get(i).getNombre());
+            if(i < (Templates.size()-1)){
+                System.out.println("--------------------------------------------------------------------");
+            }
+        }
+    }
+    
+    public static void imprimirArtifacts(){
+        for (int i = 0; i < Artifacts.size(); i++) {
+            System.out.println("");
+            System.out.println("Nombre: "+Artifacts.get(i).getNombre());
+            System.out.println("Descripción: "+Artifacts.get(i).getDescripcion());
+            if (!Artifacts.get(i).getId_template().equals("")) {
+                System.out.println("Template: "+nombreTemplate(Artifacts.get(i).getId_template()));
+            }
+            if(i < (Artifacts.size()-1)){
+                System.out.println("--------------------------------------------------------------------");
+            }
+        }
+    }
+    
+    public static void imprimirTasks(){
+        for (int i = 0; i < Tasks.size(); i++) {
+            System.out.println("");
+            System.out.println("Nombre: "+Tasks.get(i).getNombre());
+            System.out.println("Descripción: "+Tasks.get(i).getDescripcion());
+            if (Tasks.get(i).getId_realizadores().size()>0) {
+                System.out.println("Realizadores:");
+                for (int j = 0; j < Tasks.get(i).getId_realizadores().size(); j++) {
+                    System.out.println("             > "+nombreRol(Tasks.get(i).getId_realizadores().get(j)));
+                }
+            }
+            if (Tasks.get(i).getId_colaboradores().size()>0) {
+                System.out.println("Colaboradores:");
+                for (int j = 0; j < Tasks.get(i).getId_colaboradores().size(); j++) {
+                    System.out.println("             > "+nombreRol(Tasks.get(i).getId_colaboradores().get(j)));
+                }
+            }
+            if (Tasks.get(i).getId_input().size()>0) {
+                System.out.println("Input:");
+                for (int j = 0; j < Tasks.get(i).getId_input().size(); j++) {
+                    System.out.println("             > "+nombreArtifact(Tasks.get(i).getId_input().get(j)));
+                }
+            }
+            if (Tasks.get(i).getId_output().size()>0) {
+                System.out.println("Output:");
+                for (int j = 0; j < Tasks.get(i).getId_output().size(); j++) {
+                    System.out.println("             > "+nombreArtifact(Tasks.get(i).getId_output().get(j)));
+                }
+            }
+            if(i < (Tasks.size()-1)){
+                System.out.println("--------------------------------------------------------------------");
+            }
+        }
     }
     
     public static void Contenido_XMI(String ruta_archivo) throws FileNotFoundException, IOException {
@@ -350,7 +432,7 @@ public class Herramienta {
             // Lectura del fichero
             String linea;
             while((linea=br.readLine())!=null){
-                Mostrar_todo(linea_limpia(linea));
+                Informacion(linea_limpia(linea));
             }
         }
         catch(Exception e){

@@ -3,9 +3,9 @@ package herramienta;
 
 public class Template {
     
-    String name;
-    String nombre;
-    String id;
+    private String name;
+    private String nombre;
+    private String id;
 
     public Template(String name, String nombre, String id) {
         this.name = name;
