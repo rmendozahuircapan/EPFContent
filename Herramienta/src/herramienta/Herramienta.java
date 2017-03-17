@@ -2,7 +2,6 @@ package herramienta;
 
 import java.io.*;
 import java.util.*;
-import javax.management.relation.RoleStatus;
 
 
 public class Herramienta {
@@ -15,30 +14,7 @@ public class Herramienta {
     public static void main(String[] args) throws IOException {
         String ruta_archivo = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso\\plugin.xmi";
         Contenido_XMI(ruta_archivo);
-        System.out.println("********************************************************************");
-        System.out.println("********************    INFORMACIÓN GENERAL     ********************");
-        System.out.println("********************************************************************");
-        System.out.println("El archivo contiene:");
-        System.out.println("                    > "+Roles.size()+" roles.");
-        System.out.println("                    > "+Templates.size()+" templates.");
-        System.out.println("                    > "+Artifacts.size()+" artefactos.");
-        System.out.println("                    > "+Tasks.size()+" tareas.");
-        System.out.println("********************************************************************");
-        System.out.println("********************            DETALLE         ********************");
-        System.out.println("********************************************************************");
-        System.out.println("********************             ROLES          ********************");
-        imprimirRoles();
-        System.out.println("********************************************************************");
-        System.out.println("********************            TEMPLATE        ********************");
-        imprimirTemplates();
-        System.out.println("********************************************************************");
-        System.out.println("********************            ARTIFACT        ********************");
-        imprimirArtifacts();
-        System.out.println("********************************************************************");
-        System.out.println("********************             TAREAS         ********************");
-        imprimirTasks();
-        System.out.println("********************************************************************");
-        
+        imprimirAll();
     }
     
     public static String linea_limpia(String linea){
@@ -415,6 +391,34 @@ public class Herramienta {
                 System.out.println("--------------------------------------------------------------------");
             }
         }
+    }
+    
+    public static void imprimirAll(){
+        
+        System.out.println("********************************************************************");
+        System.out.println("********************    INFORMACIÓN GENERAL     ********************");
+        System.out.println("********************************************************************");
+        System.out.println("El archivo contiene:");
+        System.out.println("                    > "+Roles.size()+" roles.");
+        System.out.println("                    > "+Templates.size()+" templates.");
+        System.out.println("                    > "+Artifacts.size()+" artefactos.");
+        System.out.println("                    > "+Tasks.size()+" tareas.");
+        System.out.println("********************************************************************");
+        System.out.println("********************            DETALLE         ********************");
+        System.out.println("********************************************************************");
+        System.out.println("********************             ROLES          ********************");
+        imprimirRoles();
+        System.out.println("********************************************************************");
+        System.out.println("********************            TEMPLATE        ********************");
+        imprimirTemplates();
+        System.out.println("********************************************************************");
+        System.out.println("********************            ARTIFACT        ********************");
+        imprimirArtifacts();
+        System.out.println("********************************************************************");
+        System.out.println("********************             TAREAS         ********************");
+        imprimirTasks();
+        System.out.println("********************************************************************");
+
     }
     
     public static void Contenido_XMI(String ruta_archivo) throws FileNotFoundException, IOException {
