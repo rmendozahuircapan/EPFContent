@@ -12,8 +12,9 @@ public class Herramienta {
     static ArrayList<Task> Tasks = new ArrayList<Task>();
     
     public static void main(String[] args) throws IOException {
-        String ruta_archivo = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso\\plugin.xmi";
-        Contenido_XMI(ruta_archivo);
+        //String ruta_archivo = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso\\plugin.xmi";
+        String ruta_archivo = "C:\\Users\\Rodrigo\\Desktop\\Proceso\\proceso_de_prueba\\plugin.xmi";
+        XMI(ruta_archivo);
         imprimirAll();
     }
     
@@ -40,10 +41,10 @@ public class Herramienta {
         String descripcion = "";
         String id = "";
         String id_template = "";
-        String realizadores = "";
-        String colaboradores = "";
-        String input = "";
-        String output = "";
+        String realizadores;
+        String colaboradores;
+        String input;
+        String output;
         
         ArrayList<String> id_realizadores = new ArrayList<String>();
         ArrayList<String> id_colaboradores = new ArrayList<String>();
@@ -124,8 +125,23 @@ public class Herramienta {
                                 }
                                 nombre = nombre.split("\"")[1];
                             }
+                            else if (aux[j].contains("briefDescription")) {
+                                descripcion = aux[j].split("=")[1];
+                                if (!descripcion.endsWith("\"") && !descripcion.endsWith(">")) {
+                                    flag = true;
+                                    int k = j;
+                                    while (flag){
+                                        k++;
+                                        descripcion = descripcion + " " + aux[k];
+                                        if (aux[k].contains("\"")) {
+                                            flag = false;
+                                        }
+                                    }
+                                }
+                                descripcion = descripcion.split("\"")[1];
+                            }
                         }
-                        Template t = new Template(name, nombre, id);
+                        Template t = new Template(name, nombre, id, descripcion);
                         Templates.add(t);
                     }
 /****************************************            ARTIFACT               ****************************************/
@@ -338,6 +354,7 @@ public class Herramienta {
         for (int i = 0; i < Templates.size(); i++) {
             System.out.println("");
             System.out.println("Nombre: "+Templates.get(i).getNombre());
+            System.out.println("Descripción: "+Templates.get(i).getDescripcion());
             if(i < (Templates.size()-1)){
                 System.out.println("--------------------------------------------------------------------");
             }
@@ -404,24 +421,9 @@ public class Herramienta {
         System.out.println("                    > "+Artifacts.size()+" artefactos.");
         System.out.println("                    > "+Tasks.size()+" tareas.");
         System.out.println("********************************************************************");
-        System.out.println("********************            DETALLE         ********************");
-        System.out.println("********************************************************************");
-        System.out.println("********************             ROLES          ********************");
-        imprimirRoles();
-        System.out.println("********************************************************************");
-        System.out.println("********************            TEMPLATE        ********************");
-        imprimirTemplates();
-        System.out.println("********************************************************************");
-        System.out.println("********************            ARTIFACT        ********************");
-        imprimirArtifacts();
-        System.out.println("********************************************************************");
-        System.out.println("********************             TAREAS         ********************");
-        imprimirTasks();
-        System.out.println("********************************************************************");
-
     }
     
-    public static void Contenido_XMI(String ruta_archivo) throws FileNotFoundException, IOException {
+    public static void XMI(String ruta_archivo) throws FileNotFoundException, IOException {
         File archivo = null;
         FileReader fr = null;
         BufferedReader br = null;

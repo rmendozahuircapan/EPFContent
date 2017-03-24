@@ -6,11 +6,13 @@ public class Template {
     private String name;
     private String nombre;
     private String id;
+    private String descripcion;
 
-    public Template(String name, String nombre, String id) {
+    public Template(String name, String nombre, String id, String descripcion) {
         this.name = name;
         this.nombre = nombre;
         this.id = id;
+        this.descripcion = descripcion;
     }
 
     public String getName() {
@@ -36,5 +38,12 @@ public class Template {
     public void setId(String id) {
         this.id = id;
     }
-    
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
 }
