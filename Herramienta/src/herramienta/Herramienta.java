@@ -18,14 +18,15 @@ public class Herramienta {
         String path = "C:\\Users\\Rodrigo\\Desktop\\Proceso\\proceso_de_prueba\\plugin.xmi";
         XMI(path);
         searchRoles(File);
+        searchTemplates(File);
         System.out.println("-------------------------------------");
         System.out.println("Roles: "+Roles.size());
         System.out.println("Templates: "+Templates.size());
         System.out.println("WorkProducts: "+WorkProducts.size());
         System.out.println("Tasks: "+Tasks.size());
         System.out.println("-------------------------------------");
-        for (int i = 0; i < Roles.size(); i++) {
-            System.out.println(Roles.get(i).getPresentationName());
+        for (int i = 0; i < WorkProducts.size(); i++) {
+            System.out.println(WorkProducts.get(i).getPresentationName());
         }
         
     }
@@ -97,12 +98,67 @@ public class Herramienta {
                                 description = description.split("\"")[1];
                             }
                         }
-                        System.out.println(File.get(i));
-                        System.out.println("id: "+id);
-                        System.out.println("name: "+name);
-                        System.out.println("presentationName: "+presentationName);
-                        System.out.println("description: "+description);
-                        System.out.println("-");
+                        Role r = new Role(id, name, presentationName, description);
+                        Roles.add(r);
+                    }
+                }
+            }
+        }
+    }
+    
+    public static void searchTemplates(ArrayList<String> File){
+        String name = "";
+        String presentationName = "";
+        String description = "";
+        String id = "";
+        
+        boolean flag;
+        
+        for (int i = 0; i < File.size(); i++) {
+            String[] separated = File.get(i).split(" ");
+            if (separated[0].contains("contentElements")) {
+                for (int j = 0; j < separated.length; j++) {
+                    if (separated[j].contains("org.eclipse.epf.uma:Template")) {
+                        for (int k = 0; k < separated.length; k++) {
+                            if (separated[k].contains("xmi:id")) {
+                                id = separated[k].split("=")[1].split("\"")[1];
+                            }
+                            else if (separated[k].contains("name")) {
+                                name = separated[k].split("=")[1].split("\"")[1];
+                            }
+                            else if (separated[k].contains("presentationName")) {
+                                presentationName = separated[k].split("=")[1];
+                                if (!presentationName.endsWith("\"") && !presentationName.endsWith(">")) {
+                                    flag = true;
+                                    int l = k;
+                                    while (flag){
+                                        l++;
+                                        presentationName = presentationName + " " + separated[l];
+                                        if (separated[l].contains("\"")) {
+                                            flag = false;
+                                        }
+                                    }
+                                }
+                                presentationName = presentationName.split("\"")[1];
+                            }
+                            else if (separated[k].contains("briefDescription")) {
+                                description = separated[k].split("=")[1];
+                                if (!description.endsWith("\"") && !description.endsWith(">")) {
+                                    flag = true;
+                                    int l = k;
+                                    while (flag){
+                                        l++;
+                                        description = description + " " + separated[l];
+                                        if (separated[l].contains("\"")) {
+                                            flag = false;
+                                        }
+                                    }
+                                }
+                                description = description.split("\"")[1];
+                            }
+                        }
+                        Template t = new Template(id, name, presentationName, description);
+                        Templates.add(t);
                     }
                 }
             }
