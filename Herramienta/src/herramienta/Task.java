@@ -4,48 +4,24 @@ package herramienta;
 import java.util.*;
 
 public class Task {
-    private String name;
-    private String nombre;
-    private String descripcion;
     private String id;
-    private ArrayList<String> id_realizadores;
-    private ArrayList<String> id_colaboradores;
-    private ArrayList<String> id_input;
-    private ArrayList<String> id_output;
+    private String name;
+    private String presentationName;
+    private String description;
+    private ArrayList<Role> producers;
+    private ArrayList<Role> collaborators;
+    private ArrayList<WorkProduct> inputs;
+    private ArrayList<WorkProduct> outputs;
 
-    public Task(String name, String nombre, String descripcion, String id, ArrayList<String> id_realizadores, ArrayList<String> id_colaboradores, ArrayList<String> id_input, ArrayList<String> id_output) {
-        this.name = name;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
+    public Task(String id, String name, String presentationName, String description, ArrayList<Role> producers, ArrayList<Role> collaborators, ArrayList<WorkProduct> inputs, ArrayList<WorkProduct> outputs) {
         this.id = id;
-        this.id_realizadores = id_realizadores;
-        this.id_colaboradores = id_colaboradores;
-        this.id_input = id_input;
-        this.id_output = id_output;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        this.presentationName = presentationName;
+        this.description = description;
+        this.producers = producers;
+        this.collaborators = collaborators;
+        this.inputs = inputs;
+        this.outputs = outputs;
     }
 
     public String getId() {
@@ -56,41 +32,61 @@ public class Task {
         this.id = id;
     }
 
-    public ArrayList<String> getId_realizadores() {
-        return id_realizadores;
+    public String getName() {
+        return name;
     }
 
-    public void setId_realizadores(ArrayList<String> id_realizadores) {
-        this.id_realizadores = id_realizadores;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public ArrayList<String> getId_colaboradores() {
-        return id_colaboradores;
+    public String getPresentationName() {
+        return presentationName;
     }
 
-    public void setId_colaboradores(ArrayList<String> id_colaboradores) {
-        this.id_colaboradores = id_colaboradores;
+    public void setPresentationName(String presentationName) {
+        this.presentationName = presentationName;
     }
 
-    public ArrayList<String> getId_input() {
-        return id_input;
+    public String getDescription() {
+        return description;
     }
 
-    public void setId_input(ArrayList<String> id_input) {
-        this.id_input = id_input;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public ArrayList<String> getId_output() {
-        return id_output;
+    public ArrayList<Role> getProducers() {
+        return producers;
     }
 
-    public void setId_output(ArrayList<String> id_output) {
-        this.id_output = id_output;
+    public void setProducers(ArrayList<Role> producers) {
+        this.producers = producers;
     }
-    
-    
-    
-    
-    
+
+    public ArrayList<Role> getCollaborators() {
+        return collaborators;
+    }
+
+    public void setCollaborators(ArrayList<Role> collaborators) {
+        this.collaborators = collaborators;
+    }
+
+    public ArrayList<WorkProduct> getInputs() {
+        return inputs;
+    }
+
+    public void setInputs(ArrayList<WorkProduct> inputs) {
+        this.inputs = inputs;
+    }
+
+    public ArrayList<WorkProduct> getOutputs() {
+        return outputs;
+    }
+
+    public void setOutputs(ArrayList<WorkProduct> outputs) {
+        this.outputs = outputs;
+    }
+
     
 }
