@@ -6,48 +6,121 @@ import java.util.*;
 
 public class Herramienta {
     
+    static ArrayList<String> File = new ArrayList<String>();
     static ArrayList<Rol> Roles = new ArrayList<Rol>();
     static ArrayList<Template> Templates = new ArrayList<Template>();
     static ArrayList<Artifact> Artifacts = new ArrayList<Artifact>();
     static ArrayList<Task> Tasks = new ArrayList<Task>();
     
+    
     public static void main(String[] args) throws IOException {
         //String ruta_archivo = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso\\plugin.xmi";
-        String ruta_archivo = "C:\\Users\\Rodrigo\\Desktop\\Proceso\\proceso_de_prueba\\plugin.xmi";
-        XMI(ruta_archivo);
-        imprimirAll();
+        String path = "C:\\Users\\Rodrigo\\Desktop\\Proceso\\proceso_de_prueba\\plugin.xmi";
+        XMI(path);
+        searchRoles(File);
+        System.out.println(Roles.size());
+        System.out.println(Templates.size());
+        System.out.println(Artifacts.size());
+        System.out.println(Tasks.size());
+        for (int i = 0; i < Roles.size(); i++) {
+            System.out.println(Roles.get(i).getNombre());
+        }
+        
     }
     
-    public static String linea_limpia(String linea){
-        String[] linea_separada = linea.split(" ");
-        String limpieza = "";
-        for (int i = 0; i < linea_separada.length; i++) {
-            if (linea_separada[i].length() > 0) {
-                if ( i < (linea_separada.length - 1)){
-                        limpieza = limpieza + linea_separada[i] + " ";
+    public static String cleanLine(String line){
+        String[] separate = line.split(" ");
+        String clean = "";
+        for (int i = 0; i < separate.length; i++) {
+            if (separate[i].length() > 0) {
+                if ( i < (separate.length - 1)){
+                        clean = clean + separate[i] + " ";
                 }else{
-                        limpieza = limpieza + linea_separada[i];
+                        clean = clean + separate[i];
                     }
             }
         }
-        return limpieza;
+        return clean;
+    }
+    
+    public static void searchRoles(ArrayList<String> File) {
+        
+        String id = "";
+        String name = "";
+        String presentationName = "";
+        String description = "";
+        
+        boolean flag;
+        
+        for (int i = 0; i < File.size(); i++) {
+            String[] separated = File.get(i).split(" ");
+            if (separated[0].contains("contentElements")) {
+                for (int j = 0; j < separated.length; j++) {
+                    if (separated[j].contains("org.eclipse.epf.uma:Role")) {
+                        for (int k = 0; k < separated.length; k++) {
+                            if (separated[k].contains("xmi:id")) {
+                                id = separated[k].split("=")[1].split("\"")[1];
+                            }
+                            else if (separated[k].contains("name")) {
+                                name = separated[k].split("=")[1].split("\"")[1];
+                            }
+                            else if (separated[k].contains("presentationName")) {
+                                presentationName = separated[k].split("=")[1];
+                                if (!presentationName.endsWith("\"") && !presentationName.endsWith(">") ) {
+                                    flag = true;
+                                    int l = k;
+                                    while (flag){
+                                        l++;
+                                        presentationName = presentationName + " " + separated[l];
+                                        if (separated[l].contains("\"")) {
+                                            flag = false;
+                                        }
+                                    }
+                                }
+                                presentationName = presentationName.split("\"")[1];
+                            }
+                            else if (separated[k].contains("briefDescription")) {
+                                description = separated[k].split("=")[1];
+                                if(!description.endsWith("\"") && !description.endsWith(">")){
+                                    flag = true;
+                                    int l = k;
+                                    while (flag){
+                                        l++;
+                                        description = description + " " + separated[l];
+                                        if (separated[l].contains("\"")) {
+                                            flag = false;
+                                        }
+                                    }
+                                }
+                                description = description.split("\"")[1];
+                            }
+                        }
+                        System.out.println(File.get(i));
+                        System.out.println("id: "+id);
+                        System.out.println("name: "+name);
+                        System.out.println("presentationName: "+presentationName);
+                        System.out.println("description: "+description);
+                    }
+                }
+            }
+        }
     }
     
     public static void Informacion(String linea){// (Cambiar nombre fx) Se recupera la información de roles, templates y artefactos
-        String[] aux = linea.split(" ");
+        String[] separated = linea.split(" ");
 
         String name = "";
-        String nombre = "";
-        String descripcion = "";
+        String presentationName = "";
+        String description = "";
         String id = "";
         String id_template = "";
-        String realizadores;
-        String colaboradores;
+        String producers;
+        String collaborators;
         String input;
         String output;
         
-        ArrayList<String> id_realizadores = new ArrayList<String>();
-        ArrayList<String> id_colaboradores = new ArrayList<String>();
+        ArrayList<String> id_producers = new ArrayList<String>();
+        ArrayList<String> id_collaborators = new ArrayList<String>();
         ArrayList<String> id_input = new ArrayList<String>();
         ArrayList<String> id_output = new ArrayList<String>();
         
@@ -55,226 +128,226 @@ public class Herramienta {
         boolean flag;
 
         
-        if (aux[0].contains("contentElements")) {
-            for (int i = 0; i < aux.length; i++) {
-                if (aux[i].contains("org.eclipse.epf.uma")){
+        if (separated[0].contains("contentElements")) {
+            for (int i = 0; i < separated.length; i++) {
+                if (separated[i].contains("org.eclipse.epf.uma")){
 /****************************************            ROLES               ****************************************/                    
-                    if(aux[i].contains("Role")){
-                        for (int j = 0; j < aux.length; j++) {
-                            if (aux[j].contains("xmi:id")) {
-                                id = aux[j].split("=")[1].split("\"")[1];
+                    if(separated[i].contains("Role")){
+                        for (int j = 0; j < separated.length; j++) {
+                            if (separated[j].contains("xmi:id")) {
+                                id = separated[j].split("=")[1].split("\"")[1];
                             }
-                            else if (aux[j].contains("name")) {
-                                name = aux[j].split("=")[1].split("\"")[1];
+                            else if (separated[j].contains("name")) {
+                                name = separated[j].split("=")[1].split("\"")[1];
                             }
-                            else if (aux[j].contains("presentationName")) {
-                                nombre = aux[j].split("=")[1];
-                                if (!nombre.endsWith("\"") && !nombre.endsWith(">") ) {
+                            else if (separated[j].contains("presentationName")) {
+                                presentationName = separated[j].split("=")[1];
+                                if (!presentationName.endsWith("\"") && !presentationName.endsWith(">") ) {
                                     flag = true;
                                     int k = j;
                                     while (flag){
                                         k++;
-                                        nombre = nombre + " " + aux[k];
-                                        if (aux[k].contains("\"")) {
+                                        presentationName = presentationName + " " + separated[k];
+                                        if (separated[k].contains("\"")) {
                                             flag = false;
                                         }
                                     }
                                 }
-                                nombre = nombre.split("\"")[1];
+                                presentationName = presentationName.split("\"")[1];
                             }
-                            else if (aux[j].contains("briefDescription")) {
-                                descripcion = aux[j].split("=")[1];
-                                if(!descripcion.endsWith("\"") && !descripcion.endsWith(">")){
+                            else if (separated[j].contains("briefDescription")) {
+                                description = separated[j].split("=")[1];
+                                if(!description.endsWith("\"") && !description.endsWith(">")){
                                     flag = true;
                                     int k = j;
                                     while (flag){
                                         k++;
-                                        descripcion = descripcion + " " + aux[k];
-                                        if (aux[k].contains("\"")) {
+                                        description = description + " " + separated[k];
+                                        if (separated[k].contains("\"")) {
                                             flag = false;
                                         }
                                     }
                                 }
-                                descripcion = descripcion.split("\"")[1];
+                                description = description.split("\"")[1];
                             }
                         }
-                        Rol r = new Rol(name, nombre, descripcion, id);
+                        Rol r = new Rol(name, presentationName, description, id);
                         Roles.add(r);
                     }
 /****************************************            TEMPLATE               ****************************************/                    
-                    else if(aux[i].contains("Template")){   //Se recupera la informacion de los templates
-                        for (int j = 0; j < aux.length; j++) {
-                            if (aux[j].contains("xmi:id")) {
-                                id = aux[j].split("=")[1].split("\"")[1];
+                    else if(separated[i].contains("Template")){   //Se recupera la informacion de los templates
+                        for (int j = 0; j < separated.length; j++) {
+                            if (separated[j].contains("xmi:id")) {
+                                id = separated[j].split("=")[1].split("\"")[1];
                             }
-                            else if (aux[j].contains("name")) {
-                                name = aux[j].split("=")[1].split("\"")[1];
+                            else if (separated[j].contains("name")) {
+                                name = separated[j].split("=")[1].split("\"")[1];
                             }
-                            else if (aux[j].contains("presentationName")) {
-                                nombre = aux[j].split("=")[1];
-                                if (!nombre.endsWith("\"") && !nombre.endsWith(">")) {
+                            else if (separated[j].contains("presentationName")) {
+                                presentationName = separated[j].split("=")[1];
+                                if (!presentationName.endsWith("\"") && !presentationName.endsWith(">")) {
                                     flag = true;
                                     int k = j;
                                     while (flag){
                                         k++;
-                                        nombre = nombre + " " + aux[k];
-                                        if (aux[k].contains("\"")) {
+                                        presentationName = presentationName + " " + separated[k];
+                                        if (separated[k].contains("\"")) {
                                             flag = false;
                                         }
                                     }
                                 }
-                                nombre = nombre.split("\"")[1];
+                                presentationName = presentationName.split("\"")[1];
                             }
-                            else if (aux[j].contains("briefDescription")) {
-                                descripcion = aux[j].split("=")[1];
-                                if (!descripcion.endsWith("\"") && !descripcion.endsWith(">")) {
+                            else if (separated[j].contains("briefDescription")) {
+                                description = separated[j].split("=")[1];
+                                if (!description.endsWith("\"") && !description.endsWith(">")) {
                                     flag = true;
                                     int k = j;
                                     while (flag){
                                         k++;
-                                        descripcion = descripcion + " " + aux[k];
-                                        if (aux[k].contains("\"")) {
+                                        description = description + " " + separated[k];
+                                        if (separated[k].contains("\"")) {
                                             flag = false;
                                         }
                                     }
                                 }
-                                descripcion = descripcion.split("\"")[1];
+                                description = description.split("\"")[1];
                             }
                         }
-                        Template t = new Template(name, nombre, id, descripcion);
+                        Template t = new Template(name, presentationName, id, description);
                         Templates.add(t);
                     }
 /****************************************            ARTIFACT               ****************************************/
-                    else if(aux[i].contains("Artifact")){ //Falta buscar e identificar cada uno de los templates asociados
-                        for (int j = 0; j < aux.length; j++) {
-                            if (aux[j].contains("xmi:id")) {
-                                id = aux[j].split("=")[1].split("\"")[1];
+                    else if(separated[i].contains("Artifact")){ //Falta buscar e identificar cada uno de los templates asociados
+                        for (int j = 0; j < separated.length; j++) {
+                            if (separated[j].contains("xmi:id")) {
+                                id = separated[j].split("=")[1].split("\"")[1];
                             }
-                            else if (aux[j].contains("name")) {
-                                name = aux[j].split("=")[1].split("\"")[1];
+                            else if (separated[j].contains("name")) {
+                                name = separated[j].split("=")[1].split("\"")[1];
                             }
-                            else if (aux[j].contains("presentationName")) {
-                                nombre = aux[j].split("=")[1];
-                                if (!nombre.endsWith("\"") && !nombre.endsWith(">")) {
+                            else if (separated[j].contains("presentationName")) {
+                                presentationName = separated[j].split("=")[1];
+                                if (!presentationName.endsWith("\"") && !presentationName.endsWith(">")) {
                                     flag = true;
                                     int k = j;
                                     while (flag){
                                         k++;
-                                        nombre = nombre + " " + aux[k];
-                                        if (aux[k].contains("\"")) {
+                                        presentationName = presentationName + " " + separated[k];
+                                        if (separated[k].contains("\"")) {
                                             flag = false;
                                         }
                                     }
                                 }
-                                nombre = nombre.split("\"")[1];
+                                presentationName = presentationName.split("\"")[1];
                             }
-                            else if (aux[j].contains("briefDescription")) {
-                                descripcion = aux[j].split("=")[1];
-                                if (!descripcion.endsWith("\"") && !descripcion.endsWith(">")) {
+                            else if (separated[j].contains("briefDescription")) {
+                                description = separated[j].split("=")[1];
+                                if (!description.endsWith("\"") && !description.endsWith(">")) {
                                     flag = true;
                                     int k = j;
                                     while (flag){
                                         k++;
-                                        descripcion = descripcion + " " + aux[k];
-                                        if (aux[k].contains("\"")) {
+                                        description = description + " " + separated[k];
+                                        if (separated[k].contains("\"")) {
                                             flag = false;
                                         }
                                     }
                                 }
-                                descripcion = descripcion.split("\"")[1];
+                                description = description.split("\"")[1];
                             }
-                            else if(aux[j].contains("templates")){
-                                id_template = aux[j].split("=")[1].split("\"")[1];
+                            else if(separated[j].contains("templates")){
+                                id_template = separated[j].split("=")[1].split("\"")[1];
                             }
                         }
-                        Artifact a = new Artifact(name, nombre, descripcion, id, id_template);
+                        Artifact a = new Artifact(name, presentationName, description, id, id_template);
                         Artifacts.add(a);
                     }
 /****************************************            TASK               ****************************************/                    
-                    else if(aux[i].contains("Task")){ //Falta buscar e identificar cada uno de los tareas asociados
-                        for (int j = 0; j < aux.length; j++) {
-                            if (aux[j].contains("xmi:id")) {
-                                id = aux[j].split("=")[1].split("\"")[1];
+                    else if(separated[i].contains("Task")){ //Falta buscar e identificar cada uno de los tareas asociados
+                        for (int j = 0; j < separated.length; j++) {
+                            if (separated[j].contains("xmi:id")) {
+                                id = separated[j].split("=")[1].split("\"")[1];
                             }
-                            else if (aux[j].contains("name")) {
-                                name = aux[j].split("=")[1].split("\"")[1];
+                            else if (separated[j].contains("name")) {
+                                name = separated[j].split("=")[1].split("\"")[1];
                             }
-                            else if (aux[j].contains("presentationName")) {
-                                nombre = aux[j].split("=")[1];
-                                if (!nombre.endsWith("\"") && !nombre.endsWith(">") ) {
+                            else if (separated[j].contains("presentationName")) {
+                                presentationName = separated[j].split("=")[1];
+                                if (!presentationName.endsWith("\"") && !presentationName.endsWith(">") ) {
                                     flag = true;
                                     int k = j;
                                     while (flag){
                                         k++;
-                                        nombre = nombre + " " + aux[k];
-                                        if (aux[k].contains("\"")) {
+                                        presentationName = presentationName + " " + separated[k];
+                                        if (separated[k].contains("\"")) {
                                             flag = false;
                                         }
                                     }
                                 }
-                                nombre = nombre.split("\"")[1];
+                                presentationName = presentationName.split("\"")[1];
                             }
-                            else if (aux[j].contains("briefDescription")) {
-                                descripcion = aux[j].split("=")[1];
-                                if (!descripcion.endsWith("\"") && !descripcion.endsWith(">")) {
+                            else if (separated[j].contains("briefDescription")) {
+                                description = separated[j].split("=")[1];
+                                if (!description.endsWith("\"") && !description.endsWith(">")) {
                                     flag = true;
                                     int k = j;
                                     while (flag){
                                         k++;
-                                        descripcion = descripcion + " " + aux[k];
-                                        if (aux[k].contains("\"")) {
+                                        description = description + " " + separated[k];
+                                        if (separated[k].contains("\"")) {
                                             flag = false;
                                         }
                                     }
                                 }
-                                descripcion = descripcion.split("\"")[1];
+                                description = description.split("\"")[1];
                             }
-                            else if (aux[j].split("=")[0].equals("performedBy")){
-                                realizadores = aux[j].split("=")[1];
-                                if (!realizadores.endsWith("\"") && !realizadores.endsWith(">")) {
+                            else if (separated[j].split("=")[0].equals("performedBy")){
+                                producers = separated[j].split("=")[1];
+                                if (!producers.endsWith("\"") && !producers.endsWith(">")) {
                                     flag = true;
                                     int k = j;
                                     while (flag){
                                         k++;
-                                        realizadores = realizadores + " " + aux[k];
-                                        if (aux[k].contains("\"")) {
+                                        producers = producers + " " + separated[k];
+                                        if (separated[k].contains("\"")) {
                                             flag = false;
                                         }
                                     }
                                 }
-                                realizadores = realizadores.split("\"")[1];
-                                for (int l = 0; l < realizadores.split(" ").length; l++) {
-                                    id_realizadores.add(realizadores.split(" ")[l]);
+                                producers = producers.split("\"")[1];
+                                for (int l = 0; l < producers.split(" ").length; l++) {
+                                    id_producers.add(producers.split(" ")[l]);
                                 }
                             }
-                            else if (aux[j].split("=")[0].equals("additionallyPerformedBy")){
-                                colaboradores = aux[j].split("=")[1];
-                                if (!colaboradores.endsWith("\"") && !colaboradores.endsWith(">")) {
+                            else if (separated[j].split("=")[0].equals("additionallyPerformedBy")){
+                                collaborators = separated[j].split("=")[1];
+                                if (!collaborators.endsWith("\"") && !collaborators.endsWith(">")) {
                                     flag = true;
                                     int k = j;
                                     while (flag){
                                         k++;
-                                        colaboradores = colaboradores + " " + aux[k];
-                                        if (aux[k].contains("\"")) {
+                                        collaborators = collaborators + " " + separated[k];
+                                        if (separated[k].contains("\"")) {
                                             flag = false;
                                         }
                                     }
                                 }
-                                colaboradores = colaboradores.split("\"")[1];
-                                for (int l = 0; l < colaboradores.split(" ").length; l++) {
-                                    id_colaboradores.add(colaboradores.split(" ")[l]);
+                                collaborators = collaborators.split("\"")[1];
+                                for (int l = 0; l < collaborators.split(" ").length; l++) {
+                                    id_collaborators.add(collaborators.split(" ")[l]);
                                 }
                             }
                             
-                            else if (aux[j].split("=")[0].equals("mandatoryInput")){
-                                input = aux[j].split("=")[1];
+                            else if (separated[j].split("=")[0].equals("mandatoryInput")){
+                                input = separated[j].split("=")[1];
                                 if (!input.endsWith("\"") && !input.endsWith(">")) {
                                     flag = true;
                                     int k = j;
                                     while (flag){
                                         k++;
-                                        input = input + " " + aux[k];
-                                        if (aux[k].contains("\"")) {
+                                        input = input + " " + separated[k];
+                                        if (separated[k].contains("\"")) {
                                             flag = false;
                                         }
                                     }
@@ -285,15 +358,15 @@ public class Herramienta {
                                 }
                             }
                             
-                            else if (aux[j].split("=")[0].equals("output")){
-                                output = aux[j].split("=")[1];
+                            else if (separated[j].split("=")[0].equals("output")){
+                                output = separated[j].split("=")[1];
                                 if (!output.endsWith("\"") && !output.endsWith(">")) {
                                     flag = true;
                                     int k = j;
                                     while (flag){
                                         k++;
-                                        output = output + " " + aux[k];
-                                        if (aux[k].contains("\"")) {
+                                        output = output + " " + separated[k];
+                                        if (separated[k].contains("\"")) {
                                             flag = false;
                                         }
                                     }
@@ -304,141 +377,30 @@ public class Herramienta {
                                 }
                             }
                         }
-                        Task t = new Task(name, nombre, descripcion, id, id_realizadores, id_colaboradores, id_input, id_output);
+                        Task t = new Task(name, presentationName, description, id, id_producers, id_collaborators, id_input, id_output);
                         Tasks.add(t);
                     }
                 }
             }
         }
     }
-    
-    public static String nombreTemplate(String id){
-        for (int i = 0; i < Templates.size(); i++) {
-            if(Templates.get(i).getId().equals(id)){
-                return Templates.get(i).getNombre();
-            }
-        }
-        return "";
-    }
-    
-    public static String nombreRol(String id){
-        for (int i = 0; i < Roles.size(); i++) {
-            if(Roles.get(i).getId().equals(id)){
-                return Roles.get(i).getNombre();
-            }
-        }
-        return "";
-    }
-    
-    public static String nombreArtifact(String id){
-        for (int i = 0; i < Artifacts.size(); i++) {
-            if(Artifacts.get(i).getId().equals(id)){
-                return Artifacts.get(i).getNombre();
-            }
-        }
-        return "";
-    }
-    
-    public static void imprimirRoles(){
-        for (int i = 0; i < Roles.size(); i++) {
-            System.out.println("");
-            System.out.println("Nombre: "+Roles.get(i).getNombre());
-            System.out.println("Descripción: "+Roles.get(i).getDescripcion());
-            if(i < (Roles.size()-1)){
-                System.out.println("--------------------------------------------------------------------");
-            }
-        }
-    }
-    
-    public static void imprimirTemplates(){
-        for (int i = 0; i < Templates.size(); i++) {
-            System.out.println("");
-            System.out.println("Nombre: "+Templates.get(i).getNombre());
-            System.out.println("Descripción: "+Templates.get(i).getDescripcion());
-            if(i < (Templates.size()-1)){
-                System.out.println("--------------------------------------------------------------------");
-            }
-        }
-    }
-    
-    public static void imprimirArtifacts(){
-        for (int i = 0; i < Artifacts.size(); i++) {
-            System.out.println("");
-            System.out.println("Nombre: "+Artifacts.get(i).getNombre());
-            System.out.println("Descripción: "+Artifacts.get(i).getDescripcion());
-            if (!Artifacts.get(i).getId_template().equals("")) {
-                System.out.println("Template: "+nombreTemplate(Artifacts.get(i).getId_template()));
-            }
-            if(i < (Artifacts.size()-1)){
-                System.out.println("--------------------------------------------------------------------");
-            }
-        }
-    }
-    
-    public static void imprimirTasks(){
-        for (int i = 0; i < Tasks.size(); i++) {
-            System.out.println("");
-            System.out.println("Nombre: "+Tasks.get(i).getNombre());
-            System.out.println("Descripción: "+Tasks.get(i).getDescripcion());
-            if (Tasks.get(i).getId_realizadores().size()>0) {
-                System.out.println("Realizadores:");
-                for (int j = 0; j < Tasks.get(i).getId_realizadores().size(); j++) {
-                    System.out.println("             > "+nombreRol(Tasks.get(i).getId_realizadores().get(j)));
-                }
-            }
-            if (Tasks.get(i).getId_colaboradores().size()>0) {
-                System.out.println("Colaboradores:");
-                for (int j = 0; j < Tasks.get(i).getId_colaboradores().size(); j++) {
-                    System.out.println("             > "+nombreRol(Tasks.get(i).getId_colaboradores().get(j)));
-                }
-            }
-            if (Tasks.get(i).getId_input().size()>0) {
-                System.out.println("Input:");
-                for (int j = 0; j < Tasks.get(i).getId_input().size(); j++) {
-                    System.out.println("             > "+nombreArtifact(Tasks.get(i).getId_input().get(j)));
-                }
-            }
-            if (Tasks.get(i).getId_output().size()>0) {
-                System.out.println("Output:");
-                for (int j = 0; j < Tasks.get(i).getId_output().size(); j++) {
-                    System.out.println("             > "+nombreArtifact(Tasks.get(i).getId_output().get(j)));
-                }
-            }
-            if(i < (Tasks.size()-1)){
-                System.out.println("--------------------------------------------------------------------");
-            }
-        }
-    }
-    
-    public static void imprimirAll(){
         
-        System.out.println("********************************************************************");
-        System.out.println("********************    INFORMACIÓN GENERAL     ********************");
-        System.out.println("********************************************************************");
-        System.out.println("El archivo contiene:");
-        System.out.println("                    > "+Roles.size()+" roles.");
-        System.out.println("                    > "+Templates.size()+" templates.");
-        System.out.println("                    > "+Artifacts.size()+" artefactos.");
-        System.out.println("                    > "+Tasks.size()+" tareas.");
-        System.out.println("********************************************************************");
-    }
-    
-    public static void XMI(String ruta_archivo) throws FileNotFoundException, IOException {
-        File archivo = null;
+    public static void XMI(String path) throws FileNotFoundException, IOException {
+        File archive = null;
         FileReader fr = null;
         BufferedReader br = null;
 
         try {
             // Apertura del fichero y creacion de BufferedReader para poder
             // hacer una lectura comoda (disponer del metodo readLine()).
-            archivo = new File (ruta_archivo);
-            fr = new FileReader (archivo);
+            archive = new File (path);
+            fr = new FileReader (archive);
             br = new BufferedReader(fr);
 
             // Lectura del fichero
-            String linea;
-            while((linea=br.readLine())!=null){
-                Informacion(linea_limpia(linea));
+            String line;
+            while((line=br.readLine())!=null){
+                File.add(cleanLine(line));
             }
         }
         catch(Exception e){
