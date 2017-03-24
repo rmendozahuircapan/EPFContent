@@ -3,32 +3,16 @@ package herramienta;
 
 public class Template {
     
-    private String name;
-    private String nombre;
     private String id;
-    private String descripcion;
+    private String name;
+    private String presentationName;
+    private String description;
 
-    public Template(String name, String nombre, String id, String descripcion) {
-        this.name = name;
-        this.nombre = nombre;
+    public Template(String id, String name, String presentationName, String description) {
         this.id = id;
-        this.descripcion = descripcion;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.presentationName = presentationName;
+        this.description = description;
     }
 
     public String getId() {
@@ -39,11 +23,29 @@ public class Template {
         this.id = id;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public String getName() {
+        return name;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setName(String name) {
+        this.name = name;
     }
+
+    public String getPresentationName() {
+        return presentationName;
+    }
+
+    public void setPresentationName(String presentationName) {
+        this.presentationName = presentationName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    
 }

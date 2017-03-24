@@ -7,7 +7,7 @@ import java.util.*;
 public class Herramienta {
     
     static ArrayList<String> File = new ArrayList<String>();
-    static ArrayList<Rol> Roles = new ArrayList<Rol>();
+    static ArrayList<Role> Roles = new ArrayList<Role>();
     static ArrayList<Template> Templates = new ArrayList<Template>();
     static ArrayList<Artifact> Artifacts = new ArrayList<Artifact>();
     static ArrayList<Task> Tasks = new ArrayList<Task>();
@@ -171,8 +171,8 @@ public class Herramienta {
                                 description = description.split("\"")[1];
                             }
                         }
-                        Rol r = new Rol(name, presentationName, description, id);
-                        Roles.add(r);
+                        //Role r = new Role(name, presentationName, description, id);
+                        //Roles.add(r);
                     }
 /****************************************            TEMPLATE               ****************************************/                    
                     else if(separated[i].contains("Template")){   //Se recupera la informacion de los templates
@@ -214,8 +214,8 @@ public class Herramienta {
                                 description = description.split("\"")[1];
                             }
                         }
-                        Template t = new Template(name, presentationName, id, description);
-                        Templates.add(t);
+                        //Template t = new Template(name, presentationName, id, description);
+                        //Templates.add(t);
                     }
 /****************************************            ARTIFACT               ****************************************/
                     else if(separated[i].contains("Artifact")){ //Falta buscar e identificar cada uno de los templates asociados
@@ -260,8 +260,8 @@ public class Herramienta {
                                 id_template = separated[j].split("=")[1].split("\"")[1];
                             }
                         }
-                        Artifact a = new Artifact(name, presentationName, description, id, id_template);
-                        Artifacts.add(a);
+                        //Artifact a = new Artifact(name, presentationName, description, id, id_template);
+                        //Artifacts.add(a);
                     }
 /****************************************            TASK               ****************************************/                    
                     else if(separated[i].contains("Task")){ //Falta buscar e identificar cada uno de los tareas asociados
@@ -377,8 +377,8 @@ public class Herramienta {
                                 }
                             }
                         }
-                        Task t = new Task(name, presentationName, description, id, id_producers, id_collaborators, id_input, id_output);
-                        Tasks.add(t);
+                        //Task t = new Task(name, presentationName, description, id, id_producers, id_collaborators, id_input, id_output);
+                        //Tasks.add(t);
                     }
                 }
             }
