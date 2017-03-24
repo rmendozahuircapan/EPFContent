@@ -23,7 +23,7 @@ public class Herramienta {
         System.out.println(Artifacts.size());
         System.out.println(Tasks.size());
         for (int i = 0; i < Roles.size(); i++) {
-            System.out.println(Roles.get(i).getNombre());
+            System.out.println(Roles.get(i).getPresentationName());
         }
         
     }

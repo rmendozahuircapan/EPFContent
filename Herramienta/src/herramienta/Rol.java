@@ -2,16 +2,23 @@
 package herramienta;
 
 public class Rol {
-    private String name;
-    private String nombre;
-    private String descripcion;
     private String id;
-    
-    
-    public Rol(String name, String nombre, String descripcion, String id) {
+    private String name;
+    private String presentationName;
+    private String description;
+
+    public Rol(String id, String name, String presentationName, String description) {
+        this.id = id;
         this.name = name;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
+        this.presentationName = presentationName;
+        this.description = description;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -23,27 +30,21 @@ public class Rol {
         this.name = name;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getPresentationName() {
+        return presentationName;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setPresentationName(String presentationName) {
+        this.presentationName = presentationName;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setDescription(String description) {
+        this.description = description;
     }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+    
+    
 }
