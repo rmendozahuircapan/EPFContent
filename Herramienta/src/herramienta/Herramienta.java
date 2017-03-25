@@ -178,7 +178,7 @@ public class Herramienta {
                         String presentationName = "";
                         String description = "";
                         String type = "";
-                        String templatesLine = "";
+                        String templatesLine;
                         ArrayList<Template> templates = new ArrayList<Template>();
                         
                         for (int k = 0; k < separated.length; k++) {
@@ -266,14 +266,14 @@ public class Herramienta {
                         String name = "";
                         String presentationName = "";
                         String description = "";
-                        String producersLine = "";
-                        String collaboratorsLine = "";
-                        String inputsLine = "";
-                        String outputsLine = "";
+                        String producersLine;
+                        String collaboratorsLine;
+                        String inputsLine;
+                        String outputsLine;
                         ArrayList<Role> producers = new ArrayList<Role>();
-                        ArrayList<Role> collaborators = new ArrayList<Role>();;
-                        ArrayList<WorkProduct> inputs = new ArrayList<WorkProduct>();;
-                        ArrayList<WorkProduct> outputs = new ArrayList<WorkProduct>();;
+                        ArrayList<Role> collaborators = new ArrayList<Role>();
+                        ArrayList<WorkProduct> inputs = new ArrayList<WorkProduct>();
+                        ArrayList<WorkProduct> outputs = new ArrayList<WorkProduct>();
                         
                         
                         for (int k = 0; k < separated.length; k++) {
