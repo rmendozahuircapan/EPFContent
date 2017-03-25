@@ -1,21 +1,23 @@
 
 package herramienta;
         
+import java.util.ArrayList;
+
 public class WorkProduct {
     private String id;
     private String name;
     private String presentationName;
     private String description;
     private String type;
-    private Template template;
+    private ArrayList<Template> templates;
 
-    public WorkProduct(String id, String name, String presentationName, String description, String type, Template template) {
+    public WorkProduct(String id, String name, String presentationName, String description, String type, ArrayList<Template> templates) {
         this.id = id;
         this.name = name;
         this.presentationName = presentationName;
         this.description = description;
         this.type = type;
-        this.template = template;
+        this.templates = templates;
     }
 
     public String getId() {
@@ -58,12 +60,12 @@ public class WorkProduct {
         this.type = type;
     }
 
-    public Template getTemplate() {
-        return template;
+    public ArrayList<Template> getTemplates() {
+        return templates;
     }
 
-    public void setTemplate(Template template) {
-        this.template = template;
+    public void setTemplates(ArrayList<Template> templates) {
+        this.templates = templates;
     }
 
     
