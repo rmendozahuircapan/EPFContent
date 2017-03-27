@@ -23,7 +23,8 @@ public class Herramienta {
         String pathFile = "C:\\Users\\Rodrigo\\Desktop\\Proceso\\proceso_de_prueba\\plugin.xmi";
         String pathTask = "C:\\Users\\Rodrigo\\Desktop\\Proceso\\proceso_de_prueba\\tasks";
         
-        XMI(pathFile, "File");
+        String typePath = "File";
+        XMI(pathFile, typePath);
         searchInformation(File);
         
         System.out.println("-------------------------------------");
@@ -425,12 +426,12 @@ public class Herramienta {
     }
     
     public static void searchSteps(String pathTask) throws IOException{
-        
+        String typePath = "Task";
         for (int i = 0; i < Tasks.size(); i++) {
             TaskFile = new ArrayList<String>();
             System.out.println("Name: "+Tasks.get(i).getPresentationName());
             String path = pathTask + "\\" + Tasks.get(i).getName() + ".xmi";
-            XMI(path, "Task");
+            XMI(path, typePath);
             String[] separated;
             for (int j = 0; j < TaskFile.size(); j++) {
                 separated = TaskFile.get(j).split(" ");
