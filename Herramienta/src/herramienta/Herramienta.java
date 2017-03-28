@@ -426,7 +426,12 @@ public class Herramienta {
     }
     
     public static void searchSteps(String pathTask) throws IOException{
+
         String typePath = "Task";
+        String id = "";
+        String name = "";
+        boolean flag;
+
         for (int i = 0; i < Tasks.size(); i++) {
             TaskFile = new ArrayList<String>();
             System.out.println("Name: "+Tasks.get(i).getPresentationName());
@@ -436,7 +441,27 @@ public class Herramienta {
             for (int j = 0; j < TaskFile.size(); j++) {
                 separated = TaskFile.get(j).split(" ");
                 if (separated[0].contentEquals("<sections")) {
-                    System.out.println(TaskFile.get(j));
+                    for (int k = 0; k < separated.length; k++) {
+                        if (separated[k].contains("xmi:id")) {
+                            id = separated[k].split("=")[1].split("\"")[1];
+                        }
+                        else if (separated[k].contains("name")) {
+                            name = separated[k].split("=")[1];
+                            if (!name.endsWith("\"") && !name.endsWith(">")) {
+                                flag = true;
+                                int l = k;
+                                while (flag){
+                                    l++;
+                                    name = name + " " + separated[l];
+                                    if (separated[l].contains("\"")) {
+                                        flag = false;
+                                    }
+                                }
+                            }
+                            name = name.split("\"")[1];
+                        }
+                    }
+                    System.out.println("name: "+name+" id: "+id);
                 }
             }
             System.out.println("---------------------------------");    
