@@ -12,6 +12,7 @@ public class Task {
     private ArrayList<Role> collaborators;
     private ArrayList<WorkProduct> inputs;
     private ArrayList<WorkProduct> outputs;
+    private ArrayList<Step> steps;
 
     public Task(String id, String name, String presentationName, String description, ArrayList<Role> producers, ArrayList<Role> collaborators, ArrayList<WorkProduct> inputs, ArrayList<WorkProduct> outputs) {
         this.id = id;
@@ -88,5 +89,11 @@ public class Task {
         this.outputs = outputs;
     }
 
-    
+    public ArrayList<Step> getSteps() {
+        return steps;
+    }
+
+    public void setSteps(ArrayList<Step> steps) {
+        this.steps = steps;
+    }
 }
