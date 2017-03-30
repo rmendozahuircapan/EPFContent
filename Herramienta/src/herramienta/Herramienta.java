@@ -13,7 +13,8 @@ public class Herramienta {
     static ArrayList<WorkProduct> WorkProducts = new ArrayList<WorkProduct>();
     static ArrayList<Task> Tasks = new ArrayList<Task>();
     static ArrayList<Step> Steps = new ArrayList<Step>();
-    static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso";
+    //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso";
+    static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso\\proceso_de_prueba";
     static String pathFile = mainFolder + "\\plugin.xmi";
     static String pathTask = mainFolder + "\\tasks";
     static String typePathFile = "File";
@@ -24,38 +25,29 @@ public class Herramienta {
         
         searchInformation();
         resumeInformation();
-
+        //showInformation();
         
-    }
-    
-    public static void resumeInformation(){
-        System.out.println("-------------------------------------");
-        
-        System.out.println("Roles: "+Roles.size());
-        System.out.println("Templates: "+Templates.size());
-        System.out.println("WorkProducts: "+WorkProducts.size());
-        System.out.println("Tasks: "+Tasks.size());
-        System.out.println("Steps: "+Steps.size());
-        
-        System.out.println("-------------------------------------");
     }
     
     public static String cleanLine(String line){
+
         String[] separate = line.split(" ");
         String clean = "";
+        
         for (int i = 0; i < separate.length; i++) {
             if (separate[i].length() > 0) {
                 if ( i < (separate.length - 1)){
-                        clean = clean + separate[i] + " ";
+                    clean = clean + separate[i] + " ";
                 }else{
-                        clean = clean + separate[i];
-                    }
+                    clean = clean + separate[i];
+                }
             }
         }
         return clean;
+        
     }
     
-    public static void searchRoles(ArrayList<String> File) {
+    public static void searchRoles() {
         
         boolean flag;
         
@@ -116,7 +108,7 @@ public class Herramienta {
         }
     }
     
-    public static void searchTemplates(ArrayList<String> File){
+    public static void searchTemplates(){
         
         boolean flag;
         
@@ -177,7 +169,7 @@ public class Herramienta {
         }
     }
     
-    public static void searchWorkProducts(ArrayList<String> File) {
+    public static void searchWorkProducts() {
         
         boolean flag;
         
@@ -266,7 +258,7 @@ public class Herramienta {
         }
     }
     
-    public static void searchTasks(ArrayList<String> File) {
+    public static void searchTasks() {
         
         boolean flag;
         
@@ -284,6 +276,7 @@ public class Herramienta {
                         String collaboratorsLine;
                         String inputsLine;
                         String outputsLine;
+                        
                         ArrayList<Role> producers = new ArrayList<Role>();
                         ArrayList<Role> collaborators = new ArrayList<Role>();
                         ArrayList<WorkProduct> inputs = new ArrayList<WorkProduct>();
@@ -424,17 +417,17 @@ public class Herramienta {
         }
     }
     
-    public static void searchSteps(String pathTask) throws IOException{
+    public static void searchSteps() throws IOException{
 
         String id = "";
         String name = "";
         boolean flag;
-        ArrayList<Step> stepTask;
+        ArrayList<Step> stepsTask;
 
         for (int i = 0; i < Tasks.size(); i++) {
             
             TaskFile = new ArrayList<String>();
-            stepTask = new ArrayList<Step>();
+            stepsTask = new ArrayList<Step>();
             String path = pathTask + "\\" + Tasks.get(i).getName() + ".xmi";
             String[] separated;
             XMI(path, typePathTask);
@@ -463,13 +456,13 @@ public class Herramienta {
                         }
                     }
                     Step s = new Step(id, name);
-                    stepTask.add(s);
+                    stepsTask.add(s);
                     Steps.add(s);
                 }
             }
-            for (Task Task : Tasks) {
-                if (Task.getName().equals(Tasks.get(i).getName())) {
-                    Task.setSteps(stepTask);
+            for (Task task : Tasks) {
+                if (task.getName().equals(Tasks.get(i).getName())) {
+                    task.setSteps(stepsTask);
                 }
             }
         }
@@ -478,12 +471,119 @@ public class Herramienta {
     public static void searchInformation() throws IOException {
         
         XMI(pathFile, typePathFile);
-        searchRoles(File);
-        searchTemplates(File);
-        searchWorkProducts(File);
-        searchTasks(File);
-        searchSteps(pathTask);
+        searchRoles();
+        searchTemplates();
+        searchWorkProducts();
+        searchTasks();
+        searchSteps();
         
+    }
+    
+    public static void resumeInformation(){
+        
+        System.out.println("-------------------------------------");
+        System.out.println("Roles: "+Roles.size());
+        System.out.println("Templates: "+Templates.size());
+        System.out.println("WorkProducts: "+WorkProducts.size());
+        System.out.println("Tasks: "+Tasks.size());
+        System.out.println("Steps: "+Steps.size());
+        System.out.println("-------------------------------------");
+    }
+    
+    public static void showInformation(){
+        showRoles();
+        System.out.println("-------------------------------------");
+        showTemplates();
+        System.out.println("-------------------------------------");
+        showWorkProducts();
+        System.out.println("-------------------------------------");
+        showTasks();
+        System.out.println("-------------------------------------");
+        showSteps();
+        System.out.println("-------------------------------------");
+    }
+    
+    public static void showRoles(){
+        int i = 0;
+        for (Role role : Roles) {
+            System.out.println("Role "+(++i));
+            System.out.println("PresentationName: "+role.getPresentationName());
+            System.out.println("Name: "+role.getName());
+            System.out.println("Id: "+role.getId());
+            System.out.println("Description: "+role.getDescription());
+            System.out.println("        *******         ");
+        }
+    }
+    
+    public static void showTemplates(){
+        int i = 0;
+        for (Template template : Templates) {
+            System.out.println("Template "+(++i));
+            System.out.println("PresentationName: "+template.getPresentationName());
+            System.out.println("Name: "+template.getName());
+            System.out.println("Id: "+template.getId());
+            System.out.println("Description: "+template.getDescription());
+            System.out.println("        *******         ");
+        }
+    }
+    
+    public static void showWorkProducts(){
+        int i = 0;
+        for (WorkProduct wp : WorkProducts) {
+            System.out.println("WorkProduct "+(++i));
+            System.out.println("PresentationName: "+wp.getPresentationName());
+            System.out.println("Name: "+wp.getName());
+            System.out.println("Id: "+wp.getId());
+            System.out.println("Type: "+wp.getType());
+            System.out.println("Description: "+wp.getDescription());
+            System.out.println("Templates: "+wp.getTemplates().size());
+            for (Template template : wp.getTemplates()) {
+                System.out.println("    - "+template.getPresentationName());
+            }
+            System.out.println("        *******         ");
+        }
+    }
+    
+    public static void showTasks(){
+        int i = 0;
+        for (Task task : Tasks) {
+            System.out.println("Task "+(++i));
+            System.out.println("PresentationName: "+task.getPresentationName());
+            System.out.println("Name: "+task.getName());
+            System.out.println("Id: "+task.getId());
+            System.out.println("Description: "+task.getDescription());
+            System.out.println("Producers: "+task.getProducers().size());
+            for (Role role : task.getProducers()) {
+                System.out.println("    - "+role.getPresentationName());
+            }
+            System.out.println("Collaborators: "+task.getCollaborators().size());
+            for (Role role : task.getCollaborators()) {
+                System.out.println("    - "+role.getPresentationName());
+            }
+            System.out.println("Inputs: "+task.getInputs().size());
+            for (WorkProduct wp : task.getInputs()) {
+                System.out.println("    - "+wp.getPresentationName());
+            }
+            System.out.println("Outputs: "+task.getOutputs().size());
+            for (WorkProduct wp : task.getOutputs()) {
+                System.out.println("    - "+wp.getPresentationName());
+            }
+            System.out.println("Steps: "+task.getSteps().size());
+            for (Step step : task.getSteps()) {
+                System.out.println("    - "+step.getName());
+            }
+            System.out.println("        *******         ");
+        }
+    }
+    
+    public static void showSteps(){
+        int i = 0;
+        for (Step step : Steps) {
+            System.out.println("Step "+(++i));
+            System.out.println("Name: "+step.getName());
+            System.out.println("Id: "+step.getId());
+            System.out.println("        *******         ");
+        }
     }
          
     public static void XMI(String path, String typePath) throws FileNotFoundException, IOException {
