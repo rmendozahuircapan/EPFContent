@@ -12,33 +12,32 @@ public class Herramienta {
     static ArrayList<Template> Templates = new ArrayList<Template>();
     static ArrayList<WorkProduct> WorkProducts = new ArrayList<WorkProduct>();
     static ArrayList<Task> Tasks = new ArrayList<Task>();
+    static ArrayList<Step> Steps = new ArrayList<Step>();
+    static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso";
+    static String pathFile = mainFolder + "\\plugin.xmi";
+    static String pathTask = mainFolder + "\\tasks";
+    static String typePathFile = "File";
+    static String typePathTask = "Task";
     
     
     public static void main(String[] args) throws IOException {
         
-        /*
-        String ruta_archivo = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso\\plugin.xmi";
-        */
+        searchInformation();
+        resumeInformation();
+
         
-        String pathFile = "C:\\Users\\Rodrigo\\Desktop\\Proceso\\proceso_de_prueba\\plugin.xmi";
-        String pathTask = "C:\\Users\\Rodrigo\\Desktop\\Proceso\\proceso_de_prueba\\tasks";
-        
-        String typePath = "File";
-        XMI(pathFile, typePath);
-        searchInformation(File);
-        
+    }
+    
+    public static void resumeInformation(){
         System.out.println("-------------------------------------");
         
         System.out.println("Roles: "+Roles.size());
         System.out.println("Templates: "+Templates.size());
         System.out.println("WorkProducts: "+WorkProducts.size());
         System.out.println("Tasks: "+Tasks.size());
+        System.out.println("Steps: "+Steps.size());
         
         System.out.println("-------------------------------------");
-        
-        searchSteps(pathTask);
-        
-        System.out.println("-------------------------------------");        
     }
     
     public static String cleanLine(String line){
@@ -427,17 +426,19 @@ public class Herramienta {
     
     public static void searchSteps(String pathTask) throws IOException{
 
-        String typePath = "Task";
         String id = "";
         String name = "";
         boolean flag;
+        ArrayList<Step> stepTask;
 
         for (int i = 0; i < Tasks.size(); i++) {
+            
             TaskFile = new ArrayList<String>();
-            System.out.println("Name: "+Tasks.get(i).getPresentationName());
+            stepTask = new ArrayList<Step>();
             String path = pathTask + "\\" + Tasks.get(i).getName() + ".xmi";
-            XMI(path, typePath);
             String[] separated;
+            XMI(path, typePathTask);
+            
             for (int j = 0; j < TaskFile.size(); j++) {
                 separated = TaskFile.get(j).split(" ");
                 if (separated[0].contentEquals("<sections")) {
@@ -461,20 +462,28 @@ public class Herramienta {
                             name = name.split("\"")[1];
                         }
                     }
-                    System.out.println("name: "+name+" id: "+id);
+                    Step s = new Step(id, name);
+                    stepTask.add(s);
+                    Steps.add(s);
                 }
             }
-            System.out.println("---------------------------------");    
-
+            for (Task Task : Tasks) {
+                if (Task.getName().equals(Tasks.get(i).getName())) {
+                    Task.setSteps(stepTask);
+                }
+            }
         }
-        
     }
     
-    public static void searchInformation(ArrayList<String> File) {
+    public static void searchInformation() throws IOException {
+        
+        XMI(pathFile, typePathFile);
         searchRoles(File);
         searchTemplates(File);
         searchWorkProducts(File);
         searchTasks(File);
+        searchSteps(pathTask);
+        
     }
          
     public static void XMI(String path, String typePath) throws FileNotFoundException, IOException {
