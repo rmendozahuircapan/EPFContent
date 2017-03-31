@@ -6,26 +6,37 @@ import java.util.*;
 
 public class Herramienta {
     
-    static ArrayList<String> File = new ArrayList<String>();
+    static ArrayList<String> PluginFile = new ArrayList<String>();
     static ArrayList<String> TaskFile = new ArrayList<String>();
+    static ArrayList<String> ModelFile = new ArrayList<String>();
+    static ArrayList<String> DiagramFile = new ArrayList<String>();
+    
     static ArrayList<Role> Roles = new ArrayList<Role>();
     static ArrayList<Template> Templates = new ArrayList<Template>();
     static ArrayList<WorkProduct> WorkProducts = new ArrayList<WorkProduct>();
     static ArrayList<Task> Tasks = new ArrayList<Task>();
     static ArrayList<Step> Steps = new ArrayList<Step>();
-    //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso";
-    static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso\\proceso_de_prueba";
+    
+    //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso\\proceso_de_prueba";
+    static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Nueva carpeta\\Prueba";
     static String pathFile = mainFolder + "\\plugin.xmi";
-    static String pathTask = mainFolder + "\\tasks";
+    static String pathModel = "";
+    static String pathDiagram = "";
+    static ArrayList<String> pathTasks = new ArrayList<String>();
     static String typePathFile = "File";
     static String typePathTask = "Task";
+    static String typePathModel = "Model";
+    static String typePathDiagram = "Diagram";
+    
     
     
     public static void main(String[] args) throws IOException {
         
         searchInformation();
         resumeInformation();
+        //XMI(resourceDescriptors, typePathModel);
         //showInformation();
+        showTasks();
         
     }
     
@@ -51,8 +62,8 @@ public class Herramienta {
         
         boolean flag;
         
-        for (int i = 0; i < File.size(); i++) {
-            String[] separated = File.get(i).split(" ");
+        for (int i = 0; i < PluginFile.size(); i++) {
+            String[] separated = PluginFile.get(i).split(" ");
             if (separated[0].contains("contentElements")) {
                 for (int j = 0; j < separated.length; j++) {
                     if (separated[j].contains("org.eclipse.epf.uma:Role")) {
@@ -112,8 +123,8 @@ public class Herramienta {
         
         boolean flag;
         
-        for (int i = 0; i < File.size(); i++) {
-            String[] separated = File.get(i).split(" ");
+        for (int i = 0; i < PluginFile.size(); i++) {
+            String[] separated = PluginFile.get(i).split(" ");
             if (separated[0].contains("contentElements")) {
                 for (int j = 0; j < separated.length; j++) {
                     if (separated[j].contains("org.eclipse.epf.uma:Template")) {
@@ -173,8 +184,8 @@ public class Herramienta {
         
         boolean flag;
         
-        for (int i = 0; i < File.size(); i++) {
-            String[] separated = File.get(i).split(" ");
+        for (int i = 0; i < PluginFile.size(); i++) {
+            String[] separated = PluginFile.get(i).split(" ");
             if (separated[0].contains("contentElements")) {
                 for (int j = 0; j < separated.length; j++) {
                     if (separated[j].contains("org.eclipse.epf.uma:Artifact") || separated[j].contains("org.eclipse.epf.uma:Deliverable") || separated[j].contains("org.eclipse.epf.uma:Outcome")) {
@@ -262,8 +273,8 @@ public class Herramienta {
         
         boolean flag;
         
-        for (int i = 0; i < File.size(); i++) {
-            String[] separated = File.get(i).split(" ");
+        for (int i = 0; i < PluginFile.size(); i++) {
+            String[] separated = PluginFile.get(i).split(" ");
             if (separated[0].contains("contentElements")) {
                 for (int j = 0; j < separated.length; j++) {
                     if (separated[j].contains("org.eclipse.epf.uma:Task")) {
@@ -421,18 +432,20 @@ public class Herramienta {
 
         String id = "";
         String name = "";
+        String nameTask = "";
         boolean flag;
         ArrayList<Step> stepsTask;
 
-        for (int i = 0; i < Tasks.size(); i++) {
-            
+        for (int i = 0; i < pathTasks.size(); i++) {
+            nameTask = pathTasks.get(i).substring(mainFolder.length() + 7).substring(0, pathTasks.get(i).substring(mainFolder.length() + 7).length() - 4);
+            System.out.println(nameTask + " -> "+ pathTasks.get(i));
             TaskFile = new ArrayList<String>();
             stepsTask = new ArrayList<Step>();
-            String path = pathTask + "\\" + Tasks.get(i).getName() + ".xmi";
             String[] separated;
-            XMI(path, typePathTask);
+            XMI(pathTasks.get(i), typePathTask);
             
             for (int j = 0; j < TaskFile.size(); j++) {
+                //System.out.println(TaskFile.get(j));
                 separated = TaskFile.get(j).split(" ");
                 if (separated[0].contentEquals("<sections")) {
                     for (int k = 0; k < separated.length; k++) {
@@ -461,8 +474,40 @@ public class Herramienta {
                 }
             }
             for (Task task : Tasks) {
-                if (task.getName().equals(Tasks.get(i).getName())) {
-                    task.setSteps(stepsTask);
+                if (task.getName().endsWith(nameTask)) {
+                    task.setSteps(Steps);
+                }
+            }
+        }
+    }
+    
+    public static void searchResourceDescriptors() throws IOException{
+        
+        for (int i = 0; i < PluginFile.size(); i++) {
+            String[] separated = PluginFile.get(i).split(" ");
+            if (separated[0].contains("resourceDescriptors")) {
+                for (int j = 0; j < separated.length; j++) {
+                    if (separated[j].contains("uri")) {
+                        String uri = separated[j].split("=")[1].split("/>")[0].split("\"")[1];
+                        String uriType = uri.split("/")[0];
+                        String path = mainFolder;
+                        if (uriType.equals("deliveryprocesses")) {
+                            for (int k = 0; k < uri.split("/").length; k++) {
+                                String part = uri.split("/")[k].replace("%20", " ");
+                                path = path + "\\" + part;
+                                
+                            }
+                            pathModel = path;
+                            pathDiagram = path.replace("model.xmi", "diagram.xmi");
+                        }
+                        else if (uriType.equals("tasks")) {
+                            for (int k = 0; k < uri.split("/").length; k++) {
+                                String part = uri.split("/")[k].replace("%20", " ");
+                                path = path + "\\" + part;
+                            }
+                            pathTasks.add(path);
+                        }
+                    }
                 }
             }
         }
@@ -471,6 +516,7 @@ public class Herramienta {
     public static void searchInformation() throws IOException {
         
         XMI(pathFile, typePathFile);
+        searchResourceDescriptors();
         searchRoles();
         searchTemplates();
         searchWorkProducts();
@@ -601,12 +647,18 @@ public class Herramienta {
             // Lectura del fichero
             String line;
             while((line=br.readLine())!=null){
-                if (typePath.equals("File")) {
-                    File.add(cleanLine(line));
+                if (typePath.equals(typePathFile)) {
+                    PluginFile.add(cleanLine(line));
                 }
-                else if (typePath.equals("Task")) {
+                else if (typePath.equals(typePathTask)) {
                     //System.out.println(line);
                     TaskFile.add(cleanLine(line));
+                }
+                else if (typePath.equals(typePathModel)){
+                    ModelFile.add(cleanLine(line));
+                }
+                else if (typePath.equals(typePathDiagram)){
+                    DiagramFile.add(cleanLine(line));
                 }
             }
         }
