@@ -16,44 +16,64 @@ public class Herramienta {
     static ArrayList<WorkProduct> WorkProducts = new ArrayList<WorkProduct>();
     static ArrayList<Task> Tasks = new ArrayList<Task>();
     static ArrayList<Step> Steps = new ArrayList<Step>();
+    static ArrayList<Activity> Activities = new ArrayList<Activity>();
+    static ArrayList<Process> Processes = new ArrayList<Process>();
     
-    static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Nueva carpeta\\Prueba";
-    //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso\\proceso_de_prueba";
+    //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Nueva carpeta\\Prueba";
+    static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso\\proceso_de_prueba";
     static String pathFile = mainFolder + "\\plugin.xmi";
-    static String pathModel = "";
-    static String pathDiagram = "";
+    
     static ArrayList<String> pathTasks = new ArrayList<String>();
-    static String typePathFile = "File";
+    static ArrayList<String> pathModels = new ArrayList<String>();
+    static ArrayList<String> pathDiagrams = new ArrayList<String>();
+    
+    static String typePathFile = "Plugin";
     static String typePathTask = "Task";
     static String typePathModel = "Model";
     static String typePathDiagram = "Diagram";
     
-    
+    /*************************************************************************************************************/
     
     public static void main(String[] args) throws IOException {
         
         searchInformation();
         resumeInformation();
-        showTasks();
+        showProcesses();
         
     }
     
-    public static String cleanLine(String line){
-
-        String[] separate = line.split(" ");
-        String clean = "";
-        
-        for (int i = 0; i < separate.length; i++) {
-            if (separate[i].length() > 0) {
-                if ( i < (separate.length - 1)){
-                    clean = clean + separate[i] + " ";
-                }else{
-                    clean = clean + separate[i];
+    /*************************************************************************************************************/
+    
+    public static void searchResourceDescriptors() throws IOException{
+        XMI(pathFile, typePathFile);
+        for (int i = 0; i < PluginFile.size(); i++) {
+            String[] separated = PluginFile.get(i).split(" ");
+            if (separated[0].contains("resourceDescriptors")) {
+                for (int j = 0; j < separated.length; j++) {
+                    if (separated[j].contains("uri")) {
+                        String uri = separated[j].split("=")[1].split("/>")[0].split("\"")[1];
+                        String uriType = uri.split("/")[0];
+                        String path = mainFolder;
+                        if (uriType.equals("deliveryprocesses")) {
+                            for (int k = 0; k < uri.split("/").length; k++) {
+                                String part = uri.split("/")[k].replace("%20", " ");
+                                path = path + "\\" + part;
+                                
+                            }
+                            pathModels.add(path);
+                            pathDiagrams.add(path.replace("model.xmi", "diagram.xmi"));
+                        }
+                        else if (uriType.equals("tasks")) {
+                            for (int k = 0; k < uri.split("/").length; k++) {
+                                String part = uri.split("/")[k].replace("%20", " ");
+                                path = path + "\\" + part;
+                            }
+                            pathTasks.add(path);
+                        }
+                    }
                 }
             }
         }
-        return clean;
-        
     }
     
     public static void searchRoles() {
@@ -428,22 +448,21 @@ public class Herramienta {
     
     public static void searchSteps() throws IOException{
 
-        String id = "";
-        String name = "";
-        String nameTask = "";
         boolean flag;
-        ArrayList<Step> stepsTask;
 
         for (int i = 0; i < pathTasks.size(); i++) {
             
+            String id = new String();
+            String name = new String();
+            String nameTask = pathTasks.get(i).substring(mainFolder.length() + 7).substring(0, pathTasks.get(i).substring(mainFolder.length() + 7).length() - 4);
+            
+            ArrayList<Step> stepsTask = new ArrayList<Step>();
+            
             TaskFile = new ArrayList<String>();
-            stepsTask = new ArrayList<Step>();
-            String[] separated;
             XMI(pathTasks.get(i), typePathTask);
-            nameTask = pathTasks.get(i).substring(mainFolder.length() + 7).substring(0, pathTasks.get(i).substring(mainFolder.length() + 7).length() - 4);
             
             for (int j = 0; j < TaskFile.size(); j++) {
-                separated = TaskFile.get(j).split(" ");
+                String[] separated = TaskFile.get(j).split(" ");
                 if (separated[0].contentEquals("<sections")) {
                     for (int k = 0; k < separated.length; k++) {
                         if (separated[k].contains("xmi:id")) {
@@ -472,55 +491,166 @@ public class Herramienta {
             }
             for (Task task : Tasks) {
                 if (task.getName().endsWith(nameTask)) {
-                    task.setSteps(Steps);
+                    task.setSteps(stepsTask);
                 }
             }
         }
     }
     
-    public static void searchResourceDescriptors() throws IOException{
+    public static void searchActivities() throws IOException{
         
-        for (int i = 0; i < PluginFile.size(); i++) {
-            String[] separated = PluginFile.get(i).split(" ");
-            if (separated[0].contains("resourceDescriptors")) {
-                for (int j = 0; j < separated.length; j++) {
-                    if (separated[j].contains("uri")) {
-                        String uri = separated[j].split("=")[1].split("/>")[0].split("\"")[1];
-                        String uriType = uri.split("/")[0];
-                        String path = mainFolder;
-                        if (uriType.equals("deliveryprocesses")) {
-                            for (int k = 0; k < uri.split("/").length; k++) {
-                                String part = uri.split("/")[k].replace("%20", " ");
-                                path = path + "\\" + part;
-                                
-                            }
-                            pathModel = path;
-                            pathDiagram = path.replace("model.xmi", "diagram.xmi");
+        boolean flag;
+        ArrayList<Task> tasksActivity = new ArrayList<Task>();
+        String id = new String ();
+        String name = new String ();
+        
+        
+        
+        for (int i = 0; i < pathModels.size(); i++) {
+            ModelFile = new ArrayList<String>();
+            XMI(pathModels.get(i),typePathModel);
+            for (int j = 0; j < ModelFile.size(); j++) {
+                String[] separated = ModelFile.get(j).split(" ");
+                if (separated[0].equals("<childPackages")) {
+                    tasksActivity = new ArrayList<Task>();
+                    for (int k = 0; k < separated.length; k++) {
+                        if (separated[k].contains("xmi:id")) {
+                            id = separated[k].split("=")[1].split("\"")[1];
                         }
-                        else if (uriType.equals("tasks")) {
-                            for (int k = 0; k < uri.split("/").length; k++) {
-                                String part = uri.split("/")[k].replace("%20", " ");
-                                path = path + "\\" + part;
+                        else if (separated[k].contains("name")) {
+                            name = separated[k].split("=")[1];
+                            if (!name.endsWith("\"") && !name.endsWith(">")) {
+                                flag = true;
+                                int l = k;
+                                while (flag){
+                                    l++;
+                                    name = name + " " + separated[l];
+                                    if (separated[l].contains("\"")) {
+                                        flag = false;
+                                    }
+                                }
                             }
-                            pathTasks.add(path);
+                            name = name.split("\"")[1];
                         }
                     }
                 }
+                else if(separated[0].equals("<processElements")){
+                    if (separated[1].equals("xsi:type=\"org.eclipse.epf.uma:TaskDescriptor\"")) {
+                        String nameTask = new String();
+                        for (int k = 0; k < separated.length; k++) {
+                            if (separated[k].contains("name")) {
+                                nameTask = separated[k].split("=")[1];
+                                if (!nameTask.endsWith("\"") && !nameTask.endsWith(">")) {
+                                    flag = true;
+                                    int l = k;
+                                    while (flag){
+                                        l++;
+                                        nameTask = nameTask + " " + separated[l];
+                                        if (separated[l].contains("\"")) {
+                                            flag = false;
+                                        }
+                                    }
+                                }
+                                nameTask = nameTask.split("\"")[1];
+                            }
+                        }
+                        for (Task task : Tasks) {
+                            if (task.getName().equals(nameTask)) {
+                                tasksActivity.add(task);
+                            }
+                        }
+                    }
+                }else if (separated[0].equals("</childPackages>")) {
+                    Activity a = new Activity(id, name, tasksActivity);
+                    Activities.add(a);
+                }
             }
+        }
+    }
+    
+    public static void searchProcess() throws IOException{
+        
+        boolean flag;
+        
+        for (int i = 0; i < pathModels.size(); i++) {
+            ModelFile = new ArrayList<String>();
+            XMI(pathModels.get(i),typePathModel);
+            String id = new String ();
+            String name = new String ();
+            ArrayList<Activity> activityProcess = new ArrayList<Activity>();
+            
+            for (int j = 0; j < ModelFile.size(); j++) {
+                String[] separated = ModelFile.get(j).split(" ");
+                if (separated[0].equals("<org.eclipse.epf.uma:ProcessComponent")) {
+                    
+                    for (int k = 0; k < separated.length; k++) {
+                        if (separated[k].contains("xmi:id")) {
+                            id = separated[k].split("=")[1].split("\"")[1];
+                        }
+                        else if (separated[k].contains("name")) {
+                            name = separated[k].split("=")[1];
+                            if (!name.endsWith("\"") && !name.endsWith(">")) {
+                                flag = true;
+                                int l = k;
+                                while (flag){
+                                    l++;
+                                    name = name + " " + separated[l];
+                                    if (separated[l].contains("\"")) {
+                                        flag = false;
+                                    }
+                                }
+                            }
+                            name = name.split("\"")[1];
+                        }
+                    }
+                    //System.out.println("name: "+name+" id: "+id);
+                }
+                else if (separated[0].equals("<childPackages")) {
+                    String nameActivity = new String();
+                    for (int k = 0; k < separated.length; k++) {
+                        if (separated[k].contains("name")) {
+                            nameActivity = separated[k].split("=")[1];
+                            if (!nameActivity.endsWith("\"") && !nameActivity.endsWith(">")) {
+                                flag = true;
+                                int l = k;
+                                while (flag){
+                                    l++;
+                                    nameActivity = nameActivity + " " + separated[l];
+                                    if (separated[l].contains("\"")) {
+                                        flag = false;
+                                    }
+                                }
+                            }
+                            nameActivity = nameActivity.split("\"")[1];
+                        }
+                    }
+                    for (Activity activity : Activities) {
+                        if (activity.getName().equals(nameActivity)) {
+                            activityProcess.add(activity);
+                        }
+                    }
+                    //System.out.println(nameActivity);
+                }
+            }
+            Process p = new Process(id, name, activityProcess);
+            Processes.add(p);
         }
     }
     
     public static void searchInformation() throws IOException {
         
-        XMI(pathFile, typePathFile);
         searchResourceDescriptors();
         searchRoles();
         searchTemplates();
         searchWorkProducts();
         searchTasks();
         searchSteps();
+        searchActivities();
+        searchProcess();
         
     }
+    
+    /*************************************************************************************************************/
     
     public static void resumeInformation(){
         
@@ -530,6 +660,8 @@ public class Herramienta {
         System.out.println("WorkProducts: "+WorkProducts.size());
         System.out.println("Tasks: "+Tasks.size());
         System.out.println("Steps: "+Steps.size());
+        System.out.println("Activities: "+Activities.size());
+        System.out.println("Processes: "+Processes.size());
         System.out.println("-------------------------------------");
     }
     
@@ -544,6 +676,11 @@ public class Herramienta {
         System.out.println("-------------------------------------");
         showSteps();
         System.out.println("-------------------------------------");
+        showActivities();
+        System.out.println("-------------------------------------");
+        showProcesses();
+        System.out.println("-------------------------------------");
+        
     }
     
     public static void showRoles(){
@@ -627,6 +764,54 @@ public class Herramienta {
             System.out.println("Id: "+step.getId());
             System.out.println("        *******         ");
         }
+    }
+    
+    public static void showActivities(){
+        int i = 0;
+        for (Activity activity : Activities) {
+            System.out.println("Activity "+(++i));
+            System.out.println("Name: "+activity.getName());
+            System.out.println("Id: "+activity.getId());
+            System.out.println("Tasks: ");
+            for (Task task : activity.getTasks()) {
+                System.out.println("    - "+task.getPresentationName());
+            }
+            System.out.println("        *******         ");
+        }
+    }
+    public static void showProcesses(){
+        int i = 0;
+        for (Process process : Processes) {
+            System.out.println("Process "+(++i));
+            System.out.println("Name: "+process.getName());
+            System.out.println("Id: "+process.getId());
+            System.out.println("Activities: ");
+            for (Activity activity : process.getActivities()) {
+                System.out.println("    - "+activity.getName());
+            }
+            System.out.println("        *******         ");
+        }
+    }
+    
+    
+    
+    /*************************************************************************************************************/
+    
+    public static String cleanLine(String line){
+
+        String[] separate = line.split(" ");
+        String clean = "";
+        
+        for (int i = 0; i < separate.length; i++) {
+            if (separate[i].length() > 0) {
+                if ( i < (separate.length - 1)){
+                    clean = clean + separate[i] + " ";
+                }else{
+                    clean = clean + separate[i];
+                }
+            }
+        }
+        return clean;
     }
          
     public static void XMI(String path, String typePath) throws FileNotFoundException, IOException {
