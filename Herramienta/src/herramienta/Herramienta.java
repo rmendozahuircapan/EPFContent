@@ -17,8 +17,8 @@ public class Herramienta {
     static ArrayList<Task> Tasks = new ArrayList<Task>();
     static ArrayList<Step> Steps = new ArrayList<Step>();
     
-    //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso\\proceso_de_prueba";
     static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Nueva carpeta\\Prueba";
+    //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso\\proceso_de_prueba";
     static String pathFile = mainFolder + "\\plugin.xmi";
     static String pathModel = "";
     static String pathDiagram = "";
@@ -34,8 +34,6 @@ public class Herramienta {
         
         searchInformation();
         resumeInformation();
-        //XMI(resourceDescriptors, typePathModel);
-        //showInformation();
         showTasks();
         
     }
@@ -437,15 +435,14 @@ public class Herramienta {
         ArrayList<Step> stepsTask;
 
         for (int i = 0; i < pathTasks.size(); i++) {
-            nameTask = pathTasks.get(i).substring(mainFolder.length() + 7).substring(0, pathTasks.get(i).substring(mainFolder.length() + 7).length() - 4);
-            System.out.println(nameTask + " -> "+ pathTasks.get(i));
+            
             TaskFile = new ArrayList<String>();
             stepsTask = new ArrayList<Step>();
             String[] separated;
             XMI(pathTasks.get(i), typePathTask);
+            nameTask = pathTasks.get(i).substring(mainFolder.length() + 7).substring(0, pathTasks.get(i).substring(mainFolder.length() + 7).length() - 4);
             
             for (int j = 0; j < TaskFile.size(); j++) {
-                //System.out.println(TaskFile.get(j));
                 separated = TaskFile.get(j).split(" ");
                 if (separated[0].contentEquals("<sections")) {
                     for (int k = 0; k < separated.length; k++) {
