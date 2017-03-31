@@ -19,7 +19,6 @@ public class Herramienta {
     static ArrayList<Activity> Activities = new ArrayList<Activity>();
     static ArrayList<Process> Processes = new ArrayList<Process>();
     
-    //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Nueva carpeta\\Prueba";
     static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso\\proceso_de_prueba";
     static String pathFile = mainFolder + "\\plugin.xmi";
     
@@ -38,8 +37,7 @@ public class Herramienta {
         
         searchInformation();
         resumeInformation();
-        showProcesses();
-        
+        showInformation();
     }
     
     /*************************************************************************************************************/
@@ -58,7 +56,6 @@ public class Herramienta {
                             for (int k = 0; k < uri.split("/").length; k++) {
                                 String part = uri.split("/")[k].replace("%20", " ");
                                 path = path + "\\" + part;
-                                
                             }
                             pathModels.add(path);
                             pathDiagrams.add(path.replace("model.xmi", "diagram.xmi"));
@@ -79,18 +76,15 @@ public class Herramienta {
     public static void searchRoles() {
         
         boolean flag;
-        
         for (int i = 0; i < PluginFile.size(); i++) {
             String[] separated = PluginFile.get(i).split(" ");
             if (separated[0].contains("contentElements")) {
                 for (int j = 0; j < separated.length; j++) {
                     if (separated[j].contains("org.eclipse.epf.uma:Role")) {
-                        
-                        String id = "";
-                        String name = "";
-                        String presentationName = "";
-                        String description = "";
-                        
+                        String id = new String();
+                        String name = new String();
+                        String presentationName = new String();
+                        String description = new String();
                         for (int k = 0; k < separated.length; k++) {
                             if (separated[k].contains("xmi:id")) {
                                 id = separated[k].split("=")[1].split("\"")[1];
@@ -138,20 +132,16 @@ public class Herramienta {
     }
     
     public static void searchTemplates(){
-        
         boolean flag;
-        
         for (int i = 0; i < PluginFile.size(); i++) {
             String[] separated = PluginFile.get(i).split(" ");
             if (separated[0].contains("contentElements")) {
                 for (int j = 0; j < separated.length; j++) {
                     if (separated[j].contains("org.eclipse.epf.uma:Template")) {
-                        
-                        String id = "";
-                        String name = "";
-                        String presentationName = "";
-                        String description = "";
-                        
+                        String id = new String();
+                        String name = new String();
+                        String presentationName = new String();
+                        String description = new String();
                         for (int k = 0; k < separated.length; k++) {
                             if (separated[k].contains("xmi:id")) {
                                 id = separated[k].split("=")[1].split("\"")[1];
@@ -199,23 +189,19 @@ public class Herramienta {
     }
     
     public static void searchWorkProducts() {
-        
         boolean flag;
-        
         for (int i = 0; i < PluginFile.size(); i++) {
             String[] separated = PluginFile.get(i).split(" ");
             if (separated[0].contains("contentElements")) {
                 for (int j = 0; j < separated.length; j++) {
                     if (separated[j].contains("org.eclipse.epf.uma:Artifact") || separated[j].contains("org.eclipse.epf.uma:Deliverable") || separated[j].contains("org.eclipse.epf.uma:Outcome")) {
-                        
-                        String id = "";
-                        String name = "";
-                        String presentationName = "";
-                        String description = "";
-                        String type = "";
-                        String templatesLine;
+                        String id = new String();
+                        String name = new String();
+                        String presentationName = new String();
+                        String description = new String();
+                        String type = new String();
+                        String templatesLine = new String();
                         ArrayList<Template> templates = new ArrayList<Template>();
-                        
                         for (int k = 0; k < separated.length; k++) {
                             if (separated[k].contains("xmi:id")) {
                                 id = separated[k].split("=")[1].split("\"")[1];
@@ -288,30 +274,24 @@ public class Herramienta {
     }
     
     public static void searchTasks() {
-        
         boolean flag;
-        
         for (int i = 0; i < PluginFile.size(); i++) {
             String[] separated = PluginFile.get(i).split(" ");
             if (separated[0].contains("contentElements")) {
                 for (int j = 0; j < separated.length; j++) {
                     if (separated[j].contains("org.eclipse.epf.uma:Task")) {
-                        
-                        String id = "";
-                        String name = "";
-                        String presentationName = "";
-                        String description = "";
-                        String producersLine;
-                        String collaboratorsLine;
-                        String inputsLine;
-                        String outputsLine;
-                        
+                        String id = new String();
+                        String name = new String();
+                        String presentationName = new String();
+                        String description = new String();
+                        String producersLine = new String();
+                        String collaboratorsLine = new String();
+                        String inputsLine = new String();
+                        String outputsLine = new String();
                         ArrayList<Role> producers = new ArrayList<Role>();
                         ArrayList<Role> collaborators = new ArrayList<Role>();
                         ArrayList<WorkProduct> inputs = new ArrayList<WorkProduct>();
                         ArrayList<WorkProduct> outputs = new ArrayList<WorkProduct>();
-                        
-                        
                         for (int k = 0; k < separated.length; k++) {
                             if (separated[k].contains("xmi:id")) {
                                 id = separated[k].split("=")[1].split("\"")[1];
@@ -447,20 +427,14 @@ public class Herramienta {
     }
     
     public static void searchSteps() throws IOException{
-
         boolean flag;
-
         for (int i = 0; i < pathTasks.size(); i++) {
-            
             String id = new String();
             String name = new String();
             String nameTask = pathTasks.get(i).substring(mainFolder.length() + 7).substring(0, pathTasks.get(i).substring(mainFolder.length() + 7).length() - 4);
-            
-            ArrayList<Step> stepsTask = new ArrayList<Step>();
-            
+            ArrayList<Step> stepsTask = new ArrayList<Step>();            
             TaskFile = new ArrayList<String>();
-            XMI(pathTasks.get(i), typePathTask);
-            
+            XMI(pathTasks.get(i), typePathTask);            
             for (int j = 0; j < TaskFile.size(); j++) {
                 String[] separated = TaskFile.get(j).split(" ");
                 if (separated[0].contentEquals("<sections")) {
@@ -497,15 +471,11 @@ public class Herramienta {
         }
     }
     
-    public static void searchActivities() throws IOException{
-        
+    public static void searchActivities() throws IOException{    
         boolean flag;
         ArrayList<Task> tasksActivity = new ArrayList<Task>();
         String id = new String ();
-        String name = new String ();
-        
-        
-        
+        String name = new String ();    
         for (int i = 0; i < pathModels.size(); i++) {
             ModelFile = new ArrayList<String>();
             XMI(pathModels.get(i),typePathModel);
@@ -560,7 +530,8 @@ public class Herramienta {
                             }
                         }
                     }
-                }else if (separated[0].equals("</childPackages>")) {
+                }
+                else if (separated[0].equals("</childPackages>")) {
                     Activity a = new Activity(id, name, tasksActivity);
                     Activities.add(a);
                 }
@@ -569,20 +540,16 @@ public class Herramienta {
     }
     
     public static void searchProcess() throws IOException{
-        
         boolean flag;
-        
         for (int i = 0; i < pathModels.size(); i++) {
             ModelFile = new ArrayList<String>();
             XMI(pathModels.get(i),typePathModel);
             String id = new String ();
             String name = new String ();
             ArrayList<Activity> activityProcess = new ArrayList<Activity>();
-            
             for (int j = 0; j < ModelFile.size(); j++) {
                 String[] separated = ModelFile.get(j).split(" ");
-                if (separated[0].equals("<org.eclipse.epf.uma:ProcessComponent")) {
-                    
+                if (separated[0].equals("<org.eclipse.epf.uma:ProcessComponent")) {    
                     for (int k = 0; k < separated.length; k++) {
                         if (separated[k].contains("xmi:id")) {
                             id = separated[k].split("=")[1].split("\"")[1];
@@ -603,7 +570,6 @@ public class Herramienta {
                             name = name.split("\"")[1];
                         }
                     }
-                    //System.out.println("name: "+name+" id: "+id);
                 }
                 else if (separated[0].equals("<childPackages")) {
                     String nameActivity = new String();
@@ -629,7 +595,6 @@ public class Herramienta {
                             activityProcess.add(activity);
                         }
                     }
-                    //System.out.println(nameActivity);
                 }
             }
             Process p = new Process(id, name, activityProcess);
@@ -779,6 +744,7 @@ public class Herramienta {
             System.out.println("        *******         ");
         }
     }
+    
     public static void showProcesses(){
         int i = 0;
         for (Process process : Processes) {
@@ -792,8 +758,6 @@ public class Herramienta {
             System.out.println("        *******         ");
         }
     }
-    
-    
     
     /*************************************************************************************************************/
     
