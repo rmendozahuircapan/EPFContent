@@ -19,14 +19,20 @@ public class Herramienta {
     static ArrayList<Activity> Activities = new ArrayList<Activity>();
     static ArrayList<Process> Processes = new ArrayList<Process>();
     
+    static ArrayList<Node> Nodes = new ArrayList<Node>();
+    static ArrayList<Edge> Edges = new ArrayList<Edge>();
+    
+    //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso";
+    //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library3\\workflow";
     static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso\\proceso_de_prueba";
-    static String pathFile = mainFolder + "\\plugin.xmi";
+    
+    static String pathPlugin = mainFolder + "\\plugin.xmi";
     
     static ArrayList<String> pathTasks = new ArrayList<String>();
     static ArrayList<String> pathModels = new ArrayList<String>();
     static ArrayList<String> pathDiagrams = new ArrayList<String>();
     
-    static String typePathFile = "Plugin";
+    static String typePathPlugin = "Plugin";
     static String typePathTask = "Task";
     static String typePathModel = "Model";
     static String typePathDiagram = "Diagram";
@@ -37,13 +43,131 @@ public class Herramienta {
         
         searchInformation();
         resumeInformation();
-        showInformation();
+        //showProcesses();
+        //showActivities();
+        //showInformation();
+        searchNodes();
+        searchEdges();
+        resumeWorkflow();
+    }
+    
+    /*************************************************************************************************************/
+    
+    public static void searchNodes() throws IOException{
+        boolean flag;
+        for (int i = 0; i < pathDiagrams.size(); i++) {
+            DiagramFile = new ArrayList<String>();
+            XMI(pathDiagrams.get(i),typePathDiagram);
+            for (int j = 0; j < DiagramFile.size(); j++) {
+                String[] separated = DiagramFile.get(j).split(" ");
+                if (separated[0].equals("<node")) {
+                    String id = new String();
+                    String name = new String();
+                    String type = new String();
+                    for (int k = 0; k < separated.length; k++) {
+                        if (separated[k].contains("xmi:type")) {
+                            type = separated[k].split("=")[1].split("\"")[1].split(":")[1];
+                        }
+                        else if (separated[k].contains("xmi:id")) {
+                            id = separated[k].split("=")[1].split("\"")[1];
+                        }
+                        else if (separated[k].contains("name")) {
+                            name = separated[k].split("=")[1];
+                            if (!name.endsWith("\"") && !name.endsWith(">")) {
+                                flag = true;
+                                int l = k;
+                                while (flag){
+                                    l++;
+                                    name = name + " " + separated[l];
+                                    if (separated[l].contains("\"")) {
+                                        flag = false;
+                                    }
+                                }
+                            }
+                            name = name.split("\"")[1];
+                        }
+                    }
+                    if (name.isEmpty()) {
+                        name = type;
+                    }
+                    Node n = new Node(id, name, type);
+                    Nodes.add(n);
+                }
+            }
+        }
+    }
+    
+    public static void searchEdges() throws IOException{
+        
+        boolean flag;
+        for (int i = 0; i < pathDiagrams.size(); i++) {
+            DiagramFile = new ArrayList<String>();
+            XMI(pathDiagrams.get(i),typePathDiagram);
+            for (int j = 0; j < DiagramFile.size(); j++) {
+                String[] separated = DiagramFile.get(j).split(" ");
+                if (separated[0].equals("<edge")) {
+                    String id = new String();
+                    String name = new String();
+                    Node source = null;
+                    Node target = null;
+                    String idSource = new String();
+                    String idTarget = new String();
+                    for (int k = 0; k < separated.length; k++) {
+                        if (separated[k].contains("xmi:id")) {
+                            id = separated[k].split("=")[1].split("\"")[1];
+                        }
+                        else if (separated[k].contains("name")) {
+                            name = separated[k].split("=")[1];
+                            if (!name.endsWith("\"") && !name.endsWith(">")) {
+                                flag = true;
+                                int l = k;
+                                while (flag){
+                                    l++;
+                                    name = name + " " + separated[l];
+                                    if (separated[l].contains("\"")) {
+                                        flag = false;
+                                    }
+                                }
+                            }
+                            name = name.split("\"")[1];
+                        }
+                        else if (separated[k].contains("source")) {
+                            //String 
+                            idSource = separated[k].split("=")[1].split("\"")[1];
+                            for (Node node : Nodes) {
+                                if (node.getId().equals(idSource)) {
+                                    source = node;
+                                }
+                            }
+                        }
+                        else if (separated[k].contains("target")) {
+                            //String
+                            idTarget = separated[k].split("=")[1].split("\"")[1];
+                            for (Node node : Nodes) {
+                                if (node.getId().equals(idTarget)) {
+                                    target = node;
+                                }
+                            }
+                        }
+                    }
+                    Edge e = new Edge(id, name, source, target);
+                    Edges.add(e);
+                }
+            }
+        }
+    }
+    
+    public static void resumeWorkflow() {
+        System.out.println("-------------------------------------");
+        System.out.println("Nodes: "+Nodes.size());
+        System.out.println("Edges: "+Edges.size());
+        System.out.println("-------------------------------------");        
     }
     
     /*************************************************************************************************************/
     
     public static void searchResourceDescriptors() throws IOException{
-        XMI(pathFile, typePathFile);
+        XMI(pathPlugin, typePathPlugin);
         for (int i = 0; i < PluginFile.size(); i++) {
             String[] separated = PluginFile.get(i).split(" ");
             if (separated[0].contains("resourceDescriptors")) {
@@ -793,11 +917,10 @@ public class Herramienta {
             // Lectura del fichero
             String line;
             while((line=br.readLine())!=null){
-                if (typePath.equals(typePathFile)) {
+                if (typePath.equals(typePathPlugin)) {
                     PluginFile.add(cleanLine(line));
                 }
                 else if (typePath.equals(typePathTask)) {
-                    //System.out.println(line);
                     TaskFile.add(cleanLine(line));
                 }
                 else if (typePath.equals(typePathModel)){
