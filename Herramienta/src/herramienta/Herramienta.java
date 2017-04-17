@@ -23,9 +23,9 @@ public class Herramienta {
     static ArrayList<Edge> Edges = new ArrayList<Edge>();
     static ArrayList<WorkFlow> WorkFlows = new ArrayList<WorkFlow>();
     
-    //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso";
+    static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso";
     //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library3\\workflow";
-    static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso\\proceso_de_prueba";
+    //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso\\proceso_de_prueba";
     
     static String pathPlugin = mainFolder + "\\plugin.xmi";
     
@@ -42,12 +42,11 @@ public class Herramienta {
     
     public static void main(String[] args) throws IOException {
         
-        searchInformation();
-        resumeInformation();
-        searchNodes();
-        searchEdges();
-        searchWorkFlows();
+        searchProcessElements();
+        searchElementsWorkFlow();
+        resumeProcessElements();
         resumeWorkFlow();
+        showWorkFlow();
     }
     
     /*************************************************************************************************************/
@@ -227,6 +226,12 @@ public class Herramienta {
         }
     }
     
+    public static void searchElementsWorkFlow() throws IOException{
+        searchNodes();
+        searchEdges();
+        searchWorkFlows();
+    }
+    
     public static void resumeWorkFlow() {
         System.out.println("-------------------------------------");
         System.out.println("Nodes: "+Nodes.size());
@@ -234,6 +239,22 @@ public class Herramienta {
         System.out.println("WorkFlows: "+WorkFlows.size());
         System.out.println("-------------------------------------");        
     }
+    
+    public static void showWorkFlow() {
+        System.out.println("-------------------------------------");
+        for (WorkFlow wf : WorkFlows) {
+            System.out.println("name: "+wf.getName());
+            System.out.println(wf.getNodes().size()+" nodes "+wf.getEdges().size()+" edges");
+            System.out.println("");
+            for (Edge e : wf.getEdges()) {
+                System.out.println(e.getSource().getName()+" -> "+e.getTarget().getName()+" ["+e.getName()+"]");
+            }
+            System.out.println("---");
+        }
+        
+    }
+    
+    
     
     /*************************************************************************************************************/
     
@@ -797,7 +818,7 @@ public class Herramienta {
         }
     }
     
-    public static void searchInformation() throws IOException {
+    public static void searchProcessElements() throws IOException {
         
         searchResourceDescriptors();
         searchRoles();
@@ -812,7 +833,7 @@ public class Herramienta {
     
     /*************************************************************************************************************/
     
-    public static void resumeInformation(){
+    public static void resumeProcessElements(){
         
         System.out.println("-------------------------------------");
         System.out.println("Roles: "+Roles.size());
@@ -825,7 +846,7 @@ public class Herramienta {
         System.out.println("-------------------------------------");
     }
     
-    public static void showInformation(){
+    public static void showAll(){
         showRoles();
         System.out.println("-------------------------------------");
         showTemplates();
