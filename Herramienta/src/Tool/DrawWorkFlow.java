@@ -6,7 +6,7 @@ import java.awt.geom.*;
 import javax.swing.*;
 
   
-public class Draw{
+public class DrawWorkFlow{
     
     public static void DrawWorkFlow(){
         JFrame f = new JFrame();

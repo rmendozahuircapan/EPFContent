@@ -7,7 +7,7 @@ import static Tool.SearchProcessElements.*;
 import static Tool.SearchWorkFlow.*;
 import static Tool.ShowProcessElements.*;
 import static Tool.ShowWorkFlow.*;
-import static Tool.Draw.*;
+import static Tool.DrawWorkFlow.*;
 
 import java.io.*;
 import java.util.*;
