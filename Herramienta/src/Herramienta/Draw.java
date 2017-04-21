@@ -6,7 +6,7 @@ import java.awt.geom.*;
 import javax.swing.*;
 
   
-public class DrawWorkflow
+public class Draw
 {
     public static void main(String[] args)
     {
