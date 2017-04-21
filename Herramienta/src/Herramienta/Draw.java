@@ -8,7 +8,7 @@ import javax.swing.*;
   
 public class Draw
 {
-    public static void main(String[] args)
+    /*public static void main(String[] args)
     {
         JFrame f = new JFrame();
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -16,7 +16,7 @@ public class Draw
         f.setSize(600,600);
         f.setLocation(200,200);
         f.setVisible(true);
-    }
+    }*/
 }
   
 class ArrowPanel extends JPanel
