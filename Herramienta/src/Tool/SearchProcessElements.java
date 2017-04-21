@@ -1,7 +1,8 @@
 
-package Herramienta;
+package Tool;
 
-import static Herramienta.Herramienta.*;
+import static Tool.App.*;
+import static Tool.ReadFileXMI.*;
 import ProcessElements.*;
 import java.io.*;
 import java.util.*;

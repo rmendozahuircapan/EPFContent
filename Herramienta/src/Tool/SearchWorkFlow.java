@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Herramienta;
+package Tool;
 
-import static Herramienta.Herramienta.*;
+import static Tool.App.*;
+import static Tool.ReadFileXMI.*;
 import WorkFlow.*;
 import java.io.*;
 import java.util.*;
