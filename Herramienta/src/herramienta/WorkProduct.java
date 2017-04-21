@@ -1,5 +1,5 @@
 
-package herramienta;
+package Herramienta;
         
 import java.util.ArrayList;
 

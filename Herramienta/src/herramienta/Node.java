@@ -1,5 +1,5 @@
 
-package herramienta;
+package Herramienta;
 
 
 public class Node {

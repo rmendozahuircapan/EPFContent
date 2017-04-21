@@ -1,4 +1,4 @@
-package herramienta;
+package Herramienta;
 
 import java.io.*;
 import java.util.*;
@@ -47,6 +47,8 @@ public class Herramienta {
         resumeProcessElements();
         resumeWorkFlow();
         showWorkFlow();
+        
+        DrawWorkflow.main(args);
     }
     
     /*************************************************************************************************************/
