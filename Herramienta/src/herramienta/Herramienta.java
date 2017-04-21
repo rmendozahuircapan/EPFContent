@@ -1,5 +1,7 @@
 package Herramienta;
 
+import ProcessElements.*;
+
 import java.io.*;
 import java.util.*;
 
@@ -17,7 +19,7 @@ public class Herramienta {
     static ArrayList<Task> Tasks = new ArrayList<Task>();
     static ArrayList<Step> Steps = new ArrayList<Step>();
     static ArrayList<Activity> Activities = new ArrayList<Activity>();
-    static ArrayList<Process> Processes = new ArrayList<Process>();
+    static ArrayList<Processes> Processes = new ArrayList<Processes>();
     
     static ArrayList<Node> Nodes = new ArrayList<Node>();
     static ArrayList<Edge> Edges = new ArrayList<Edge>();
@@ -815,7 +817,7 @@ public class Herramienta {
                     }
                 }
             }
-            Process p = new Process(id, name, activityProcess);
+            Processes p = new Processes(id, name, activityProcess);
             Processes.add(p);
         }
     }
@@ -965,7 +967,7 @@ public class Herramienta {
     
     public static void showProcesses(){
         int i = 0;
-        for (Process process : Processes) {
+        for (Processes process : Processes) {
             System.out.println("Process "+(++i));
             System.out.println("Name: "+process.getName());
             System.out.println("Id: "+process.getId());

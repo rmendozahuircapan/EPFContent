@@ -1,14 +1,14 @@
 
-package Herramienta;
+package ProcessElements;
 
 import java.util.*;
 
-public class Process {
+public class Processes {
     private String id;
     private String name;
     private ArrayList<Activity> activities;
 
-    public Process(String id, String name, ArrayList<Activity> activities) {
+    public Processes(String id, String name, ArrayList<Activity> activities) {
         this.id = id;
         this.name = name;
         this.activities = activities;
