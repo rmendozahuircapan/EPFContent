@@ -1,5 +1,5 @@
 
-package Herramienta;
+package WorkFlow;
 
 
 public class Edge {

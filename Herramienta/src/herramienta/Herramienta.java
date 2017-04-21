@@ -1,5 +1,8 @@
 package Herramienta;
 
+import WorkFlow.Edge;
+import WorkFlow.Node;
+import WorkFlow.WorkFlow;
 import ProcessElements.*;
 
 import java.io.*;
