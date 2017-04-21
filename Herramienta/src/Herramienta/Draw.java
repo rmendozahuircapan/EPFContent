@@ -6,21 +6,18 @@ import java.awt.geom.*;
 import javax.swing.*;
 
   
-public class Draw
-{
-    /*public static void main(String[] args)
-    {
+public class Draw{
+    public static void main(String[] args){
         JFrame f = new JFrame();
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.getContentPane().add(new ArrowPanel());
         f.setSize(600,600);
         f.setLocation(200,200);
         f.setVisible(true);
-    }*/
+    }
 }
   
-class ArrowPanel extends JPanel
-{
+class ArrowPanel extends JPanel{
     int barb;
     double phi;
   
