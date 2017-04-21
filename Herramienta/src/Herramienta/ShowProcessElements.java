@@ -4,7 +4,8 @@ package Herramienta;
 import static Herramienta.Herramienta.*;
 import ProcessElements.*;
 
-public class Show {
+public class ShowProcessElements {
+    
     public static void resumeProcessElements(){
         
         System.out.println("-------------------------------------");
@@ -146,4 +147,5 @@ public class Show {
             System.out.println("        *******         ");
         }
     }
+    
 }
