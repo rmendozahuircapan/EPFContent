@@ -127,11 +127,11 @@ class ArrowPanel extends JPanel{
             for (Position position : wf.getPositions()) {
                 if (node.getId().equals(position.getIdNode())) {
                     if (node.getType().equals("StructuredActivityNode")) {
-                        ImageIcon Img = new ImageIcon(getClass().getResource("/Icons/Activity.gif"));
+                        ImageIcon Img = new ImageIcon(getClass().getResource("/Icons/activity.gif"));
                         graph.drawImage(Img.getImage(),position.getX() - xMin(id) + side,position.getY() - yMin(id), side, side, null);
                     }
                     else if (node.getType().equals("ActivityParameterNode")) {
-                        ImageIcon Img = new ImageIcon(getClass().getResource("/Icons/Task.gif"));
+                        ImageIcon Img = new ImageIcon(getClass().getResource("/Icons/task.gif"));
                         graph.drawImage(Img.getImage(),position.getX() - xMin(id) + side,position.getY() - yMin(id), side, side, null);
                     }
                     else{
