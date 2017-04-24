@@ -7,7 +7,7 @@ import static Tool.SearchProcessElements.*;
 import static Tool.SearchWorkFlow.*;
 import static Tool.ShowProcessElements.*;
 import static Tool.ShowWorkFlow.*;
-import static Tool.DrawWorkFlow.*;
+import static WorkFlow.DrawWorkFlow.*;
 
 import java.io.*;
 import java.util.*;
@@ -30,7 +30,8 @@ public class App {
     
     static ArrayList<Node> Nodes = new ArrayList<Node>();
     static ArrayList<Edge> Edges = new ArrayList<Edge>();
-    static ArrayList<WorkFlow> WorkFlows = new ArrayList<WorkFlow>();
+    static public ArrayList<WorkFlow> WorkFlows = new ArrayList<WorkFlow>();
+    static public ArrayList<Position> Positions = new ArrayList<Position>();
     
     static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso";
     //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library3\\workflow";
@@ -53,11 +54,10 @@ public class App {
         
         searchProcessElements();
         searchElementsWorkFlow();
-        resumeProcessElements();
+        //resumeProcessElements();
         resumeWorkFlow();
         showWorkFlow();
-        DrawWorkFlow();
+        //DrawWorkFlow("_rX5H4EGMEeaBIP9BVh-bPQ");
         
-    }
-    
+    }   
 }
