@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Tool;
 
 import static Tool.App.*;
@@ -11,15 +7,12 @@ import WorkFlow.*;
 import java.io.*;
 import java.util.*;
 
-/**
- *
- * @author Rodrigo
- */
 public class SearchWorkFlow {
     
     public static void searchElementsWorkFlow() throws IOException{
         searchNodes();
         searchEdges();
+        searchPositions();
         searchWorkFlows();
     }
     
@@ -127,6 +120,43 @@ public class SearchWorkFlow {
         }
     }
     
+    public static void searchPositions() throws IOException{
+        for (int i = 0; i < pathDiagrams.size(); i++) {
+            DiagramFile = new ArrayList<String>();
+            XMI(pathDiagrams.get(i), typePathDiagram);
+            String id = new String();
+            int x = -1;
+            int y = -1;
+            for (int j = 0; j < DiagramFile.size(); j++) {
+                String[] separated = DiagramFile.get(j).split(" ");
+                if (separated[0].equals("<children") && separated[1].equals("xmi:type=\"notation:Node\"")) {
+                    for (int k = 0; k < separated.length; k++) {
+                        if (separated[k].contains("element")) {
+                            id = separated[k].split("=")[1].split("\"")[1];
+                        }
+                    }
+                }
+                else if(separated[0].equals("<layoutConstraint") && separated[1].equals("xmi:type=\"notation:Bounds\"")){
+                    for (int k = 0; k < separated.length; k++) {
+                        if (separated[k].contains("x=\"")) {
+                            x = Integer.parseInt(separated[k].split("=")[1].split("\"")[1]);
+                        }
+                        else if (separated[k].contains("y=\"")) {
+                            y = Integer.parseInt(separated[k].split("=")[1].split("\"")[1]);
+                        }
+                    }   
+                }
+                else if ( (!id.isEmpty()) && (x != -1) && (y != -1) ) {
+                    Position p = new Position(id, x, y);
+                    Positions.add(p);
+                    id = new String();
+                    x = -1;
+                    y = -1;
+                }
+            }
+        }
+    }
+    
     public static void searchWorkFlows() throws IOException{
         
         boolean flag;
@@ -137,6 +167,7 @@ public class SearchWorkFlow {
             String name = new String();
             ArrayList<Node> nodesWorkFlow = new ArrayList<Node>();
             ArrayList<Edge> edgesWorkFlow = new ArrayList<Edge>();
+            ArrayList<Position> positionsWorkFlow = new ArrayList<Position>();
 
             for (int j = 0; j < DiagramFile.size(); j++) {
                 String[] separated = DiagramFile.get(j).split(" ");
@@ -146,6 +177,7 @@ public class SearchWorkFlow {
                     name = new String();
                     nodesWorkFlow = new ArrayList<Node>();
                     edgesWorkFlow = new ArrayList<Edge>();
+                    positionsWorkFlow = new ArrayList<Position>();
                     
                     for (int k = 0; k < separated.length; k++) {
                         if (separated[k].contains("xmi:id")) {
@@ -190,8 +222,22 @@ public class SearchWorkFlow {
                         }    
                     }
                 }
-                else if(separated[0].equals("</uml:Activity>")){
-                    WorkFlow wf = new WorkFlow(id, name, nodesWorkFlow, edgesWorkFlow);
+                else if (separated[0].equals("<children") && separated[1].equals("xmi:type=\"notation:Node\"")) {
+                    String idAux = new String();
+                    for (int k = 0; k < separated.length; k++) {
+                        if (separated[k].contains("element")) {
+                            idAux = separated[k].split("=")[1].split("\"")[1];
+                        }
+                    }
+                    for (Position position : Positions) {
+                        if (position.getIdNode().equals(idAux)) {
+                            positionsWorkFlow.add(position);
+                        }
+                    }
+                    
+                }
+                else if(separated[0].equals("</notation:Diagram>")){
+                    WorkFlow wf = new WorkFlow(id, name, nodesWorkFlow, edgesWorkFlow, positionsWorkFlow);
                     WorkFlows.add(wf);
                 }
             }

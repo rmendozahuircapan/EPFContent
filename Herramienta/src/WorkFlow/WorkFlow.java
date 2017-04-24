@@ -8,12 +8,14 @@ public class WorkFlow {
     private String name;
     private ArrayList<Node> nodes;
     private ArrayList<Edge> edges;
+    private ArrayList<Position> positions;
 
-    public WorkFlow(String id, String name, ArrayList<Node> nodes, ArrayList<Edge> edges) {
+    public WorkFlow(String id, String name, ArrayList<Node> nodes, ArrayList<Edge> edges, ArrayList<Position> positions) {
         this.id = id;
         this.name = name;
         this.nodes = nodes;
         this.edges = edges;
+        this.positions = positions;
     }
 
     public String getId() {
@@ -48,5 +50,12 @@ public class WorkFlow {
         this.edges = edges;
     }
 
+    public ArrayList<Position> getPositions() {
+        return positions;
+    }
+
+    public void setPositions(ArrayList<Position> positions) {
+        this.positions = positions;
+    }
     
 }
