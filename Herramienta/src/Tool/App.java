@@ -33,8 +33,8 @@ public class App {
     static public ArrayList<WorkFlow> WorkFlows = new ArrayList<WorkFlow>();
     static public ArrayList<Position> Positions = new ArrayList<Position>();
     
-    static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso";
-    //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library3\\workflow";
+    //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso";
+    static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library3\\workflow";
     //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso\\proceso_de_prueba";
     
     static String pathPlugin = mainFolder + "\\plugin.xmi";
@@ -55,9 +55,10 @@ public class App {
         searchProcessElements();
         searchElementsWorkFlow();
         //resumeProcessElements();
-        resumeWorkFlow();
-        showWorkFlow();
-        //DrawWorkFlow("_rX5H4EGMEeaBIP9BVh-bPQ");
-        
+        //resumeWorkFlow();
+        //showWorkFlow();
+        for (WorkFlow wf : WorkFlows) {
+            DrawWorkFlow(wf.getId());
+        }
     }   
 }
