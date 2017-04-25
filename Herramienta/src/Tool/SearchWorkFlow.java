@@ -230,7 +230,7 @@ public class SearchWorkFlow {
                         }
                     }
                     for (Position position : Positions) {
-                        if (position.getIdNode().equals(idAux)) {
+                        if (position.getId().equals(idAux)) {
                             positionsWorkFlow.add(position);
                         }
                     }

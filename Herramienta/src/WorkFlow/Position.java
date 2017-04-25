@@ -3,22 +3,22 @@ package WorkFlow;
 
 
 public class Position {
-    private String idNode;
+    private String id;
     private int x;
     private int y;
 
-    public Position(String idNode, int x, int y) {
-        this.idNode = idNode;
+    public Position(String id, int x, int y) {
+        this.id = id;
         this.x = x;
         this.y = y;
     }
 
-    public String getIdNode() {
-        return idNode;
+    public String getId() {
+        return id;
     }
 
-    public void setIdNode(String idNode) {
-        this.idNode = idNode;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public int getX() {
