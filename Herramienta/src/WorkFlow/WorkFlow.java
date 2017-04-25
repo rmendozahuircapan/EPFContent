@@ -58,4 +58,9 @@ public class WorkFlow {
         this.positions = positions;
     }
     
+    public void getGraph(){
+        WorkFlow workflow = new WorkFlow(id, name, nodes, edges, positions);
+        DrawWorkFlow.Draw(workflow);
+    }
+    
 }
