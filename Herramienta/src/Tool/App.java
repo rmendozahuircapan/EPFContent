@@ -5,10 +5,6 @@ import WorkFlow.*;
 
 import static Tool.SearchProcessElements.*;
 import static Tool.SearchWorkFlow.*;
-import static Tool.ShowProcessElements.*;
-import static Tool.ShowWorkFlow.*;
-import static WorkFlow.DrawWorkFlow.*;
-
 import java.io.*;
 import java.util.*;
 
@@ -30,8 +26,8 @@ public class App {
     
     static ArrayList<Node> Nodes = new ArrayList<Node>();
     static ArrayList<Edge> Edges = new ArrayList<Edge>();
-    static public ArrayList<WorkFlow> WorkFlows = new ArrayList<WorkFlow>();
-    static public ArrayList<Position> Positions = new ArrayList<Position>();
+    static ArrayList<Position> Positions = new ArrayList<Position>();
+    static ArrayList<WorkFlow> WorkFlows = new ArrayList<WorkFlow>();
     
     //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso";
     static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library3\\workflow";
@@ -57,8 +53,28 @@ public class App {
         //resumeProcessElements();
         //resumeWorkFlow();
         //showWorkFlow();
+
+        
+        Node n = new Node("a", "a", "hola");
+        Node m = new Node("b", "b", "chao");
+        Position p = new Position("a", 88, 88);
+        Position q = new Position("b", 88, 188);
+        Edge e = new Edge("id", "asd", n, m);
+        
+        ArrayList<Node> No = new ArrayList<Node>();
+        ArrayList<Edge> Ed = new ArrayList<Edge>();
+        ArrayList<Position> Po = new ArrayList<Position>();
+        
+        No.add(n);
+        No.add(m);
+        Po.add(p);
+        Po.add(q);
+        Ed.add(e);
+        
+        WorkFlow a = new WorkFlow("id", "Nodo", No, Ed, Po);
+        WorkFlows.add(a);
         for (WorkFlow wf : WorkFlows) {
-            DrawWorkFlow(wf.getId());
+            wf.getGraph();
         }
     }   
 }

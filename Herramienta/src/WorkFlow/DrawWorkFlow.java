@@ -1,7 +1,6 @@
 
 package WorkFlow;
 
-import static Tool.App.WorkFlows;
 import java.awt.*;
 import java.awt.geom.*;
 import javax.swing.*;
@@ -10,226 +9,164 @@ import static WorkFlow.DrawWorkFlow.*;
   
 public class DrawWorkFlow{
     
-    
-    public static void DrawWorkFlow(String id){
+    public static void Draw(WorkFlow workflow){  
+        int xSize = xMax(workflow) + 18 ;
+        int ySize = yMax(workflow) + 39 ;
         JFrame f = new JFrame();
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.getContentPane().add(new ArrowPanel(id));
-        // Cambiar valores fijos *********************************
-        f.setSize(xMax(id)+18,yMax(id)+39);
+        f.getContentPane().add(new Panel(workflow));
+        f.setSize(xSize,ySize);
         f.setLocationByPlatform(true);
         f.setVisible(true);
-        f.setTitle("WorkFlow");
+        f.setTitle(workflow.getName().toUpperCase());
     }
-    public static int xMax(String id) {
-        WorkFlow wf = null;
-        for (WorkFlow w : WorkFlows) {
-            if (w.getId().equals(id)) {
-                wf = w;
-            }
-        }
+    
+    public static int xMax(WorkFlow workflow) {
         ArrayList<Integer> x = new ArrayList<Integer>();
-        for (Position p : wf.getPositions()) {
+        for (Position p : workflow.getPositions()) {
             x.add(p.getX());
         }
-        int size = (int) x.stream().mapToDouble(i -> i).max().getAsDouble();
-        return size;
+        int max = (int) x.stream().mapToDouble(i -> i).max().getAsDouble();
+        return max;
     }
     
-    public static int yMax(String id) {
-        WorkFlow wf = null;
-        for (WorkFlow w : WorkFlows) {
-            if (w.getId().equals(id)) {
-                wf = w;
-            }
-        }
+    public static int yMax(WorkFlow workflow) {
         ArrayList<Integer> y = new ArrayList<Integer>();
-        for (Position p : wf.getPositions()) {
+        for (Position p : workflow.getPositions()) {
             y.add(p.getY());
         }
-        int size = (int) y.stream().mapToDouble(i -> i).max().getAsDouble();
-        return size;
+        int max = (int) y.stream().mapToDouble(i -> i).max().getAsDouble();
+        return max;
     }
     
-    public static int xMin(String id) {
-        WorkFlow wf = null;
-        for (WorkFlow w : WorkFlows) {
-            if (w.getId().equals(id)) {
-                wf = w;
-            }
-        }
+    public static int xMin(WorkFlow workflow) {
         ArrayList<Integer> x = new ArrayList<Integer>();
-        for (Position p : wf.getPositions()) {
+        for (Position p : workflow.getPositions()) {
             x.add(p.getX());
         }
-        int size = (int) x.stream().mapToDouble(i -> i).min().getAsDouble();
-        return size;
+        int min = (int) x.stream().mapToDouble(i -> i).min().getAsDouble();
+        return min;
     }
     
-    public static int yMin(String id) {
-        WorkFlow wf = null;
-        for (WorkFlow w : WorkFlows) {
-            if (w.getId().equals(id)) {
-                wf = w;
-            }
-        }
+    public static int yMin(WorkFlow workflow) {
         ArrayList<Integer> y = new ArrayList<Integer>();
-        for (Position p : wf.getPositions()) {
+        for (Position p : workflow.getPositions()) {
             y.add(p.getY());
         }
-        int size = (int) y.stream().mapToDouble(i -> i).min().getAsDouble();
-        return size;
+        int min = (int) y.stream().mapToDouble(i -> i).min().getAsDouble();
+        return min;
     }
 }
 
 /******************************************************************************************************/  
 
-class ArrowPanel extends JPanel{
+class Panel extends JPanel{
+    int side;
+    int border;
     int barb;
     double phi;
+    WorkFlow workflow;
     
-    WorkFlow wf;
     
-    
-    public ArrowPanel(String id){
-        barb = 20;                   // barb length
-        phi = Math.PI/6;             // 30 degrees barb angle
+    public Panel(WorkFlow workflow){
+        side = 30;
+        border = 10;
+        barb = 10;
+        phi = Math.PI/6;
+        this.workflow = workflow;
         setBackground(Color.white);
-        for (WorkFlow w : WorkFlows) {
-            if (w.getId().equals(id)) {
-                wf = w;
-            }
-        }
     }
   
     protected void paintComponent(Graphics g){
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////
-        /*/ datos de worflow
-        System.out.println("------------------------------------");
-        System.out.println(wf.getName());
-        System.out.println(wf.getId());
-        System.out.println(wf.getNodes().size()+" nodes");
-        System.out.println(wf.getEdges().size()+" edges");
-        System.out.println(wf.getPositions().size()+" positions");
-        System.out.println("------------------------------------");
-        *///////////////////////////////////////////////////////////////////////////////////////////////////////
         super.paintComponent(g);
-        Graphics2D graph = (Graphics2D)g;
-        graph.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-        
+        Graphics2D graph = (Graphics2D) g;
         Font font = new Font("Arial", Font.PLAIN, 10);
+        graph.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
         graph.setFont(font);
-
-        String id = wf.getId();        
-        int side = 30;
-        int border = 10;
-        for (Node node : wf.getNodes()) {
-            for (Position position : wf.getPositions()) {
-                if (node.getId().equals(position.getIdNode())) {
+        
+        drawNodes(graph, workflow);
+        drawArrow(graph, workflow);
+        
+        // BORRAR /////////////////////////////////////
+        for (int i = 0; i < xMax(workflow); i++) {
+            graph.drawString(".", i , yMax(workflow));
+        }
+        for (int i = 0; i < yMax(workflow); i++) {
+            graph.drawString(".", xMax(workflow), i);
+        }
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+    }
+    
+    private void drawNodes(Graphics2D graph, WorkFlow workflow){
+        for (Node node : workflow.getNodes()) {
+            for (Position position : workflow.getPositions()) {
+                if (node.getId().equals(position.getId())) {
+                    
+                    int xPosition = position.getX() - xMin(workflow) + side ;
+                    int yPosition = position.getY() - yMin(workflow) ;
+                    int yPositionName = position.getY() - yMin(workflow) + side + border ;
+                    
                     if (node.getType().equals("StructuredActivityNode")) {
                         ImageIcon Img = new ImageIcon(getClass().getResource("/Icons/activity.gif"));
-                        graph.drawImage(Img.getImage(),position.getX() - xMin(id) + side,position.getY() - yMin(id), side, side, null);
+                        graph.drawImage(Img.getImage(), xPosition, yPosition, side, side, null);
                     }
                     else if (node.getType().equals("ActivityParameterNode")) {
                         ImageIcon Img = new ImageIcon(getClass().getResource("/Icons/task.gif"));
-                        graph.drawImage(Img.getImage(),position.getX() - xMin(id) + side,position.getY() - yMin(id), side, side, null);
+                        graph.drawImage(Img.getImage(), xPosition, yPosition, side, side, null);
                     }
                     else{
                         ImageIcon Img = new ImageIcon(getClass().getResource("/Icons/Extra.png"));
-                        graph.drawImage(Img.getImage(),position.getX() - xMin(id) + side,position.getY() - yMin(id), side, side, null);
+                        graph.drawImage(Img.getImage(), xPosition, yPosition, side, side, null);
                     }
-                    
-                    
-                    graph.drawString(node.getName(), position.getX() - xMin(id) + side, position.getY() - yMin(id) + side + border);
+                    graph.drawString(node.getName(), xPosition, yPositionName); // Cambiar, según tipo
                 }
             }
         }
-        
-        for (int i = 0; i < xMax(id); i++) {
-            graph.drawString(".", i , yMax(id));
+    }
+    
+    private void drawArrow(Graphics2D graph, WorkFlow workflow){
+        System.out.println("Workflow: "+workflow.getName().toUpperCase());
+        for (Edge edge : workflow.getEdges()) {
+            int x1 = -1;
+            int y1 = -1; 
+            int x2 = -1;
+            int y2 = -1;
+            for (Position position : workflow.getPositions()) {
+                if (edge.getSource().getId().equals(position.getId())) {
+                    x1 = position.getX() - xMin(workflow) + side + side/2;
+                    y1 = position.getY() - yMin(workflow) + side/2;
+                }
+                else if (edge.getTarget().getId().equals(position.getId())) {
+                    x2 = position.getX() - xMin(workflow) + side + side/2;
+                    y2 = position.getY() - yMin(workflow) + side/2;
+                }
+            }
+            
+            
+            //System.out.println(edge.getSource().getName() + " " + x1 + " " + y1);
+            //System.out.println(edge.getTarget().getName() + " " + x2 + " " + y2);
+            graph.setColor(Color.black);
+            graph.draw(new Line2D.Double( x1, y1 , x2, y2));
+            graph.setColor(Color.yellow);
+            System.out.println(edge.getSource().getName());
+            arrowDirection(graph, x1, y1, x2, y2);
+            //System.out.println("---------");
         }
-        for (int i = 0; i < yMax(id); i++) {
-            graph.drawString(".", xMax(id), i);
-        }
+        System.out.println("**********************************");
+    }
+    
+    private void arrowDirection(Graphics2D graph, int x1, int y1, int x2, int y2){
 
-
-
-        
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////
         double theta;
-        int x1 = 400, y1 = 100;
-        int x2 = 100, y2 = 300;
-        int lado = 40; // side
-        int margen = 10; // border
-        String posicion = new String();
-        /*///////////////////////////////////////////////////////////////////////////////////////////////////////
-        ImageIcon Img = new ImageIcon(getClass().getResource("/Icons/task.gif"));
-        graph.drawImage(Img.getImage(), x1, y1, lado, lado, null);
-        graph.drawString("Tarea 1", x1 , y1 + lado + margen);
-        graph.drawImage(Img.getImage(), x2, y2, lado, lado, null);
-        graph.drawString("Tarea 2", x2 , y2 + lado + margen);
-        *////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // Posiciones de flechas
-        if (x1 == x2) {
-            if (y1 < y2) posicion = "abajo";
-            else if(y1 < y2) posicion = "arriba";
-        }
-        else if(x1 < x2){
-            if(y1 == y2) posicion = "derecha";
-            else if (y1 > y2) posicion = "arriba-derecha";
-            else if (y1 < y2) posicion = "abajo-derecha";
-        }
-        else if(x1 > x2){
-            if(y1 == y2) posicion = "izquierda";
-            else if (y1 > y2) posicion = "arriba-izquierda";
-            else if (y1 < y2) posicion = "abajo-izquierda";
-        }
-        posicion ="";
-        if (posicion.equals("abajo")){
-            graph.draw(new Line2D.Double(x1 + lado/2 , y1 + lado + margen*2, x2 + lado/2, y2));
-            theta = Math.atan2(y2 - y1 , x2 - x1 );
-            drawArrow(graph, theta, x2 + lado/2, y2 );
-        }
+        String direction = new String();        
+        System.out.println("( " + x1 + " , " + y1 + " )");
+        System.out.println("( " + x2 + " , " + y2 + " )");
+        System.out.println("---------");
         
-        if (posicion.equals("arriba")) {
-            graph.draw(new Line2D.Double( x1 + (lado/2), y1 , x2 + (lado/2), y2 + lado + margen*2));
-            theta = Math.atan2(y2 - y1 , x2 - x1 );
-            drawArrow(graph, theta, x2 + (lado/2) , y2 + lado + margen*2);
-        }
-        if (posicion.equals("derecha")) {
-            graph.draw(new Line2D.Double( x1 + lado + margen, y1 + (lado/2) , x2 - margen, y2 + (lado/2)));
-            theta = Math.atan2(y2 - y1 , x2 - x1 );
-            drawArrow(graph, theta, x2 - margen , y2 + (lado/2));
-        }
-        
-        if (posicion.equals("izquierda")) {
-            graph.draw(new Line2D.Double( x1  - margen , y1 + (lado/2) , x2 + lado + margen, y2 + (lado/2)));
-            theta = Math.atan2(y2 - y1 , x2 - x1 );
-            drawArrow(graph, theta, x2 + margen + lado , y2 + (lado/2));
-        }
-        if (posicion.equals("arriba-derecha")) {
-            graph.draw(new Line2D.Double( x1 + lado, y1 , x2 - margen, y2 + lado + margen));
-            theta = Math.atan2(y2 - y1 , x2 - x1 - lado );
-            drawArrow(graph, theta, x2 - margen, y2 + lado + margen);
-        }
-        if (posicion.equals("arriba-izquierda")) {
-            graph.draw(new Line2D.Double( x1 , y1 , x2 + margen + lado, y2 + lado + margen));
-            theta = Math.atan2(y2 - y1 , x2 - x1 );
-            drawArrow(graph, theta, x2 + margen + lado, y2 + lado + margen);
-        }
-        if (posicion.equals("abajo-derecha")) {
-            graph.draw(new Line2D.Double(x1 + lado, y1 + lado + margen*2, x2 , y2));
-            theta = Math.atan2(y2 - y1 , x2 - x1 );
-            drawArrow(graph, theta, x2, y2);
-        }
-        if (posicion.equals("abajo-izquierda")) {
-            graph.draw(new Line2D.Double(x1, y1 + lado + margen*2, x2 + lado , y2));
-            theta = Math.atan2(y2 - y1 , x2 - x1 );
-            drawArrow(graph, theta, x2 + lado, y2);
-        }
     }
   
-    private void drawArrow(Graphics2D g, double theta, double x0, double y0){
+    private void arrowHead(Graphics2D g, double theta, double x0, double y0){
         double x = x0 - barb * Math.cos(theta + phi);
         double y = y0 - barb * Math.sin(theta + phi);
         g.draw(new Line2D.Double(x0, y0, x, y));
@@ -237,4 +174,67 @@ class ArrowPanel extends JPanel{
         y = y0 - barb * Math.sin(theta - phi);
         g.draw(new Line2D.Double(x0, y0, x, y));
     }
+    
 }
+
+/*      if (x1 == x2) {
+            if (y1 < y2) direction = "abajo";
+            else if(y1 < y2) direction = "arriba";
+        }else if(x1 < x2){
+            if(y1 == y2) direction = "derecha";
+            else if (y1 > y2) direction = "arriba-derecha";
+            else if (y1 < y2) direction = "abajo-derecha";
+        }else if(x1 > x2){
+            if(y1 == y2) direction = "izquierda";
+            else if (y1 > y2) direction = "arriba-izquierda";
+            else if (y1 < y2) direction = "abajo-izquierda";
+        }
+        if (direction.equals("abajo")){
+            graph.drawLine( x1, y1, x2, y2);
+            theta = Math.atan2(y2 - y1 , x2 - x1 );
+            arrowHead(graph, theta, x2, y2);
+        }
+        
+        if (direction.equals("arriba")) {
+            graph.drawLine( x1, y1, x2, y2);
+            theta = Math.atan2(y2 - y1 , x2 - x1 );
+            arrowHead(graph, theta, x2, y2);
+        }
+        if (direction.equals("derecha")) { //lista
+            
+            x1 = x1 + side/2 + border;
+            x2 = x2 - side/2 - border;
+            
+            graph.drawLine( x1, y1, x2, y2);
+            theta = Math.atan2(y2 - y1 , x2 - x1);
+            arrowHead(graph, theta, x2, y2);
+        }
+        if (direction.equals("izquierda")) { //lita
+            x1 = x1 - side/2 - border;
+            x2 = x2 + side/2 + border;
+            
+            graph.drawLine( x1, y1, x2, y2);
+            theta = Math.atan2(y2 - y1 , x2 - x1 );
+            arrowHead(graph, theta, x2 , y2);
+        }
+        /*if (direction.equals("arriba-derecha")) {
+            x1 = x1 + side/2;
+            y1 = y1 - side/2;
+            
+            graph.drawLine( x1, y1, x2, y2);
+            theta = Math.atan2(y2 - y1 , x2 - x1);
+            arrowHead(graph, theta, x2, y2);
+        }
+        if (direction.equals("arriba-izquierda")) {
+            graph.draw(new Line2D.Double( x1 , y1 , x2 + border + side, y2 + side + border));
+            theta = Math.atan2(y2 - y1 , x2 - x1 );
+            arrowHead(graph, theta, x2 + border + side, y2 + side + border);
+        }else if (direction.equals("abajo-derecha")) {
+            graph.draw(new Line2D.Double(x1 + side, y1 + side + border*2, x2 , y2));
+            theta = Math.atan2(y2 - y1 , x2 - x1 );
+            arrowHead(graph, theta, x2, y2);
+        }else if (direction.equals("abajo-izquierda")) {
+            graph.draw(new Line2D.Double(x1, y1 + side + border*2, x2 + side , y2));
+            theta = Math.atan2(y2 - y1 , x2 - x1 );
+            arrowHead(graph, theta, x2 + side, y2);
+        }*/
