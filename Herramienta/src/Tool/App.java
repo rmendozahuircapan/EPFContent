@@ -3,8 +3,6 @@ package Tool;
 import ProcessElements.*;
 import WorkFlow.*;
 
-import static Tool.SearchProcessElements.*;
-import static Tool.SearchWorkFlow.*;
 import java.io.*;
 import java.util.*;
 
@@ -29,9 +27,10 @@ public class App {
     static ArrayList<Position> Positions = new ArrayList<Position>();
     static ArrayList<WorkFlow> WorkFlows = new ArrayList<WorkFlow>();
     
-    //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso";
-    static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library3\\workflow";
+    static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso";
+    //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library3\\workflow";
     //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso\\proceso_de_prueba";
+    //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso1\\nodoInicio";
     
     static String pathPlugin = mainFolder + "\\plugin.xmi";
     
@@ -43,38 +42,16 @@ public class App {
     static String typePathTask = "Task";
     static String typePathModel = "Model";
     static String typePathDiagram = "Diagram";
-    
+
     /*************************************************************************************************************/
     
     public static void main(String[] args) throws IOException {
         
-        searchProcessElements();
-        searchElementsWorkFlow();
-        //resumeProcessElements();
-        //resumeWorkFlow();
-        //showWorkFlow();
-
+        Tool.SearchProcessElements.searchProcessElements();
+        Tool.SearchWorkFlow.searchElementsWorkFlow();
         
-        Node n = new Node("a", "a", "hola");
-        Node m = new Node("b", "b", "chao");
-        Position p = new Position("a", 88, 88);
-        Position q = new Position("b", 88, 188);
-        Edge e = new Edge("id", "asd", n, m);
-        
-        ArrayList<Node> No = new ArrayList<Node>();
-        ArrayList<Edge> Ed = new ArrayList<Edge>();
-        ArrayList<Position> Po = new ArrayList<Position>();
-        
-        No.add(n);
-        No.add(m);
-        Po.add(p);
-        Po.add(q);
-        Ed.add(e);
-        
-        WorkFlow a = new WorkFlow("id", "Nodo", No, Ed, Po);
-        WorkFlows.add(a);
         for (WorkFlow wf : WorkFlows) {
             wf.getGraph();
         }
-    }   
+    }
 }

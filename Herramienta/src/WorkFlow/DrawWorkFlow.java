@@ -8,10 +8,10 @@ import java.util.*;
 import static WorkFlow.DrawWorkFlow.*;
   
 public class DrawWorkFlow{
-    
+        
     public static void Draw(WorkFlow workflow){  
-        int xSize = xMax(workflow) + 18 ;
-        int ySize = yMax(workflow) + 39 ;
+        int xSize = xMax(workflow) + 18;
+        int ySize = yMax(workflow) + 39;
         JFrame f = new JFrame();
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.getContentPane().add(new Panel(workflow));
@@ -61,7 +61,11 @@ public class DrawWorkFlow{
 /******************************************************************************************************/  
 
 class Panel extends JPanel{
-    int side;
+    int sideNode;
+    int sideStartEnd;
+    int sideDecisionMerge;
+    int highForkJoin;
+    int widthForkJoin;
     int border;
     int barb;
     double phi;
@@ -69,9 +73,13 @@ class Panel extends JPanel{
     
     
     public Panel(WorkFlow workflow){
-        side = 30;
+        sideNode = 30;
+        sideStartEnd = 30;
+        sideDecisionMerge = 56;
+        highForkJoin = 106;
+        widthForkJoin = 16;
         border = 10;
-        barb = 10;
+        barb = 6;
         phi = Math.PI/6;
         this.workflow = workflow;
         setBackground(Color.white);
@@ -85,17 +93,7 @@ class Panel extends JPanel{
         graph.setFont(font);
         
         drawNodes(graph, workflow);
-        drawArrow(graph, workflow);
-        
-        // BORRAR /////////////////////////////////////
-        for (int i = 0; i < xMax(workflow); i++) {
-            graph.drawString(".", i , yMax(workflow));
-        }
-        for (int i = 0; i < yMax(workflow); i++) {
-            graph.drawString(".", xMax(workflow), i);
-        }
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////
-        
+        drawEdges(graph, workflow);
     }
     
     private void drawNodes(Graphics2D graph, WorkFlow workflow){
@@ -103,70 +101,565 @@ class Panel extends JPanel{
             for (Position position : workflow.getPositions()) {
                 if (node.getId().equals(position.getId())) {
                     
-                    int xPosition = position.getX() - xMin(workflow) + side ;
-                    int yPosition = position.getY() - yMin(workflow) ;
-                    int yPositionName = position.getY() - yMin(workflow) + side + border ;
+                    int xPosition;
+                    int yPosition;
+                    int yPositionName;
                     
-                    if (node.getType().equals("StructuredActivityNode")) {
-                        ImageIcon Img = new ImageIcon(getClass().getResource("/Icons/activity.gif"));
-                        graph.drawImage(Img.getImage(), xPosition, yPosition, side, side, null);
+                    if (node.getType().equals("StructuredActivityNode") || node.getType().equals("ActivityParameterNode")) {
+                        
+                        xPosition = position.getX() - xMin(workflow) + sideNode ;
+                        yPosition = position.getY() - yMin(workflow) ;
+                        yPositionName = yPosition + sideNode + border ;
+                        ImageIcon Img;
+                        if (node.getType().equals("StructuredActivityNode")) {
+                            Img = new ImageIcon(getClass().getResource("/Icons/Activity.gif"));
+                        }
+                        else{
+                            Img = new ImageIcon(getClass().getResource("/Icons/Task.gif"));
+                        }
+                        graph.drawImage(Img.getImage(), xPosition, yPosition, sideNode, sideNode, null);
+                        graph.drawString(node.getName(), xPosition, yPositionName);
+                    
                     }
-                    else if (node.getType().equals("ActivityParameterNode")) {
-                        ImageIcon Img = new ImageIcon(getClass().getResource("/Icons/task.gif"));
-                        graph.drawImage(Img.getImage(), xPosition, yPosition, side, side, null);
+                    else if (node.getType().equals("InitialNode") || node.getType().equals("ActivityFinalNode")) {
+                        
+                        xPosition = position.getX() - xMin(workflow) + sideStartEnd ;
+                        yPosition = position.getY() - yMin(workflow) ;
+                        ImageIcon Img;
+                        if (node.getType().equals("InitialNode")) {
+                            Img = new ImageIcon(getClass().getResource("/Icons/StartNode.png"));
+                        }
+                        else{
+                            Img = new ImageIcon(getClass().getResource("/Icons/EndNode.png"));
+                        }
+                        graph.drawImage(Img.getImage(), xPosition, yPosition, sideStartEnd, sideStartEnd, null);
+                    
                     }
-                    else{
-                        ImageIcon Img = new ImageIcon(getClass().getResource("/Icons/Extra.png"));
-                        graph.drawImage(Img.getImage(), xPosition, yPosition, side, side, null);
+                    else if (node.getType().equals("ForkNode") || node.getType().equals("JoinNode")) {
+                        
+                        xPosition = position.getX() - xMin(workflow) + widthForkJoin;
+                        yPosition = position.getY() - yMin(workflow) ;
+                        
+                        ImageIcon Img = new ImageIcon(getClass().getResource("/Icons/ForkJoinNode.png"));
+                        graph.drawImage(Img.getImage(), xPosition, yPosition, highForkJoin, widthForkJoin, null);
+                        
                     }
-                    graph.drawString(node.getName(), xPosition, yPositionName); // Cambiar, según tipo
+                    else if (node.getType().equals("DecisionNode") || node.getType().equals("MergeNode")) {
+                        
+                        xPosition = position.getX() - xMin(workflow) ;
+                        yPosition = position.getY() - yMin(workflow) ;
+                        yPositionName = yPosition + sideDecisionMerge/2 ;
+                        ImageIcon Img;
+                        if (node.getType().equals("DecisionNode")) {
+                            Img = new ImageIcon(getClass().getResource("/Icons/DecisionMergeNode.png"));
+                            graph.drawImage(Img.getImage(), xPosition, yPosition, sideDecisionMerge, sideDecisionMerge, null);
+                            if (!node.getName().equals("DecisionNode")) {
+                               graph.drawString(node.getName(), xPosition, yPositionName);
+                            }
+                        }
+                        else{
+                            Img = new ImageIcon(getClass().getResource("/Icons/DecisionMergeNode.png"));
+                            graph.drawImage(Img.getImage(), xPosition, yPosition, sideDecisionMerge, sideDecisionMerge, null);
+                            if (!node.getName().equals("MergeNode")) {
+                                graph.drawString(node.getName(), xPosition, yPositionName);
+                            }
+                        }
+                    }
                 }
             }
         }
     }
     
-    private void drawArrow(Graphics2D graph, WorkFlow workflow){
-        System.out.println("Workflow: "+workflow.getName().toUpperCase());
+    private void drawEdges(Graphics2D graph, WorkFlow workflow){
         for (Edge edge : workflow.getEdges()) {
             int x1 = -1;
             int y1 = -1; 
             int x2 = -1;
             int y2 = -1;
+            String typeSource = new String();
+            String typeTarget = new String();
             for (Position position : workflow.getPositions()) {
                 if (edge.getSource().getId().equals(position.getId())) {
-                    x1 = position.getX() - xMin(workflow) + side + side/2;
-                    y1 = position.getY() - yMin(workflow) + side/2;
+                    Node node = edge.getSource();
+                    typeSource = node.getType();
+                    if (node.getType().equals("StructuredActivityNode") || node.getType().equals("ActivityParameterNode")) {
+                        x1 = position.getX() - xMin(workflow) + sideNode + sideNode/2;
+                        y1 = position.getY() - yMin(workflow) + sideNode/2;
+                    }
+                    else if (node.getType().equals("InitialNode") || node.getType().equals("ActivityFinalNode")) {
+                        x1 = position.getX() - xMin(workflow) + sideStartEnd + sideStartEnd/2;
+                        y1 = position.getY() - yMin(workflow) + sideStartEnd/2;
+                        
+                    }
+                    else if (node.getType().equals("ForkNode") || node.getType().equals("JoinNode")) {
+                        x1 = position.getX() - xMin(workflow) + widthForkJoin + highForkJoin/2;
+                        y1 = position.getY() - yMin(workflow) + widthForkJoin/2;
+                    }
+                    else if (node.getType().equals("DecisionNode") || node.getType().equals("MergeNode")) {
+                        x1 = position.getX() - xMin(workflow) + sideDecisionMerge/2;
+                        y1 = position.getY() - yMin(workflow) + sideDecisionMerge/2;
+                    }
                 }
                 else if (edge.getTarget().getId().equals(position.getId())) {
-                    x2 = position.getX() - xMin(workflow) + side + side/2;
-                    y2 = position.getY() - yMin(workflow) + side/2;
+                    Node node = edge.getTarget();
+                    typeTarget = node.getType();
+                    if (node.getType().equals("StructuredActivityNode") || node.getType().equals("ActivityParameterNode")) {
+                        x2 = position.getX() - xMin(workflow) + sideNode + sideNode/2;
+                        y2 = position.getY() - yMin(workflow) + sideNode/2;
+                    }
+                    else if (node.getType().equals("InitialNode") || node.getType().equals("ActivityFinalNode")) {
+                        x2 = position.getX() - xMin(workflow) + sideStartEnd + sideStartEnd/2;
+                        y2 = position.getY() - yMin(workflow) + sideStartEnd/2;
+                    }
+                    else if (node.getType().equals("ForkNode") || node.getType().equals("JoinNode")) {
+                        x2 = position.getX() - xMin(workflow) + widthForkJoin + highForkJoin/2;
+                        y2 = position.getY() - yMin(workflow) + widthForkJoin/2;
+                    }
+                    else if (node.getType().equals("DecisionNode") || node.getType().equals("MergeNode")) {
+                        x2 = position.getX() - xMin(workflow) + sideDecisionMerge/2;
+                        y2 = position.getY() - yMin(workflow) + sideDecisionMerge/2;
+                    }
                 }
+                
             }
-            
-            
-            //System.out.println(edge.getSource().getName() + " " + x1 + " " + y1);
-            //System.out.println(edge.getTarget().getName() + " " + x2 + " " + y2);
-            graph.setColor(Color.black);
-            graph.draw(new Line2D.Double( x1, y1 , x2, y2));
-            graph.setColor(Color.yellow);
-            System.out.println(edge.getSource().getName());
-            arrowDirection(graph, x1, y1, x2, y2);
-            //System.out.println("---------");
+            if ( (x1 != -1) && (y1 != -1) && (x2 != -1) && (y2 != -1)) {
+                drawArrow(graph, x1, y1, x2, y2, typeSource, typeTarget);
+                drawName(graph, edge.getName(), x1, y1, x2, y2);
+            }
         }
-        System.out.println("**********************************");
     }
     
-    private void arrowDirection(Graphics2D graph, int x1, int y1, int x2, int y2){
+    private void drawArrow(Graphics2D graph, int x1, int y1, int x2, int y2, String typeSource, String typeTarget){
 
-        double theta;
-        String direction = new String();        
-        System.out.println("( " + x1 + " , " + y1 + " )");
-        System.out.println("( " + x2 + " , " + y2 + " )");
-        System.out.println("---------");
+        double theta = Math.atan2(y2 - y1 , x2 - x1 );
+        int a1 = -1;
+        int b1 = -1;
+        int a2 = -1;
+        int b2 = -1;
+        int xDelta1 = 0;
+        int yDelta1 = 0;
+        int xDelta2 = 0;
+        int yDelta2 = 0;
         
+        graph.setColor(Color.BLACK);
+        
+        if (x1 == x2) {
+            if (y1 < y2){
+//-------------------------------- ABAJO ---------------------------
+                // ----- ORIGEN -----
+                if (typeSource.equals("StructuredActivityNode") || typeSource.equals("ActivityParameterNode")) {
+                    yDelta1 = sideNode/2 + border;
+                }
+                else if (typeSource.equals("InitialNode") || typeSource.equals("ActivityFinalNode")) {
+                    yDelta1 = sideStartEnd/2; 
+                }
+                else if (typeSource.equals("ForkNode") || typeSource.equals("JoinNode")) {
+                    yDelta1 = widthForkJoin/2;
+                }
+                else if (typeSource.equals("DecisionNode") || typeSource.equals("MergeNode")) {
+                    yDelta1 = sideDecisionMerge/2;
+                }
+                // ----- LLEGADA -----
+                if (typeTarget.equals("StructuredActivityNode") || typeTarget.equals("ActivityParameterNode")) {
+                    yDelta2 = sideNode/2;
+                }
+                else if (typeTarget.equals("InitialNode") || typeTarget.equals("ActivityFinalNode")) {
+                    yDelta2 = sideStartEnd/2;
+                }
+                else if (typeTarget.equals("ForkNode") || typeTarget.equals("JoinNode")) {
+                    yDelta2 = widthForkJoin/2;
+                }
+                else if (typeTarget.equals("DecisionNode") || typeTarget.equals("MergeNode")) {
+                    yDelta2 = sideDecisionMerge/2;
+                }
+                b1 = y1 + yDelta1;
+                b2 = y2 - yDelta2;
+                a1 = reverseFunction(b1, x1, y1, x2, y2);
+                a2 = reverseFunction(b2, x1, y1, x2, y2);
+                
+                // -----------------
+                if ( (a1 != -1) && (b1 != -1) && (a2 != -1) && (b2 != -1)) {
+                    graph.drawLine( a1, b1, a2, b2);
+                    drawArrowHead(graph, theta, a2, b2);
+                }
+// -----------------------------------------------------------------                
+            }
+            else if(y1 > y2){
+//-------------------------------- ARRIBA --------------------------
+                // ----- ORIGEN -----
+                if (typeSource.equals("StructuredActivityNode") || typeSource.equals("ActivityParameterNode")) {
+                    yDelta1 = sideNode/2;
+                }
+                else if (typeSource.equals("InitialNode") || typeSource.equals("ActivityFinalNode")) {
+                    yDelta1 = sideStartEnd/2;
+                }
+                else if (typeSource.equals("ForkNode") || typeSource.equals("JoinNode")) {
+                    yDelta1 = widthForkJoin/2;
+                }
+                else if (typeSource.equals("DecisionNode") || typeSource.equals("MergeNode")) {
+                    yDelta1 = sideDecisionMerge/2;
+                }
+                // ----- LLEGADA -----
+                if (typeTarget.equals("StructuredActivityNode") || typeTarget.equals("ActivityParameterNode")) {
+                    yDelta2 = sideNode/2 + border;
+                }
+                else if (typeTarget.equals("InitialNode") || typeTarget.equals("ActivityFinalNode")) {
+                    yDelta2 = sideStartEnd/2;
+                }
+                else if (typeTarget.equals("ForkNode") || typeTarget.equals("JoinNode")) {
+                    yDelta2 = widthForkJoin/2;
+                }
+                else if (typeTarget.equals("DecisionNode") || typeTarget.equals("MergeNode")) {
+                    yDelta2 = sideDecisionMerge/2;
+                }
+                // -----------------
+                
+                b1 = y1 - yDelta1;
+                b2 = y2 + yDelta2;
+                a1 = reverseFunction(b1, x1, y1, x2, y2);
+                a2 = reverseFunction(b2, x1, y1, x2, y2);
+                
+                if ( (a1 != -1) && (b1 != -1) && (a2 != -1) && (b2 != -1)) {
+                    graph.drawLine( a1, b1, a2, b2);
+                    drawArrowHead(graph, theta, a2, b2);
+                }
+// -----------------------------------------------------------------
+            }
+        }else if(x1 < x2){
+            if(y1 == y2){
+// ------------------------------ DERECHA --------------------------
+                // ----- ORIGEN -----
+                if (typeSource.equals("StructuredActivityNode") || typeSource.equals("ActivityParameterNode")) {
+                    xDelta1 = sideNode/2;
+                }
+                else if (typeSource.equals("InitialNode") || typeSource.equals("ActivityFinalNode")) {
+                    xDelta1 = sideStartEnd/2;
+                }
+                else if (typeSource.equals("ForkNode") || typeSource.equals("JoinNode")) {
+                    xDelta1 = highForkJoin/2;
+                }
+                else if (typeSource.equals("DecisionNode") || typeSource.equals("MergeNode")) {
+                    xDelta1 = sideDecisionMerge/2;
+                }
+                // ----- LLEGADA -----
+                if (typeTarget.equals("StructuredActivityNode") || typeTarget.equals("ActivityParameterNode")) {
+                    xDelta2 = sideNode/2;
+                }
+                else if (typeTarget.equals("InitialNode") || typeTarget.equals("ActivityFinalNode")) {
+                    xDelta2 = sideStartEnd/2;
+                }
+                else if (typeTarget.equals("ForkNode") || typeTarget.equals("JoinNode")) {
+                    xDelta2 = highForkJoin/2;
+                }
+                else if (typeTarget.equals("DecisionNode") || typeTarget.equals("MergeNode")) {
+                    xDelta2 = sideDecisionMerge/2;
+                }
+                // -----------------
+                
+                a1 = x1 + xDelta1;
+                a2 = x2 - xDelta2;
+                b1 = function(a1, x1, y1, x2, y2);
+                b2 = function(a2, x1, y1, x2, y2);
+                
+                if ( (a1 != -1) && (b1 != -1) && (a2 != -1) && (b2 != -1)) {
+                    graph.drawLine( a1, b1, a2, b2);
+                    drawArrowHead(graph, theta, a2, b2);
+                }
+// -----------------------------------------------------------------
+            }
+            else if (y1 > y2){
+// ----------------------- ARRIBA DERECHA --------------------------
+                // ----- ORIGEN -----
+                if (typeSource.equals("StructuredActivityNode") || typeSource.equals("ActivityParameterNode")) {
+                    xDelta1 = sideNode/2;
+                    yDelta1 = sideNode/2;
+                }
+                else if (typeSource.equals("InitialNode") || typeSource.equals("ActivityFinalNode")) {
+                    xDelta1 = sideStartEnd/2;
+                    yDelta1 = sideStartEnd/2;
+                }
+                else if (typeSource.equals("ForkNode") || typeSource.equals("JoinNode")) {
+                    xDelta1 = widthForkJoin/2;
+                    yDelta1 = widthForkJoin/2;
+                }
+                else if (typeSource.equals("DecisionNode") || typeSource.equals("MergeNode")) {
+                    xDelta1 = sideDecisionMerge/2;
+                    yDelta1 = sideDecisionMerge/2;
+                }
+                // ----- LLEGADA -----
+                if (typeTarget.equals("StructuredActivityNode") || typeTarget.equals("ActivityParameterNode")) {
+                    xDelta2 = sideNode/2;
+                    yDelta2 = sideNode/2;
+                }
+                else if (typeTarget.equals("InitialNode") || typeTarget.equals("ActivityFinalNode")) {
+                    xDelta2 = sideStartEnd/2;
+                    yDelta2 = sideStartEnd/2;
+                }
+                else if (typeTarget.equals("ForkNode") || typeTarget.equals("JoinNode")) {
+                    xDelta2 = widthForkJoin/2;
+                    yDelta2 = widthForkJoin/2;
+                }
+                else if (typeTarget.equals("DecisionNode") || typeTarget.equals("MergeNode")) {
+                    xDelta2 = sideDecisionMerge/2;
+                    yDelta2 = sideDecisionMerge/2;
+                }
+                // -----------------
+                
+                a1 = x1 + xDelta1;
+                a2 = x2 - xDelta2;
+                b1 = function(a1, x1, y1, x2, y2);
+                b2 = function(a2, x1, y1, x2, y2);
+                if ( Math.abs(b1 - y1) > yDelta1) {
+                    b1 = y1 - yDelta1;
+                    a1 = reverseFunction(b1, x1, y1, x2, y2);
+                }
+                if ( Math.abs(b2 - y2) > yDelta2) {
+                    b2 = y2 + yDelta2;
+                    a2 = reverseFunction(b2, x1, y1, x2, y2);
+                }
+                
+                if ( (a1 != -1) && (b1 != -1) && (a2 != -1) && (b2 != -1)) {
+                    graph.drawLine( a1, b1, a2, b2);
+                    drawArrowHead(graph, theta, a2, b2);
+                }
+// -----------------------------------------------------------------
+            }
+            else if (y1 < y2){
+// ------------------------ ABAJO DERECHA -------------------------- 
+                // ----- ORIGEN -----
+                if (typeSource.equals("StructuredActivityNode") || typeSource.equals("ActivityParameterNode")) {
+                    xDelta1 = sideNode/2;
+                    yDelta1 = sideNode/2;
+                }
+                else if (typeSource.equals("InitialNode") || typeSource.equals("ActivityFinalNode")) {
+                    xDelta1 = sideStartEnd/2;
+                    yDelta1 = sideStartEnd/2;
+                }
+                else if (typeSource.equals("ForkNode") || typeSource.equals("JoinNode")) {
+                    xDelta1 = widthForkJoin/2;
+                    yDelta1 = widthForkJoin/2;
+                }
+                else if (typeSource.equals("DecisionNode") || typeSource.equals("MergeNode")) {
+                    xDelta1 = sideDecisionMerge/2;
+                    yDelta1 = sideDecisionMerge/2;
+                }
+                // ----- LLEGADA -----
+                if (typeTarget.equals("StructuredActivityNode") || typeTarget.equals("ActivityParameterNode")) {
+                    xDelta2 = sideNode/2;
+                    yDelta2 = sideNode/2;
+                }
+                else if (typeTarget.equals("InitialNode") || typeTarget.equals("ActivityFinalNode")) {
+                    xDelta2 = sideStartEnd/2;
+                    yDelta2 = sideStartEnd/2;
+                }
+                else if (typeTarget.equals("ForkNode") || typeTarget.equals("JoinNode")) {
+                    xDelta2 = widthForkJoin/2;
+                    yDelta2 = widthForkJoin/2;
+                }
+                else if (typeTarget.equals("DecisionNode") || typeTarget.equals("MergeNode")) {
+                    xDelta2 = sideDecisionMerge/2;
+                    yDelta2 = sideDecisionMerge/2;
+                }
+                // -----------------
+                
+                a1 = x1 + xDelta1;
+                a2 = x2 - xDelta2;
+                b1 = function(a1, x1, y1, x2, y2);
+                b2 = function(a2, x1, y1, x2, y2);
+                
+                if ( Math.abs(b1 - y1) > yDelta1) {
+                    b1 = y1 + yDelta1;
+                    a1 = reverseFunction(b1, x1, y1, x2, y2);
+                }
+                if ( Math.abs(b2 - y2) > yDelta2) {
+                    b2 = y2 - yDelta2;
+                    a2 = reverseFunction(b2, x1, y1, x2, y2);
+                }
+                
+                if ( (a1 != -1) && (b1 != -1) && (a2 != -1) && (b2 != -1)) {
+                    graph.drawLine( a1, b1, a2, b2);
+                    drawArrowHead(graph, theta, a2, b2);
+                }
+// -----------------------------------------------------------------
+            }
+        }else if(x1 > x2){
+            if(y1 == y2){
+// ---------------------------- IZQUIERDA -------------------------- 
+                // ----- ORIGEN -----
+                if (typeSource.equals("StructuredActivityNode") || typeSource.equals("ActivityParameterNode")) {
+                    xDelta1 = sideNode/2;
+                }
+                else if (typeSource.equals("InitialNode") || typeSource.equals("ActivityFinalNode")) {
+                    xDelta1 = sideStartEnd/2;
+                }
+                else if (typeSource.equals("ForkNode") || typeSource.equals("JoinNode")) {
+                    xDelta1 = highForkJoin/2;
+                }
+                else if (typeSource.equals("DecisionNode") || typeSource.equals("MergeNode")) {
+                    xDelta1 = sideDecisionMerge/2;
+                }
+                // ----- LLEGADA -----
+                if (typeTarget.equals("StructuredActivityNode") || typeTarget.equals("ActivityParameterNode")) {
+                    xDelta2 = sideNode/2;
+                }
+                else if (typeTarget.equals("InitialNode") || typeTarget.equals("ActivityFinalNode")) {
+                    xDelta2 = sideStartEnd/2;
+                }
+                else if (typeTarget.equals("ForkNode") || typeTarget.equals("JoinNode")) {
+                    xDelta2 = highForkJoin/2;
+                }
+                else if (typeTarget.equals("DecisionNode") || typeTarget.equals("MergeNode")) {
+                    xDelta2 = sideDecisionMerge/2;
+                }
+                // -----------------
+                
+                a1 = x1 - xDelta1;
+                a2 = x2 + xDelta2;
+                b1 = function(a1, x1, y1, x2, y2);
+                b2 = function(a2, x1, y1, x2, y2);
+                
+                if ( (a1 != -1) && (b1 != -1) && (a2 != -1) && (b2 != -1)) {
+                    graph.drawLine( a1, b1, a2, b2);
+                    drawArrowHead(graph, theta, a2, b2);
+                }
+// -----------------------------------------------------------------
+            }
+            else if (y1 > y2){
+// --------------------- ARRIBA IZQUIERDA -------------------------- 
+                // ----- ORIGEN -----
+                if (typeSource.equals("StructuredActivityNode") || typeSource.equals("ActivityParameterNode")) {
+                    xDelta1 = sideNode/2;
+                    yDelta1 = sideNode/2;
+                }
+                else if (typeSource.equals("InitialNode") || typeSource.equals("ActivityFinalNode")) {
+                    xDelta1 = sideStartEnd/2;
+                    yDelta1 = sideStartEnd/2;
+                }
+                else if (typeSource.equals("ForkNode") || typeSource.equals("JoinNode")) {
+                    xDelta1 = widthForkJoin/2;
+                    yDelta1 = widthForkJoin/2;
+                }
+                else if (typeSource.equals("DecisionNode") || typeSource.equals("MergeNode")) {
+                    xDelta1 = sideDecisionMerge/2;
+                    yDelta1 = sideDecisionMerge/2;
+                }
+                // ----- LLEGADA -----
+                if (typeTarget.equals("StructuredActivityNode") || typeTarget.equals("ActivityParameterNode")) {
+                    xDelta2 = sideNode/2;
+                    yDelta2 = sideNode/2;
+                }
+                else if (typeTarget.equals("InitialNode") || typeTarget.equals("ActivityFinalNode")) {
+                    xDelta2 = sideStartEnd/2;
+                    yDelta2 = sideStartEnd/2;
+                }
+                else if (typeTarget.equals("ForkNode") || typeTarget.equals("JoinNode")) {
+                    xDelta2 = widthForkJoin/2;
+                    yDelta2 = widthForkJoin/2;
+                }
+                else if (typeTarget.equals("DecisionNode") || typeTarget.equals("MergeNode")) {
+                    xDelta2 = sideDecisionMerge/2;
+                    yDelta2 = sideDecisionMerge/2;
+                }
+                // -----------------
+                a1 = x1 - xDelta1;
+                a2 = x2 + xDelta2;
+                b1 = function(a1, x1, y1, x2, y2);
+                b2 = function(a2, x1, y1, x2, y2);
+                
+                if ( Math.abs(b1 - y1) > yDelta1) {
+                    b1 = y1 - yDelta1;
+                    a1 = reverseFunction(b1, x1, y1, x2, y2);
+                }
+                if ( Math.abs(b2 - y2) > yDelta2) {
+                    b2 = y2 + yDelta2;
+                    a2 = reverseFunction(b2, x1, y1, x2, y2);
+                }
+                
+                if ( (a1 != -1) && (b1 != -1) && (a2 != -1) && (b2 != -1)) {
+                    graph.drawLine( a1, b1, a2, b2);
+                    drawArrowHead(graph, theta, a2, b2);
+                }
+// -----------------------------------------------------------------
+            }
+            else if (y1 < y2){
+// ---------------------- ABAJO IZQUIERDA --------------------------
+                // ----- ORIGEN -----
+                if (typeSource.equals("StructuredActivityNode") || typeSource.equals("ActivityParameterNode")) {
+                    xDelta1 = sideNode/2;
+                    yDelta1 = sideNode/2;
+                }
+                else if (typeSource.equals("InitialNode") || typeSource.equals("ActivityFinalNode")) {
+                    xDelta1 = sideStartEnd/2;
+                    yDelta1 = sideStartEnd/2;
+                }
+                else if (typeSource.equals("ForkNode") || typeSource.equals("JoinNode")) {
+                    xDelta1 = widthForkJoin/2;
+                    yDelta1 = widthForkJoin/2;
+                }
+                else if (typeSource.equals("DecisionNode") || typeSource.equals("MergeNode")) {
+                    xDelta1 = sideDecisionMerge/2;
+                    yDelta1 = sideDecisionMerge/2;
+                }
+                // ----- LLEGADA -----
+                if (typeTarget.equals("StructuredActivityNode") || typeTarget.equals("ActivityParameterNode")) {
+                    xDelta2 = sideNode/2;
+                    yDelta2 = sideNode/2;
+                }
+                else if (typeTarget.equals("InitialNode") || typeTarget.equals("ActivityFinalNode")) {
+                    xDelta2 = sideStartEnd/2;
+                    yDelta2 = sideStartEnd/2;
+                }
+                else if (typeTarget.equals("ForkNode") || typeTarget.equals("JoinNode")) {
+                    xDelta2 = widthForkJoin/2;
+                    yDelta2 = widthForkJoin/2;
+                }
+                else if (typeTarget.equals("DecisionNode") || typeTarget.equals("MergeNode")) {
+                    xDelta2 = sideDecisionMerge/2;
+                    yDelta2 = sideDecisionMerge/2;
+                }
+                // -----------------
+                a1 = x1 - xDelta1;
+                a2 = x2 + xDelta2;
+                b1 = function(a1, x1, y1, x2, y2);
+                b2 = function(a2, x1, y1, x2, y2);
+                
+                if ( Math.abs(b1 - y1) > yDelta1) {
+                    b1 = y1 + yDelta1;
+                    a1 = reverseFunction(b1, x1, y1, x2, y2);
+                }
+                if ( Math.abs(b2 - y2) > yDelta2) {
+                    b2 = y2 - yDelta2;
+                    a2 = reverseFunction(b2, x1, y1, x2, y2);
+                }
+                if ( (a1 != -1) && (b1 != -1) && (a2 != -1) && (b2 != -1)) {
+                    graph.drawLine( a1, b1, a2, b2);
+                    drawArrowHead(graph, theta, a2, b2);
+                }
+            }
+// -----------------------------------------------------------------
+        }
+    }
+    
+    private void drawName(Graphics2D graph, String name, int x1, int y1, int x2, int y2) {
+        int x0 = (int) (x1 + x2)/2;
+        int y0 = (int) (y1 + y2)/2;
+        graph.setColor(Color.GRAY);
+        graph.drawString(name, x0, y0);
+    }
+    
+    private int function(double x, double x1, double y1, double x2, double y2){
+        double m = (y2 - y1)/(x2 - x1);
+        double y = m*x - m*x1 + y1;
+        return (int)  y;
+    }
+    
+    private int reverseFunction(double y, double x1, double y1, double x2, double y2){
+        double m = (x2 - x1)/(y2 - y1);
+        double x = m*y - m*y1 + x1;
+        return (int) x;
     }
   
-    private void arrowHead(Graphics2D g, double theta, double x0, double y0){
+    private void drawArrowHead(Graphics2D g, double theta, double x0, double y0){
         double x = x0 - barb * Math.cos(theta + phi);
         double y = y0 - barb * Math.sin(theta + phi);
         g.draw(new Line2D.Double(x0, y0, x, y));
@@ -176,65 +669,3 @@ class Panel extends JPanel{
     }
     
 }
-
-/*      if (x1 == x2) {
-            if (y1 < y2) direction = "abajo";
-            else if(y1 < y2) direction = "arriba";
-        }else if(x1 < x2){
-            if(y1 == y2) direction = "derecha";
-            else if (y1 > y2) direction = "arriba-derecha";
-            else if (y1 < y2) direction = "abajo-derecha";
-        }else if(x1 > x2){
-            if(y1 == y2) direction = "izquierda";
-            else if (y1 > y2) direction = "arriba-izquierda";
-            else if (y1 < y2) direction = "abajo-izquierda";
-        }
-        if (direction.equals("abajo")){
-            graph.drawLine( x1, y1, x2, y2);
-            theta = Math.atan2(y2 - y1 , x2 - x1 );
-            arrowHead(graph, theta, x2, y2);
-        }
-        
-        if (direction.equals("arriba")) {
-            graph.drawLine( x1, y1, x2, y2);
-            theta = Math.atan2(y2 - y1 , x2 - x1 );
-            arrowHead(graph, theta, x2, y2);
-        }
-        if (direction.equals("derecha")) { //lista
-            
-            x1 = x1 + side/2 + border;
-            x2 = x2 - side/2 - border;
-            
-            graph.drawLine( x1, y1, x2, y2);
-            theta = Math.atan2(y2 - y1 , x2 - x1);
-            arrowHead(graph, theta, x2, y2);
-        }
-        if (direction.equals("izquierda")) { //lita
-            x1 = x1 - side/2 - border;
-            x2 = x2 + side/2 + border;
-            
-            graph.drawLine( x1, y1, x2, y2);
-            theta = Math.atan2(y2 - y1 , x2 - x1 );
-            arrowHead(graph, theta, x2 , y2);
-        }
-        /*if (direction.equals("arriba-derecha")) {
-            x1 = x1 + side/2;
-            y1 = y1 - side/2;
-            
-            graph.drawLine( x1, y1, x2, y2);
-            theta = Math.atan2(y2 - y1 , x2 - x1);
-            arrowHead(graph, theta, x2, y2);
-        }
-        if (direction.equals("arriba-izquierda")) {
-            graph.draw(new Line2D.Double( x1 , y1 , x2 + border + side, y2 + side + border));
-            theta = Math.atan2(y2 - y1 , x2 - x1 );
-            arrowHead(graph, theta, x2 + border + side, y2 + side + border);
-        }else if (direction.equals("abajo-derecha")) {
-            graph.draw(new Line2D.Double(x1 + side, y1 + side + border*2, x2 , y2));
-            theta = Math.atan2(y2 - y1 , x2 - x1 );
-            arrowHead(graph, theta, x2, y2);
-        }else if (direction.equals("abajo-izquierda")) {
-            graph.draw(new Line2D.Double(x1, y1 + side + border*2, x2 + side , y2));
-            theta = Math.atan2(y2 - y1 , x2 - x1 );
-            arrowHead(graph, theta, x2 + side, y2);
-        }*/
