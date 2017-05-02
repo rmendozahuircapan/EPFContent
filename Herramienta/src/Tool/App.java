@@ -27,8 +27,8 @@ public class App {
     static ArrayList<Position> Positions = new ArrayList<Position>();
     static ArrayList<WorkFlow> WorkFlows = new ArrayList<WorkFlow>();
     
-    static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso";
-    //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library3\\workflow";
+    //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso";
+    static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library3\\workflow";
     //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso\\proceso_de_prueba";
     //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso1\\nodoInicio";
     

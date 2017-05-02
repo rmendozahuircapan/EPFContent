@@ -74,12 +74,12 @@ class Panel extends JPanel{
     
     public Panel(WorkFlow workflow){
         sideNode = 30;
-        sideStartEnd = 30;
-        sideDecisionMerge = 56;
-        highForkJoin = 106;
-        widthForkJoin = 16;
+        sideStartEnd = 20;
+        sideDecisionMerge = 55;
+        highForkJoin = 105;
+        widthForkJoin = 15;
         border = 10;
-        barb = 6;
+        barb = 5;
         phi = Math.PI/6;
         this.workflow = workflow;
         setBackground(Color.white);
@@ -245,8 +245,8 @@ class Panel extends JPanel{
         
         if (x1 == x2) {
             if (y1 < y2){
-//-------------------------------- ABAJO ---------------------------
-                // ----- ORIGEN -----
+//-------------------------------- DOWN ---------------------------
+                // ----- SOURCE -----
                 if (typeSource.equals("StructuredActivityNode") || typeSource.equals("ActivityParameterNode")) {
                     yDelta1 = sideNode/2 + border;
                 }
@@ -259,7 +259,7 @@ class Panel extends JPanel{
                 else if (typeSource.equals("DecisionNode") || typeSource.equals("MergeNode")) {
                     yDelta1 = sideDecisionMerge/2;
                 }
-                // ----- LLEGADA -----
+                // ----- TARGET -----
                 if (typeTarget.equals("StructuredActivityNode") || typeTarget.equals("ActivityParameterNode")) {
                     yDelta2 = sideNode/2;
                 }
@@ -285,8 +285,8 @@ class Panel extends JPanel{
 // -----------------------------------------------------------------                
             }
             else if(y1 > y2){
-//-------------------------------- ARRIBA --------------------------
-                // ----- ORIGEN -----
+//-------------------------------- UP --------------------------
+                // ----- SOURCE -----
                 if (typeSource.equals("StructuredActivityNode") || typeSource.equals("ActivityParameterNode")) {
                     yDelta1 = sideNode/2;
                 }
@@ -299,7 +299,7 @@ class Panel extends JPanel{
                 else if (typeSource.equals("DecisionNode") || typeSource.equals("MergeNode")) {
                     yDelta1 = sideDecisionMerge/2;
                 }
-                // ----- LLEGADA -----
+                // ----- TARGET -----
                 if (typeTarget.equals("StructuredActivityNode") || typeTarget.equals("ActivityParameterNode")) {
                     yDelta2 = sideNode/2 + border;
                 }
@@ -327,8 +327,8 @@ class Panel extends JPanel{
             }
         }else if(x1 < x2){
             if(y1 == y2){
-// ------------------------------ DERECHA --------------------------
-                // ----- ORIGEN -----
+// ------------------------------ RIGHT --------------------------
+                // ----- SOURCE -----
                 if (typeSource.equals("StructuredActivityNode") || typeSource.equals("ActivityParameterNode")) {
                     xDelta1 = sideNode/2;
                 }
@@ -341,7 +341,7 @@ class Panel extends JPanel{
                 else if (typeSource.equals("DecisionNode") || typeSource.equals("MergeNode")) {
                     xDelta1 = sideDecisionMerge/2;
                 }
-                // ----- LLEGADA -----
+                // ----- TARGET -----
                 if (typeTarget.equals("StructuredActivityNode") || typeTarget.equals("ActivityParameterNode")) {
                     xDelta2 = sideNode/2;
                 }
@@ -368,8 +368,8 @@ class Panel extends JPanel{
 // -----------------------------------------------------------------
             }
             else if (y1 > y2){
-// ----------------------- ARRIBA DERECHA --------------------------
-                // ----- ORIGEN -----
+// ----------------------- UP RIGHT --------------------------
+                // ----- SOURCE -----
                 if (typeSource.equals("StructuredActivityNode") || typeSource.equals("ActivityParameterNode")) {
                     xDelta1 = sideNode/2;
                     yDelta1 = sideNode/2;
@@ -386,7 +386,7 @@ class Panel extends JPanel{
                     xDelta1 = sideDecisionMerge/2;
                     yDelta1 = sideDecisionMerge/2;
                 }
-                // ----- LLEGADA -----
+                // ----- TARGET -----
                 if (typeTarget.equals("StructuredActivityNode") || typeTarget.equals("ActivityParameterNode")) {
                     xDelta2 = sideNode/2;
                     yDelta2 = sideNode/2;
@@ -425,8 +425,8 @@ class Panel extends JPanel{
 // -----------------------------------------------------------------
             }
             else if (y1 < y2){
-// ------------------------ ABAJO DERECHA -------------------------- 
-                // ----- ORIGEN -----
+// ------------------------ DOWN RIGHT -------------------------- 
+                // ----- SOURCE -----
                 if (typeSource.equals("StructuredActivityNode") || typeSource.equals("ActivityParameterNode")) {
                     xDelta1 = sideNode/2;
                     yDelta1 = sideNode/2;
@@ -443,7 +443,7 @@ class Panel extends JPanel{
                     xDelta1 = sideDecisionMerge/2;
                     yDelta1 = sideDecisionMerge/2;
                 }
-                // ----- LLEGADA -----
+                // ----- TARGET -----
                 if (typeTarget.equals("StructuredActivityNode") || typeTarget.equals("ActivityParameterNode")) {
                     xDelta2 = sideNode/2;
                     yDelta2 = sideNode/2;
@@ -484,8 +484,8 @@ class Panel extends JPanel{
             }
         }else if(x1 > x2){
             if(y1 == y2){
-// ---------------------------- IZQUIERDA -------------------------- 
-                // ----- ORIGEN -----
+// ---------------------------- LEFT -------------------------- 
+                // ----- SOURCE -----
                 if (typeSource.equals("StructuredActivityNode") || typeSource.equals("ActivityParameterNode")) {
                     xDelta1 = sideNode/2;
                 }
@@ -498,7 +498,7 @@ class Panel extends JPanel{
                 else if (typeSource.equals("DecisionNode") || typeSource.equals("MergeNode")) {
                     xDelta1 = sideDecisionMerge/2;
                 }
-                // ----- LLEGADA -----
+                // ----- TARGET -----
                 if (typeTarget.equals("StructuredActivityNode") || typeTarget.equals("ActivityParameterNode")) {
                     xDelta2 = sideNode/2;
                 }
@@ -525,8 +525,8 @@ class Panel extends JPanel{
 // -----------------------------------------------------------------
             }
             else if (y1 > y2){
-// --------------------- ARRIBA IZQUIERDA -------------------------- 
-                // ----- ORIGEN -----
+// --------------------- UP LEFT -------------------------- 
+                // ----- SOURCE -----
                 if (typeSource.equals("StructuredActivityNode") || typeSource.equals("ActivityParameterNode")) {
                     xDelta1 = sideNode/2;
                     yDelta1 = sideNode/2;
@@ -543,7 +543,7 @@ class Panel extends JPanel{
                     xDelta1 = sideDecisionMerge/2;
                     yDelta1 = sideDecisionMerge/2;
                 }
-                // ----- LLEGADA -----
+                // ----- TARGET -----
                 if (typeTarget.equals("StructuredActivityNode") || typeTarget.equals("ActivityParameterNode")) {
                     xDelta2 = sideNode/2;
                     yDelta2 = sideNode/2;
@@ -582,8 +582,8 @@ class Panel extends JPanel{
 // -----------------------------------------------------------------
             }
             else if (y1 < y2){
-// ---------------------- ABAJO IZQUIERDA --------------------------
-                // ----- ORIGEN -----
+// ---------------------- DOWN LEFT --------------------------
+                // ----- SOURCE -----
                 if (typeSource.equals("StructuredActivityNode") || typeSource.equals("ActivityParameterNode")) {
                     xDelta1 = sideNode/2;
                     yDelta1 = sideNode/2;
@@ -600,7 +600,7 @@ class Panel extends JPanel{
                     xDelta1 = sideDecisionMerge/2;
                     yDelta1 = sideDecisionMerge/2;
                 }
-                // ----- LLEGADA -----
+                // ----- TARGET -----
                 if (typeTarget.equals("StructuredActivityNode") || typeTarget.equals("ActivityParameterNode")) {
                     xDelta2 = sideNode/2;
                     yDelta2 = sideNode/2;
