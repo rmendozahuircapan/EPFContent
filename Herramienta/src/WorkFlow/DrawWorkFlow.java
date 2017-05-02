@@ -112,10 +112,10 @@ class Panel extends JPanel{
                         yPositionName = yPosition + sideNode + border ;
                         ImageIcon Img;
                         if (node.getType().equals("StructuredActivityNode")) {
-                            Img = new ImageIcon(getClass().getResource("/Icons/Activity.gif"));
+                            Img = new ImageIcon(getClass().getResource("/Icons/ActivityNode.gif"));
                         }
                         else{
-                            Img = new ImageIcon(getClass().getResource("/Icons/Task.gif"));
+                            Img = new ImageIcon(getClass().getResource("/Icons/TaskNode.gif"));
                         }
                         graph.drawImage(Img.getImage(), xPosition, yPosition, sideNode, sideNode, null);
                         graph.drawString(node.getName(), xPosition, yPositionName);
