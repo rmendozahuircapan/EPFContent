@@ -28,9 +28,11 @@ public class App {
     static ArrayList<WorkFlow> WorkFlows = new ArrayList<WorkFlow>();
     
     //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso";
-    static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library3\\workflow";
+    //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library3\\workflow";
     //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso\\proceso_de_prueba";
     //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso1\\nodoInicio";
+    //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso2\\Prueba final";
+    static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso3\\Prueba2";
     
     static String pathPlugin = mainFolder + "\\plugin.xmi";
     

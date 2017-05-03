@@ -10,8 +10,8 @@ import static WorkFlow.DrawWorkFlow.*;
 public class DrawWorkFlow{
         
     public static void Draw(WorkFlow workflow){  
-        int xSize = xMax(workflow) + 18;
-        int ySize = yMax(workflow) + 39;
+        int xSize = xMax(workflow) + 118;
+        int ySize = yMax(workflow) + 89;
         JFrame f = new JFrame();
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.getContentPane().add(new Panel(workflow));
