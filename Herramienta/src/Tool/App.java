@@ -13,11 +13,6 @@ import java.util.*;
 
 public class App {
     
-    static ArrayList<String> PluginFile = new ArrayList<String>();
-    static ArrayList<String> TaskFile = new ArrayList<String>();
-    static ArrayList<String> ModelFile = new ArrayList<String>();
-    static ArrayList<String> DiagramFile = new ArrayList<String>();
-    
     static ArrayList<Role> Roles = new ArrayList<Role>();
     static ArrayList<Template> Templates = new ArrayList<Template>();
     static ArrayList<WorkProduct> WorkProducts = new ArrayList<WorkProduct>();

@@ -31,7 +31,8 @@ public class SearchProcessElements {
     }
     
     public static void searchResourceDescriptors() throws IOException{
-        XMI(pathPlugin, typePathPlugin);
+        ArrayList<String> PluginFile = new ArrayList<String>();
+        PluginFile = XMI(pathPlugin);
         for (int i = 0; i < PluginFile.size(); i++) {
             String[] separated = PluginFile.get(i).split(" ");
             if (separated[0].contains("resourceDescriptors")) {
@@ -61,8 +62,9 @@ public class SearchProcessElements {
         }
     }
     
-    public static void searchRoles() {
-        
+    public static void searchRoles() throws IOException {
+        ArrayList<String> PluginFile = new ArrayList<String>();
+        PluginFile = XMI(pathPlugin);
         boolean flag;
         for (int i = 0; i < PluginFile.size(); i++) {
             String[] separated = PluginFile.get(i).split(" ");
@@ -119,7 +121,9 @@ public class SearchProcessElements {
         }
     }
     
-    public static void searchTemplates(){
+    public static void searchTemplates() throws IOException{
+        ArrayList<String> PluginFile = new ArrayList<String>();
+        PluginFile = XMI(pathPlugin);
         boolean flag;
         for (int i = 0; i < PluginFile.size(); i++) {
             String[] separated = PluginFile.get(i).split(" ");
@@ -176,7 +180,9 @@ public class SearchProcessElements {
         }
     }
     
-    public static void searchWorkProducts() {
+    public static void searchWorkProducts() throws IOException {
+        ArrayList<String> PluginFile = new ArrayList<String>();
+        PluginFile = XMI(pathPlugin);
         boolean flag;
         for (int i = 0; i < PluginFile.size(); i++) {
             String[] separated = PluginFile.get(i).split(" ");
@@ -261,7 +267,9 @@ public class SearchProcessElements {
         }
     }
     
-    public static void searchTasks() {
+    public static void searchTasks() throws IOException {
+        ArrayList<String> PluginFile = new ArrayList<String>();
+        PluginFile = XMI(pathPlugin);
         boolean flag;
         for (int i = 0; i < PluginFile.size(); i++) {
             String[] separated = PluginFile.get(i).split(" ");
@@ -420,9 +428,9 @@ public class SearchProcessElements {
             String id = new String();
             String name = new String();
             String nameTask = pathTasks.get(i).substring(mainFolder.length() + 7).substring(0, pathTasks.get(i).substring(mainFolder.length() + 7).length() - 4);
-            ArrayList<Step> stepsTask = new ArrayList<Step>();            
-            TaskFile = new ArrayList<String>();
-            XMI(pathTasks.get(i), typePathTask);            
+            ArrayList<Step> stepsTask = new ArrayList<Step>();
+            ArrayList<String> TaskFile = new ArrayList<String>();
+            TaskFile = XMI(pathTasks.get(i));            
             for (int j = 0; j < TaskFile.size(); j++) {
                 String[] separated = TaskFile.get(j).split(" ");
                 if (separated[0].contentEquals("<sections")) {
@@ -465,8 +473,8 @@ public class SearchProcessElements {
         String id = new String ();
         String name = new String ();    
         for (int i = 0; i < pathModels.size(); i++) {
-            ModelFile = new ArrayList<String>();
-            XMI(pathModels.get(i),typePathModel);
+            ArrayList<String> ModelFile = new ArrayList<String>();
+            ModelFile = XMI(pathModels.get(i));
             for (int j = 0; j < ModelFile.size(); j++) {
                 String[] separated = ModelFile.get(j).split(" ");
                 if (separated[0].equals("<childPackages")) {
@@ -530,8 +538,8 @@ public class SearchProcessElements {
     public static void searchProcess() throws IOException{
         boolean flag;
         for (int i = 0; i < pathModels.size(); i++) {
-            ModelFile = new ArrayList<String>();
-            XMI(pathModels.get(i),typePathModel);
+            ArrayList<String> ModelFile = new ArrayList<String>();
+            ModelFile = XMI(pathModels.get(i));
             String id = new String ();
             String name = new String ();
             ArrayList<Activity> activityProcess = new ArrayList<Activity>();

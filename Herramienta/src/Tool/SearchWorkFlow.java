@@ -24,8 +24,8 @@ public class SearchWorkFlow {
     public static void searchNodes() throws IOException{
         boolean flag;
         for (int i = 0; i < pathDiagrams.size(); i++) {
-            DiagramFile = new ArrayList<String>();
-            XMI(pathDiagrams.get(i),typePathDiagram);
+            ArrayList<String> DiagramFile = new ArrayList<String>();
+            DiagramFile = XMI(pathDiagrams.get(i));
             for (int j = 0; j < DiagramFile.size(); j++) {
                 String[] separated = DiagramFile.get(j).split(" ");
                 if (separated[0].equals("<node")) {
@@ -69,8 +69,8 @@ public class SearchWorkFlow {
         
         boolean flag;
         for (int i = 0; i < pathDiagrams.size(); i++) {
-            DiagramFile = new ArrayList<String>();
-            XMI(pathDiagrams.get(i),typePathDiagram);
+            ArrayList<String> DiagramFile = new ArrayList<String>();
+            DiagramFile = XMI(pathDiagrams.get(i));
             for (int j = 0; j < DiagramFile.size(); j++) {
                 String[] separated = DiagramFile.get(j).split(" ");
                 if (separated[0].equals("<edge")) {
@@ -127,8 +127,8 @@ public class SearchWorkFlow {
     
     public static void searchPositions() throws IOException{
         for (int i = 0; i < pathDiagrams.size(); i++) {
-            DiagramFile = new ArrayList<String>();
-            XMI(pathDiagrams.get(i), typePathDiagram);
+            ArrayList<String> DiagramFile = new ArrayList<String>();
+            DiagramFile = XMI(pathDiagrams.get(i));
             String id = new String();
             int x = -1;
             int y = -1;
@@ -166,8 +166,8 @@ public class SearchWorkFlow {
         
         boolean flag;
         for (int i = 0; i < pathDiagrams.size(); i++) {
-            DiagramFile = new ArrayList<String>();
-            XMI(pathDiagrams.get(i),typePathDiagram);
+            ArrayList<String> DiagramFile = new ArrayList<String>();
+            DiagramFile = XMI(pathDiagrams.get(i));
             String id = new String();
             String name = new String();
             ArrayList<Node> nodesWorkFlow = new ArrayList<Node>();
