@@ -1,21 +1,16 @@
 
 package Tool;
 
-
-import static Tool.App.DiagramFile;
-import static Tool.App.ModelFile;
-import static Tool.App.PluginFile;
-import static Tool.App.TaskFile;
-
 import java.io.*;
+import java.util.*;
 
 public class XMIReadFile {
          
-    public static void XMI(String path, String typePath) throws FileNotFoundException, IOException {
+    public static ArrayList<String> XMI(String path) throws FileNotFoundException, IOException {
         File archive = null;
         FileReader fr = null;
         BufferedReader br = null;
-
+        ArrayList<String> File = new ArrayList<String>();
         try {
             archive = new File (path);
             fr = new FileReader (archive);
@@ -23,18 +18,7 @@ public class XMIReadFile {
 
             String line;
             while((line=br.readLine())!=null){
-                if (typePath.equals("Plugin")) {
-                    PluginFile.add(cleanLine(line));
-                }
-                else if (typePath.equals("Task")) {
-                    TaskFile.add(cleanLine(line));
-                }
-                else if (typePath.equals("Model")){
-                    ModelFile.add(cleanLine(line));
-                }
-                else if (typePath.equals("Diagram")){
-                    DiagramFile.add(cleanLine(line));
-                }
+                File.add(cleanLine(line));
             }
         }
         catch(Exception e){
@@ -48,6 +32,7 @@ public class XMIReadFile {
                 e2.printStackTrace();
             }
         }
+        return File;
     }
     
     public static String cleanLine(String line){
