@@ -3,62 +3,8 @@ package DeliveryProcess;
 
 import java.awt.*;
 import java.awt.geom.*;
-import javax.swing.*;
 import java.util.*;
-import static DeliveryProcess.DrawWorkFlow.*;
-  
-public class DrawWorkFlow{
-        
-    public static void Draw(WorkFlow workflow){  
-        int xSize = xMax(workflow) + 118;
-        int ySize = yMax(workflow) + 89;
-        JFrame f = new JFrame();
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.getContentPane().add(new Panel(workflow));
-        f.setSize(xSize,ySize);
-        f.setLocationByPlatform(true);
-        f.setVisible(true);
-        f.setTitle(workflow.getName().toUpperCase());
-    }
-    
-    public static int xMax(WorkFlow workflow) {
-        ArrayList<Integer> x = new ArrayList<Integer>();
-        for (Position p : workflow.getPositions()) {
-            x.add(p.getX());
-        }
-        int max = (int) x.stream().mapToDouble(i -> i).max().getAsDouble();
-        return max;
-    }
-    
-    public static int yMax(WorkFlow workflow) {
-        ArrayList<Integer> y = new ArrayList<Integer>();
-        for (Position p : workflow.getPositions()) {
-            y.add(p.getY());
-        }
-        int max = (int) y.stream().mapToDouble(i -> i).max().getAsDouble();
-        return max;
-    }
-    
-    public static int xMin(WorkFlow workflow) {
-        ArrayList<Integer> x = new ArrayList<Integer>();
-        for (Position p : workflow.getPositions()) {
-            x.add(p.getX());
-        }
-        int min = (int) x.stream().mapToDouble(i -> i).min().getAsDouble();
-        return min;
-    }
-    
-    public static int yMin(WorkFlow workflow) {
-        ArrayList<Integer> y = new ArrayList<Integer>();
-        for (Position p : workflow.getPositions()) {
-            y.add(p.getY());
-        }
-        int min = (int) y.stream().mapToDouble(i -> i).min().getAsDouble();
-        return min;
-    }
-}
-
-/******************************************************************************************************/  
+import javax.swing.*;
 
 class Panel extends JPanel{
     int sideNode;
@@ -84,7 +30,8 @@ class Panel extends JPanel{
         this.workflow = workflow;
         setBackground(Color.white);
     }
-  
+
+
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D graph = (Graphics2D) g;
@@ -647,19 +594,7 @@ class Panel extends JPanel{
         graph.drawString(name, x0, y0);
     }
     
-    private int function(double x, double x1, double y1, double x2, double y2){
-        double m = (y2 - y1)/(x2 - x1);
-        double y = m*x - m*x1 + y1;
-        return (int)  y;
-    }
-    
-    private int reverseFunction(double y, double x1, double y1, double x2, double y2){
-        double m = (x2 - x1)/(y2 - y1);
-        double x = m*y - m*y1 + x1;
-        return (int) x;
-    }
-  
-    private void drawArrowHead(Graphics2D g, double theta, double x0, double y0){
+        private void drawArrowHead(Graphics2D g, double theta, double x0, double y0){
         double x = x0 - barb * Math.cos(theta + phi);
         double y = y0 - barb * Math.sin(theta + phi);
         g.draw(new Line2D.Double(x0, y0, x, y));
@@ -667,4 +602,34 @@ class Panel extends JPanel{
         y = y0 - barb * Math.sin(theta - phi);
         g.draw(new Line2D.Double(x0, y0, x, y));
     }   
+    
+    private static int function(double x, double x1, double y1, double x2, double y2){
+        double m = (y2 - y1)/(x2 - x1);
+        double y = m*x - m*x1 + y1;
+        return (int)  y;
+    }
+    
+    private static int reverseFunction(double y, double x1, double y1, double x2, double y2){
+        double m = (x2 - x1)/(y2 - y1);
+        double x = m*y - m*y1 + x1;
+        return (int) x;
+    }
+    
+    public static int xMin(WorkFlow workflow) {
+        ArrayList<Integer> x = new ArrayList<Integer>();
+        for (Position p : workflow.getPositions()) {
+            x.add(p.getX());
+        }
+        int min = (int) x.stream().mapToDouble(i -> i).min().getAsDouble();
+        return min;
+    }
+    
+    public static int yMin(WorkFlow workflow) {
+        ArrayList<Integer> y = new ArrayList<Integer>();
+        for (Position p : workflow.getPositions()) {
+            y.add(p.getY());
+        }
+        int min = (int) y.stream().mapToDouble(i -> i).min().getAsDouble();
+        return min;
+    }
 }

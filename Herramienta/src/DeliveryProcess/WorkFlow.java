@@ -2,6 +2,7 @@
 package DeliveryProcess;
 
 import java.util.*;
+import javax.swing.*;
 
 public class WorkFlow {
     private String id;
@@ -60,7 +61,37 @@ public class WorkFlow {
     
     public void getGraph(){
         WorkFlow workflow = new WorkFlow(id, name, nodes, edges, positions);
-        DrawWorkFlow.Draw(workflow);
+        Draw(workflow);
+    }
+    
+    private static void Draw(WorkFlow workflow){  
+        JFrame f = new JFrame();
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.getContentPane().add(new Panel(workflow));
+        f.setSize(xMax(workflow),yMax(workflow));
+        f.setLocationByPlatform(true);
+        f.setVisible(true);
+        f.setTitle(workflow.getName().toUpperCase());
+    }
+    
+    private static int xMax(WorkFlow workflow) {
+        ArrayList<Integer> x = new ArrayList<Integer>();
+        for (Position p : workflow.getPositions()) {
+            x.add(p.getX());
+        }
+        int max = (int) x.stream().mapToDouble(i -> i).max().getAsDouble();
+        max = max + 39;
+        return max;
+    }
+    
+    public static int yMax(WorkFlow workflow) {
+        ArrayList<Integer> y = new ArrayList<Integer>();
+        for (Position p : workflow.getPositions()) {
+            y.add(p.getY());
+        }
+        int max = (int) y.stream().mapToDouble(i -> i).max().getAsDouble();
+        max = max + 18;
+        return max;
     }
     
 }
