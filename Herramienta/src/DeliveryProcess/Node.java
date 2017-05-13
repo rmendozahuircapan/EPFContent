@@ -1,5 +1,5 @@
 
-package DeliveryProcesses;
+package DeliveryProcess;
 
 
 public class Node {

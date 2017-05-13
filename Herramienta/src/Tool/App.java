@@ -1,11 +1,12 @@
 package Tool;
 
-import DeliveryProcesses.Position;
-import DeliveryProcesses.WorkFlow;
-import DeliveryProcesses.Node;
-import DeliveryProcesses.Edge;
+import DeliveryProcess.Position;
+import DeliveryProcess.WorkFlow;
+import DeliveryProcess.Node;
+import DeliveryProcess.Edge;
 import ProcessElements.*;
 import ProcessElements.Process;
+
 
 import java.io.*;
 import java.util.*;
@@ -13,13 +14,13 @@ import java.util.*;
 
 public class App {
     
-    static ArrayList<Role> Roles = new ArrayList<Role>();
-    static ArrayList<Template> Templates = new ArrayList<Template>();
-    static ArrayList<WorkProduct> WorkProducts = new ArrayList<WorkProduct>();
-    static ArrayList<Task> Tasks = new ArrayList<Task>();
-    static ArrayList<Step> Steps = new ArrayList<Step>();
-    static ArrayList<Activity> Activities = new ArrayList<Activity>();
-    static ArrayList<Process> Processes = new ArrayList<Process>();
+    static ArrayList<Role> RolesApp = new ArrayList<Role>();
+    static ArrayList<Template> TemplatesApp = new ArrayList<Template>();
+    static ArrayList<WorkProduct> WorkProductsApp = new ArrayList<WorkProduct>();
+    static ArrayList<Task> TasksApp = new ArrayList<Task>();
+    static ArrayList<Step> StepsApp = new ArrayList<Step>();
+    static ArrayList<Activity> ActivitiesApp = new ArrayList<Activity>();
+    static ArrayList<Process> ProcessesApp = new ArrayList<Process>();
     
     static ArrayList<Node> Nodes = new ArrayList<Node>();
     static ArrayList<Edge> Edges = new ArrayList<Edge>();
@@ -29,7 +30,6 @@ public class App {
     //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso";
     //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library3\\workflow";
     static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso\\proceso_de_prueba";
-    //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso1\\nodoInicio";
     //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso2\\Prueba final";
     //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso3\\Prueba2";
     
@@ -40,7 +40,15 @@ public class App {
     
     public static void main(String[] args) throws IOException {
         
-        Tool.SearchProcessElements.searchProcessElements();
+        //Tool.SearchProcessElements.searchProcessElements();
+        ProcessElements PE = new ProcessElements(mainFolder);
+        RolesApp = PE.getRoles();
+        TemplatesApp = PE.getTemplates();
+        WorkProductsApp = PE.getWorkProducts();
+        TasksApp = PE.getTasks();
+        StepsApp = PE.getSteps();
+        ActivitiesApp = PE.getActivities();
+        ProcessesApp = PE.getProcesses();
         Tool.SearchWorkFlow.searchElementsWorkFlow();
         
         
@@ -59,13 +67,13 @@ public class App {
     public static void resumeProcessElements(){
         
         System.out.println("-------------------------------------");
-        System.out.println("Roles: "+Roles.size());
-        System.out.println("Templates: "+Templates.size());
-        System.out.println("WorkProducts: "+WorkProducts.size());
-        System.out.println("Tasks: "+Tasks.size());
-        System.out.println("Steps: "+Steps.size());
-        System.out.println("Activities: "+Activities.size());
-        System.out.println("Processes: "+Processes.size());
+        System.out.println("Roles: "+RolesApp.size());
+        System.out.println("Templates: "+TemplatesApp.size());
+        System.out.println("WorkProducts: "+WorkProductsApp.size());
+        System.out.println("Tasks: "+TasksApp.size());
+        System.out.println("Steps: "+StepsApp.size());
+        System.out.println("Activities: "+ActivitiesApp.size());
+        System.out.println("Processes: "+ProcessesApp.size());
         System.out.println("-------------------------------------");
     }
     
@@ -90,7 +98,7 @@ public class App {
     
     public static void showRoles(){
         int i = 0;
-        for (Role role : Roles) {
+        for (Role role : RolesApp) {
             System.out.println("Role "+(++i));
             System.out.println("PresentationName: "+role.getPresentationName());
             System.out.println("Name: "+role.getName());
@@ -102,7 +110,7 @@ public class App {
     
     public static void showTemplates(){
         int i = 0;
-        for (Template template : Templates) {
+        for (Template template : TemplatesApp) {
             System.out.println("Template "+(++i));
             System.out.println("PresentationName: "+template.getPresentationName());
             System.out.println("Name: "+template.getName());
@@ -114,7 +122,7 @@ public class App {
     
     public static void showWorkProducts(){
         int i = 0;
-        for (WorkProduct wp : WorkProducts) {
+        for (WorkProduct wp : WorkProductsApp) {
             System.out.println("WorkProduct "+(++i));
             System.out.println("PresentationName: "+wp.getPresentationName());
             System.out.println("Name: "+wp.getName());
@@ -131,7 +139,7 @@ public class App {
     
     public static void showTasks(){
         int i = 0;
-        for (Task task : Tasks) {
+        for (Task task : TasksApp) {
             System.out.println("Task "+(++i));
             System.out.println("PresentationName: "+task.getPresentationName());
             System.out.println("Name: "+task.getName());
@@ -163,7 +171,7 @@ public class App {
     
     public static void showSteps(){
         int i = 0;
-        for (Step step : Steps) {
+        for (Step step : StepsApp) {
             System.out.println("Step "+(++i));
             System.out.println("Name: "+step.getName());
             System.out.println("Id: "+step.getId());
@@ -173,7 +181,7 @@ public class App {
     
     public static void showActivities(){
         int i = 0;
-        for (Activity activity : Activities) {
+        for (Activity activity : ActivitiesApp) {
             System.out.println("Activity "+(++i));
             System.out.println("Name: "+activity.getName());
             System.out.println("Id: "+activity.getId());
@@ -187,7 +195,7 @@ public class App {
     
     public static void showProcesses(){
         int i = 0;
-        for (Process process : Processes) {
+        for (Process process : ProcessesApp) {
             System.out.println("Process "+(++i));
             System.out.println("Name: "+process.getName());
             System.out.println("Id: "+process.getId());

@@ -1,11 +1,11 @@
 
-package DeliveryProcesses;
+package DeliveryProcess;
 
 import java.awt.*;
 import java.awt.geom.*;
 import javax.swing.*;
 import java.util.*;
-import static DeliveryProcesses.DrawWorkFlow.*;
+import static DeliveryProcess.DrawWorkFlow.*;
   
 public class DrawWorkFlow{
         
@@ -666,6 +666,5 @@ class Panel extends JPanel{
         x = x0 - barb * Math.cos(theta - phi);
         y = y0 - barb * Math.sin(theta - phi);
         g.draw(new Line2D.Double(x0, y0, x, y));
-    }
-    
+    }   
 }

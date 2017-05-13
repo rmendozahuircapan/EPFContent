@@ -1,18 +1,16 @@
 
 package Tool;
 
-import DeliveryProcesses.Position;
-import DeliveryProcesses.WorkFlow;
-import DeliveryProcesses.Node;
-import DeliveryProcesses.Edge;
+import DeliveryProcess.Position;
+import DeliveryProcess.WorkFlow;
+import DeliveryProcess.Node;
+import DeliveryProcess.Edge;
 import static Tool.App.*;
 import static Tool.XMIReadFile.*;
 import java.io.*;
 import java.util.*;
 
 public class SearchWorkFlow {
-    
-    static String typePathDiagram = "Diagram";
     
     private static ArrayList<String> pathDiagrams = new ArrayList<String>();
     

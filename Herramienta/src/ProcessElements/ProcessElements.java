@@ -1,39 +1,80 @@
 
-package Tool;
+package ProcessElements;
 
-import static Tool.App.*;
-import static Tool.App.Processes;
-import static Tool.XMIReadFile.*;
-import ProcessElements.*;
-import ProcessElements.Process;
-
-import java.io.*;
+import static Tool.XMIReadFile.XMI;
+import java.io.IOException;
 import java.util.*;
 
 
-public class SearchProcessElements {
+public class ProcessElements {
     
-    static String typePathPlugin = "Plugin";
-    static String typePathTask = "Task";
-    static String typePathModel = "Model";
+    private static ArrayList<Activity> Activities;
+    private static ArrayList<Process> Processes;
+    private static ArrayList<Role> Roles;
+    private static ArrayList<Step> Steps;
+    private static ArrayList<Task> Tasks;
+    private static ArrayList<Template> Templates;
+    private static ArrayList<WorkProduct> WorkProducts;
     
     private static ArrayList<String> pathTasks = new ArrayList<String>();
     private static ArrayList<String> pathModels = new ArrayList<String>();
     
-    public static void searchProcessElements() throws IOException {
-        
+    private static String pathPlugin;
+    private static String mainFolder;
+    
+    public ProcessElements(String Folder) throws IOException {
+        setMainFolder(Folder);
         searchResourceDescriptors();
-        searchRoles();
-        searchTemplates();
-        searchWorkProducts();
-        searchTasks();
-        searchSteps();
-        searchActivities();
-        searchProcess();
-        
+        ProcessElements.Roles = searchRoles();
+        ProcessElements.Templates = searchTemplates();
+        ProcessElements.WorkProducts = searchWorkProducts();
+        ProcessElements.Tasks = searchTasks();
+        ProcessElements.Steps = searchSteps();
+        ProcessElements.Activities = searchActivities();
+        ProcessElements.Processes = searchProcesses();
     }
     
-    public static void searchResourceDescriptors() throws IOException{
+    public static ArrayList<Activity> getActivities() {
+        return Activities;
+    }
+
+    public static ArrayList<Process> getProcesses() {
+        return Processes;
+    }
+
+    public static ArrayList<Role> getRoles() {
+        return Roles;
+    }
+
+    public static ArrayList<Step> getSteps() {
+        return Steps;
+    }
+
+    public static ArrayList<Task> getTasks() {
+        return Tasks;
+    }
+
+    public static ArrayList<Template> getTemplates() {
+        return Templates;
+    }
+
+    public static ArrayList<WorkProduct> getWorkProducts() {
+        return WorkProducts;
+    }
+    
+    private static void setPathPlugin(String pathPlugin) {
+        ProcessElements.pathPlugin = pathPlugin;
+        
+    }
+
+    private static void setMainFolder(String mainFolder) {
+        ProcessElements.mainFolder = mainFolder;
+        setPathPlugin(ProcessElements.mainFolder + "\\plugin.xmi");
+    }
+   
+    
+    
+    private static void searchResourceDescriptors() throws IOException{
         ArrayList<String> PluginFile = new ArrayList<String>();
         PluginFile = XMI(pathPlugin);
         for (int i = 0; i < PluginFile.size(); i++) {
@@ -64,7 +105,8 @@ public class SearchProcessElements {
         }
     }
     
-    public static void searchRoles() throws IOException {
+    private static ArrayList<Role> searchRoles() throws IOException {
+        ArrayList<Role> roles = new ArrayList<Role>();
         ArrayList<String> PluginFile = new ArrayList<String>();
         PluginFile = XMI(pathPlugin);
         boolean flag;
@@ -116,14 +158,16 @@ public class SearchProcessElements {
                             }
                         }
                         Role r = new Role(id, name, presentationName, description);
-                        Roles.add(r);
+                        roles.add(r);
                     }
                 }
             }
         }
+        return roles;
     }
     
-    public static void searchTemplates() throws IOException{
+    private static ArrayList<Template> searchTemplates() throws IOException{
+        ArrayList<Template> templates = new ArrayList<Template>();
         ArrayList<String> PluginFile = new ArrayList<String>();
         PluginFile = XMI(pathPlugin);
         boolean flag;
@@ -175,14 +219,16 @@ public class SearchProcessElements {
                             }
                         }
                         Template t = new Template(id, name, presentationName, description);
-                        Templates.add(t);
+                        templates.add(t);
                     }
                 }
             }
         }
+        return templates;
     }
     
-    public static void searchWorkProducts() throws IOException {
+    private static ArrayList<WorkProduct> searchWorkProducts() throws IOException {
+        ArrayList<WorkProduct> workproducts = new ArrayList<WorkProduct>();
         ArrayList<String> PluginFile = new ArrayList<String>();
         PluginFile = XMI(pathPlugin);
         boolean flag;
@@ -262,14 +308,16 @@ public class SearchProcessElements {
                             }
                         }
                         WorkProduct wp = new WorkProduct(id, name, presentationName, description, type, templates);
-                        WorkProducts.add(wp);
+                        workproducts.add(wp);
                     }
                 }
             }
         }
+        return workproducts;
     }
     
-    public static void searchTasks() throws IOException {
+    private static ArrayList<Task> searchTasks() throws IOException {
+        ArrayList<Task> tasks = new ArrayList<Task>();
         ArrayList<String> PluginFile = new ArrayList<String>();
         PluginFile = XMI(pathPlugin);
         boolean flag;
@@ -417,14 +465,16 @@ public class SearchProcessElements {
                             }
                         }
                         Task t = new Task(id, name, presentationName, description, producers, collaborators, inputs, outputs);
-                        Tasks.add(t);
+                        tasks.add(t);
                     }
                 }
             }
         }
+        return tasks;
     }
     
-    public static void searchSteps() throws IOException{
+    private static ArrayList<Step> searchSteps() throws IOException{
+        ArrayList<Step> steps = new ArrayList<Step>();
         boolean flag;
         for (int i = 0; i < pathTasks.size(); i++) {
             String id = new String();
@@ -458,7 +508,7 @@ public class SearchProcessElements {
                     }
                     Step s = new Step(id, name);
                     stepsTask.add(s);
-                    Steps.add(s);
+                    steps.add(s);
                 }
             }
             for (Task task : Tasks) {
@@ -467,9 +517,11 @@ public class SearchProcessElements {
                 }
             }
         }
+        return steps;
     }
     
-    public static void searchActivities() throws IOException{    
+    private static ArrayList<Activity> searchActivities() throws IOException{ 
+        ArrayList<Activity> activities = new ArrayList<Activity>();
         boolean flag;
         ArrayList<Task> tasksActivity = new ArrayList<Task>();
         String id = new String ();
@@ -531,13 +583,15 @@ public class SearchProcessElements {
                 }
                 else if (separated[0].equals("</childPackages>")) {
                     Activity a = new Activity(id, name, tasksActivity);
-                    Activities.add(a);
+                    activities.add(a);
                 }
             }
         }
+        return activities;
     }
     
-    public static void searchProcess() throws IOException{
+    private static ArrayList<Process> searchProcesses() throws IOException{
+        ArrayList<Process> processes = new ArrayList<Process>();
         boolean flag;
         for (int i = 0; i < pathModels.size(); i++) {
             ArrayList<String> ModelFile = new ArrayList<String>();
@@ -596,7 +650,8 @@ public class SearchProcessElements {
                 }
             }
             Process p = new Process(id, name, activityProcess);
-            Processes.add(p);
+            processes.add(p);
         }
+        return processes;
     }
 }
