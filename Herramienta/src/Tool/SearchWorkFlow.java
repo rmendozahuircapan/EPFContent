@@ -14,11 +14,37 @@ public class SearchWorkFlow {
     
     static String typePathDiagram = "Diagram";
     
+    private static ArrayList<String> pathDiagrams = new ArrayList<String>();
+    
     public static void searchElementsWorkFlow() throws IOException{
+        searchResourceDescriptors();
         searchNodes();
         searchEdges();
         searchPositions();
         searchWorkFlows();
+    }
+    public static void searchResourceDescriptors() throws IOException{
+        ArrayList<String> PluginFile = new ArrayList<String>();
+        PluginFile = XMI(pathPlugin);
+        for (int i = 0; i < PluginFile.size(); i++) {
+            String[] separated = PluginFile.get(i).split(" ");
+            if (separated[0].contains("resourceDescriptors")) {
+                for (int j = 0; j < separated.length; j++) {
+                    if (separated[j].contains("uri")) {
+                        String uri = separated[j].split("=")[1].split("/>")[0].split("\"")[1];
+                        String uriType = uri.split("/")[0];
+                        String path = mainFolder;
+                        if (uriType.equals("deliveryprocesses")) {
+                            for (int k = 0; k < uri.split("/").length; k++) {
+                                String part = uri.split("/")[k].replace("%20", " ");
+                                path = path + "\\" + part;
+                            }
+                            pathDiagrams.add(path.replace("model.xmi", "diagram.xmi"));
+                        }
+                    }
+                }
+            }
+        }
     }
     
     public static void searchNodes() throws IOException{

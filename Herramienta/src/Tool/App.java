@@ -34,10 +34,6 @@ public class App {
     //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso3\\Prueba2";
     
     static String pathPlugin = mainFolder + "\\plugin.xmi";
-    
-    static ArrayList<String> pathTasks = new ArrayList<String>();
-    static ArrayList<String> pathModels = new ArrayList<String>();
-    static ArrayList<String> pathDiagrams = new ArrayList<String>();
 
 
     /*************************************************************************************************************/

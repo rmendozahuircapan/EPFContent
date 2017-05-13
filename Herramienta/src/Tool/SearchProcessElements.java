@@ -17,6 +17,9 @@ public class SearchProcessElements {
     static String typePathTask = "Task";
     static String typePathModel = "Model";
     
+    private static ArrayList<String> pathTasks = new ArrayList<String>();
+    private static ArrayList<String> pathModels = new ArrayList<String>();
+    
     public static void searchProcessElements() throws IOException {
         
         searchResourceDescriptors();
@@ -47,7 +50,6 @@ public class SearchProcessElements {
                                 path = path + "\\" + part;
                             }
                             pathModels.add(path);
-                            pathDiagrams.add(path.replace("model.xmi", "diagram.xmi"));
                         }
                         else if (uriType.equals("tasks")) {
                             for (int k = 0; k < uri.split("/").length; k++) {
