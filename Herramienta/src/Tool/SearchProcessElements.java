@@ -2,13 +2,20 @@
 package Tool;
 
 import static Tool.App.*;
-import static Tool.ReadFileXMI.*;
+import static Tool.App.Processes;
+import static Tool.XMIReadFile.*;
 import ProcessElements.*;
+import ProcessElements.Process;
+
 import java.io.*;
 import java.util.*;
 
 
 public class SearchProcessElements {
+    
+    static String typePathPlugin = "Plugin";
+    static String typePathTask = "Task";
+    static String typePathModel = "Model";
     
     public static void searchProcessElements() throws IOException {
         
@@ -578,7 +585,7 @@ public class SearchProcessElements {
                     }
                 }
             }
-            Processes p = new Processes(id, name, activityProcess);
+            Process p = new Process(id, name, activityProcess);
             Processes.add(p);
         }
     }

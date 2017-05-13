@@ -1,15 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Tool;
 
-import static Tool.App.*;
+
+import static Tool.App.DiagramFile;
+import static Tool.App.ModelFile;
+import static Tool.App.PluginFile;
+import static Tool.App.TaskFile;
 
 import java.io.*;
 
-public class ReadFileXMI {
+public class XMIReadFile {
          
     public static void XMI(String path, String typePath) throws FileNotFoundException, IOException {
         File archive = null;
@@ -17,35 +17,29 @@ public class ReadFileXMI {
         BufferedReader br = null;
 
         try {
-            // Apertura del fichero y creacion de BufferedReader para poder
-            // hacer una lectura comoda (disponer del metodo readLine()).
             archive = new File (path);
             fr = new FileReader (archive);
             br = new BufferedReader(fr);
 
-            // Lectura del fichero
             String line;
             while((line=br.readLine())!=null){
-                if (typePath.equals(typePathPlugin)) {
+                if (typePath.equals("Plugin")) {
                     PluginFile.add(cleanLine(line));
                 }
-                else if (typePath.equals(typePathTask)) {
+                else if (typePath.equals("Task")) {
                     TaskFile.add(cleanLine(line));
                 }
-                else if (typePath.equals(typePathModel)){
+                else if (typePath.equals("Model")){
                     ModelFile.add(cleanLine(line));
                 }
-                else if (typePath.equals(typePathDiagram)){
+                else if (typePath.equals("Diagram")){
                     DiagramFile.add(cleanLine(line));
                 }
             }
         }
         catch(Exception e){
-            e.printStackTrace();
+            System.out.println("ERROR: "+e.getMessage());
         }finally{
-            // En el finally cerramos el fichero, para asegurarnos
-            // que se cierra tanto si todo va bien como si salta 
-            // una excepcion.
             try{
                 if( null != fr ){   
                     fr.close();     
@@ -73,5 +67,4 @@ public class ReadFileXMI {
         return clean;
     }
 
-    
 }

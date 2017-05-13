@@ -1,11 +1,11 @@
 
-package WorkFlow;
+package DeliveryProcesses;
 
 import java.awt.*;
 import java.awt.geom.*;
 import javax.swing.*;
 import java.util.*;
-import static WorkFlow.DrawWorkFlow.*;
+import static DeliveryProcesses.DrawWorkFlow.*;
   
 public class DrawWorkFlow{
         

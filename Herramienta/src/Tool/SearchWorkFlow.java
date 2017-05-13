@@ -1,13 +1,18 @@
 
 package Tool;
 
+import DeliveryProcesses.Position;
+import DeliveryProcesses.WorkFlow;
+import DeliveryProcesses.Node;
+import DeliveryProcesses.Edge;
 import static Tool.App.*;
-import static Tool.ReadFileXMI.*;
-import WorkFlow.*;
+import static Tool.XMIReadFile.*;
 import java.io.*;
 import java.util.*;
 
 public class SearchWorkFlow {
+    
+    static String typePathDiagram = "Diagram";
     
     public static void searchElementsWorkFlow() throws IOException{
         searchNodes();
