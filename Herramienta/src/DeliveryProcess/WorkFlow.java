@@ -51,7 +51,7 @@ public class WorkFlow {
         f.setSize(xMax(workflow),yMax(workflow));
         f.setLocationByPlatform(true);
         f.setVisible(true);
-        f.setTitle(workflow.getName().toUpperCase());
+        f.setTitle("WorkFlow of \"" + workflow.getName() + "\"");
     }
     
     private static int xMax(WorkFlow workflow) {

@@ -25,12 +25,11 @@ public class App {
     static ArrayList<WorkFlow> WorkFlows1 = new ArrayList<WorkFlow>();
     
     //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso";
-    //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library3\\workflow";
+    static String mainFolder1 = "C:\\Users\\Rodrigo\\Desktop\\Library3\\workflow";
     static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso\\proceso_de_prueba";
     //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso2\\Prueba final";
     //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso3\\Prueba2";
     
-    static String pathPlugin = mainFolder + "\\plugin.xmi";
 
 
     /*************************************************************************************************************/
@@ -47,18 +46,11 @@ public class App {
         ActivitiesApp = PE.getActivities();
         ProcessesApp = PE.getProcesses();
         
-        PE.XMI(pathPlugin);
         
         DeliveryProcess DP = new DeliveryProcess(mainFolder);
         Nodes1 = DP.getNodes();
         Edges1 = DP.getEdges();
-        Positions1 = DP.getPositions();
         WorkFlows1 = DP.getWorkFlows();
-        
-        for (WorkFlow wf : WorkFlows1) {
-            wf.getGraph();
-        }
-        
         
         resumeProcessElements();
         resumeWorkFlow();
@@ -225,11 +217,12 @@ public class App {
         System.out.println("-------------------------------------");
         for (WorkFlow wf : WorkFlows1) {
             System.out.println("name: "+wf.getName());
-            System.out.println(wf.getNodes().size()+" nodes "+wf.getEdges().size()+" edges " + wf.getPositions().size()+" positions");
+            System.out.println(wf.getNodes().size()+" nodes "+wf.getEdges().size()+" edges ");
             System.out.println("");
             for (Edge e : wf.getEdges()) {
                 System.out.println(e.getSource().getName()+" -> "+e.getTarget().getName()+" ["+e.getName()+"]");
             }
+            wf.getGraph();
             System.out.println("---");
         }
         
