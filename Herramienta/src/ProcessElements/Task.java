@@ -30,71 +30,39 @@ public class Task {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getPresentationName() {
         return presentationName;
     }
 
-    public void setPresentationName(String presentationName) {
-        this.presentationName = presentationName;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public ArrayList<Role> getProducers() {
         return producers;
     }
 
-    public void setProducers(ArrayList<Role> producers) {
-        this.producers = producers;
-    }
-
     public ArrayList<Role> getCollaborators() {
         return collaborators;
-    }
-
-    public void setCollaborators(ArrayList<Role> collaborators) {
-        this.collaborators = collaborators;
     }
 
     public ArrayList<WorkProduct> getInputs() {
         return inputs;
     }
 
-    public void setInputs(ArrayList<WorkProduct> inputs) {
-        this.inputs = inputs;
-    }
-
     public ArrayList<WorkProduct> getOutputs() {
         return outputs;
-    }
-
-    public void setOutputs(ArrayList<WorkProduct> outputs) {
-        this.outputs = outputs;
     }
 
     public ArrayList<Step> getSteps() {
         return steps;
     }
 
-    public void setSteps(ArrayList<Step> steps) {
+    protected void setSteps(ArrayList<Step> steps) {
         this.steps = steps;
     }
 }
