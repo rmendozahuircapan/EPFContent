@@ -1,26 +1,58 @@
 
-package Tool;
+package DeliveryProcess;
 
-import DeliveryProcess.Position;
-import DeliveryProcess.WorkFlow;
-import DeliveryProcess.Node;
-import DeliveryProcess.Edge;
-import static Tool.App.*;
-import static Tool.XMIReadFile.*;
 import java.io.*;
 import java.util.*;
 
-public class SearchWorkFlow {
+
+public class DeliveryProcess {
+    
+    private static ArrayList<Edge> Edges;
+    private static ArrayList<Node> Nodes;
+    private static ArrayList<Position> Positions;
+    private static ArrayList<WorkFlow> WorkFlows;
     
     private static ArrayList<String> pathDiagrams = new ArrayList<String>();
     
-    public static void searchElementsWorkFlow() throws IOException{
+    private static String pathPlugin;
+    private static String mainFolder;
+
+    public DeliveryProcess(String Folder) throws IOException {
+        setMainFolder(Folder);
         searchResourceDescriptors();
-        searchNodes();
-        searchEdges();
-        searchPositions();
-        searchWorkFlows();
+        DeliveryProcess.Nodes = searchNodes();
+        DeliveryProcess.Edges = searchEdges();
+        DeliveryProcess.Positions = searchPositions();
+        DeliveryProcess.WorkFlows = searchWorkFlows();
     }
+
+    public static ArrayList<Edge> getEdges() {
+        return Edges;
+    }
+
+    public static ArrayList<Node> getNodes() {
+        return Nodes;
+    }
+
+    public static ArrayList<Position> getPositions() {
+        return Positions;
+    }
+
+    public static ArrayList<WorkFlow> getWorkFlows() {
+        return WorkFlows;
+    }
+
+
+
+    public static void setPathPlugin(String pathPlugin) {
+        DeliveryProcess.pathPlugin = pathPlugin;
+    }
+
+    public static void setMainFolder(String mainFolder) {
+        DeliveryProcess.mainFolder = mainFolder;
+        setPathPlugin(mainFolder + "\\plugin.xmi");
+    }
+    
     public static void searchResourceDescriptors() throws IOException{
         ArrayList<String> PluginFile = new ArrayList<String>();
         PluginFile = XMI(pathPlugin);
@@ -45,7 +77,8 @@ public class SearchWorkFlow {
         }
     }
     
-    public static void searchNodes() throws IOException{
+    public static ArrayList<Node> searchNodes() throws IOException{
+        ArrayList<Node> nodes = new ArrayList<Node>();
         boolean flag;
         for (int i = 0; i < pathDiagrams.size(); i++) {
             ArrayList<String> DiagramFile = new ArrayList<String>();
@@ -83,14 +116,15 @@ public class SearchWorkFlow {
                         name = type;
                     }
                     Node n = new Node(id, name, type);
-                    Nodes.add(n);
+                    nodes.add(n);
                 }
             }
         }
+        return nodes;
     }
     
-    public static void searchEdges() throws IOException{
-        
+    public static ArrayList<Edge> searchEdges() throws IOException{
+        ArrayList<Edge> edges = new ArrayList<Edge>();
         boolean flag;
         for (int i = 0; i < pathDiagrams.size(); i++) {
             ArrayList<String> DiagramFile = new ArrayList<String>();
@@ -143,13 +177,15 @@ public class SearchWorkFlow {
                         }
                     }
                     Edge e = new Edge(id, name, source, target);
-                    Edges.add(e);
+                    edges.add(e);
                 }
             }
         }
+        return edges;
     }
     
-    public static void searchPositions() throws IOException{
+    public static ArrayList<Position> searchPositions() throws IOException{
+        ArrayList<Position> positions = new ArrayList<Position>();
         for (int i = 0; i < pathDiagrams.size(); i++) {
             ArrayList<String> DiagramFile = new ArrayList<String>();
             DiagramFile = XMI(pathDiagrams.get(i));
@@ -177,17 +213,18 @@ public class SearchWorkFlow {
                 }
                 else if ( (!id.isEmpty()) && (x != -1) && (y != -1) ) {
                     Position p = new Position(id, x, y);
-                    Positions.add(p);
+                    positions.add(p);
                     id = new String();
                     x = -1;
                     y = -1;
                 }
             }
         }
+        return positions;
     }
     
-    public static void searchWorkFlows() throws IOException{
-        
+    public static ArrayList<WorkFlow> searchWorkFlows() throws IOException{
+        ArrayList<WorkFlow> workflows = new ArrayList<WorkFlow>();
         boolean flag;
         for (int i = 0; i < pathDiagrams.size(); i++) {
             ArrayList<String> DiagramFile = new ArrayList<String>();
@@ -267,10 +304,57 @@ public class SearchWorkFlow {
                 }
                 else if(separated[0].equals("</notation:Diagram>")){
                     WorkFlow wf = new WorkFlow(id, name, nodesWorkFlow, edgesWorkFlow, positionsWorkFlow);
-                    WorkFlows.add(wf);
+                    workflows.add(wf);
                 }
             }
         }
+        return workflows;
     }
     
+    public static ArrayList<String> XMI(String path) throws FileNotFoundException, IOException {
+        File archive = null;
+        FileReader fr = null;
+        BufferedReader br = null;
+        ArrayList<String> File = new ArrayList<String>();
+        try {
+            archive = new File (path);
+            fr = new FileReader (archive);
+            br = new BufferedReader(fr);
+
+            String line;
+            while((line=br.readLine())!=null){
+                File.add(cleanLine(line));
+            }
+        }
+        catch(Exception e){
+            System.out.println("ERROR: "+e.getMessage());
+        }finally{
+            try{
+                if( null != fr ){   
+                    fr.close();     
+               }                  
+            }catch (Exception e2){
+                e2.printStackTrace();
+            }
+        }
+        return File;
+    }
+    
+    public static String cleanLine(String line){
+
+        String[] separate = line.split(" ");
+        String clean = "";
+        
+        for (int i = 0; i < separate.length; i++) {
+            if (separate[i].length() > 0) {
+                if ( i < (separate.length - 1)){
+                    clean = clean + separate[i] + " ";
+                }else{
+                    clean = clean + separate[i];
+                }
+            }
+        }
+        return clean;
+    }
+
 }

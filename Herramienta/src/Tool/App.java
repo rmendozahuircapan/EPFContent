@@ -1,9 +1,6 @@
 package Tool;
 
-import DeliveryProcess.Position;
-import DeliveryProcess.WorkFlow;
-import DeliveryProcess.Node;
-import DeliveryProcess.Edge;
+import DeliveryProcess.*;
 import ProcessElements.*;
 import ProcessElements.Process;
 
@@ -22,10 +19,10 @@ public class App {
     static ArrayList<Activity> ActivitiesApp = new ArrayList<Activity>();
     static ArrayList<Process> ProcessesApp = new ArrayList<Process>();
     
-    static ArrayList<Node> Nodes = new ArrayList<Node>();
-    static ArrayList<Edge> Edges = new ArrayList<Edge>();
-    static ArrayList<Position> Positions = new ArrayList<Position>();
-    static ArrayList<WorkFlow> WorkFlows = new ArrayList<WorkFlow>();
+    static ArrayList<Node> Nodes1 = new ArrayList<Node>();
+    static ArrayList<Edge> Edges1 = new ArrayList<Edge>();
+    static ArrayList<Position> Positions1 = new ArrayList<Position>();
+    static ArrayList<WorkFlow> WorkFlows1 = new ArrayList<WorkFlow>();
     
     //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso";
     //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library3\\workflow";
@@ -49,10 +46,16 @@ public class App {
         StepsApp = PE.getSteps();
         ActivitiesApp = PE.getActivities();
         ProcessesApp = PE.getProcesses();
-        Tool.SearchWorkFlow.searchElementsWorkFlow();
         
+        PE.XMI(pathPlugin);
         
-        for (WorkFlow wf : WorkFlows) {
+        DeliveryProcess DP = new DeliveryProcess(mainFolder);
+        Nodes1 = DP.getNodes();
+        Edges1 = DP.getEdges();
+        Positions1 = DP.getPositions();
+        WorkFlows1 = DP.getWorkFlows();
+        
+        for (WorkFlow wf : WorkFlows1) {
             wf.getGraph();
         }
         
@@ -211,16 +214,16 @@ public class App {
     
     public static void resumeWorkFlow() {
         System.out.println("-------------------------------------");
-        System.out.println("Nodes: "+Nodes.size());
-        System.out.println("Edges: "+Edges.size());
-        System.out.println("Positions: "+Positions.size());
-        System.out.println("WorkFlows: "+WorkFlows.size());
+        System.out.println("Nodes: "+Nodes1.size());
+        System.out.println("Edges: "+Edges1.size());
+        System.out.println("Positions: "+Positions1.size());
+        System.out.println("WorkFlows: "+WorkFlows1.size());
         System.out.println("-------------------------------------");        
     }
     
     public static void showWorkFlow() {
         System.out.println("-------------------------------------");
-        for (WorkFlow wf : WorkFlows) {
+        for (WorkFlow wf : WorkFlows1) {
             System.out.println("name: "+wf.getName());
             System.out.println(wf.getNodes().size()+" nodes "+wf.getEdges().size()+" edges " + wf.getPositions().size()+" positions");
             System.out.println("");
