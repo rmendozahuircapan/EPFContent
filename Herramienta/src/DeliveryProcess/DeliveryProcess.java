@@ -34,7 +34,7 @@ public class DeliveryProcess {
         return Nodes;
     }
 
-    public static ArrayList<Position> getPositions() {
+    private static ArrayList<Position> getPositions() {
         return Positions;
     }
 
@@ -42,18 +42,16 @@ public class DeliveryProcess {
         return WorkFlows;
     }
 
-
-
-    public static void setPathPlugin(String pathPlugin) {
+    private static void setPathPlugin(String pathPlugin) {
         DeliveryProcess.pathPlugin = pathPlugin;
     }
 
-    public static void setMainFolder(String mainFolder) {
+    private static void setMainFolder(String mainFolder) {
         DeliveryProcess.mainFolder = mainFolder;
         setPathPlugin(mainFolder + "\\plugin.xmi");
     }
     
-    public static void searchResourceDescriptors() throws IOException{
+    private static void searchResourceDescriptors() throws IOException{
         ArrayList<String> PluginFile = new ArrayList<String>();
         PluginFile = XMI(pathPlugin);
         for (int i = 0; i < PluginFile.size(); i++) {
@@ -77,7 +75,7 @@ public class DeliveryProcess {
         }
     }
     
-    public static ArrayList<Node> searchNodes() throws IOException{
+    private static ArrayList<Node> searchNodes() throws IOException{
         ArrayList<Node> nodes = new ArrayList<Node>();
         boolean flag;
         for (int i = 0; i < pathDiagrams.size(); i++) {
@@ -123,7 +121,7 @@ public class DeliveryProcess {
         return nodes;
     }
     
-    public static ArrayList<Edge> searchEdges() throws IOException{
+    private static ArrayList<Edge> searchEdges() throws IOException{
         ArrayList<Edge> edges = new ArrayList<Edge>();
         boolean flag;
         for (int i = 0; i < pathDiagrams.size(); i++) {
@@ -184,7 +182,7 @@ public class DeliveryProcess {
         return edges;
     }
     
-    public static ArrayList<Position> searchPositions() throws IOException{
+    private static ArrayList<Position> searchPositions() throws IOException{
         ArrayList<Position> positions = new ArrayList<Position>();
         for (int i = 0; i < pathDiagrams.size(); i++) {
             ArrayList<String> DiagramFile = new ArrayList<String>();
@@ -223,7 +221,7 @@ public class DeliveryProcess {
         return positions;
     }
     
-    public static ArrayList<WorkFlow> searchWorkFlows() throws IOException{
+    private static ArrayList<WorkFlow> searchWorkFlows() throws IOException{
         ArrayList<WorkFlow> workflows = new ArrayList<WorkFlow>();
         boolean flag;
         for (int i = 0; i < pathDiagrams.size(); i++) {
@@ -311,7 +309,7 @@ public class DeliveryProcess {
         return workflows;
     }
     
-    public static ArrayList<String> XMI(String path) throws FileNotFoundException, IOException {
+    private static ArrayList<String> XMI(String path) throws FileNotFoundException, IOException {
         File archive = null;
         FileReader fr = null;
         BufferedReader br = null;
@@ -340,7 +338,7 @@ public class DeliveryProcess {
         return File;
     }
     
-    public static String cleanLine(String line){
+    private static String cleanLine(String line){
 
         String[] separate = line.split(" ");
         String clean = "";

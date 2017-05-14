@@ -75,7 +75,7 @@ public class ProcessElements {
     
     private static void searchResourceDescriptors() throws IOException{
         ArrayList<String> PluginFile = new ArrayList<String>();
-        PluginFile = XMI(pathPlugin);
+        PluginFile = XMIRead(pathPlugin);
         for (int i = 0; i < PluginFile.size(); i++) {
             String[] separated = PluginFile.get(i).split(" ");
             if (separated[0].contains("resourceDescriptors")) {
@@ -107,7 +107,7 @@ public class ProcessElements {
     private static ArrayList<Role> searchRoles() throws IOException {
         ArrayList<Role> roles = new ArrayList<Role>();
         ArrayList<String> PluginFile = new ArrayList<String>();
-        PluginFile = XMI(pathPlugin);
+        PluginFile = XMIRead(pathPlugin);
         boolean flag;
         for (int i = 0; i < PluginFile.size(); i++) {
             String[] separated = PluginFile.get(i).split(" ");
@@ -168,7 +168,7 @@ public class ProcessElements {
     private static ArrayList<Template> searchTemplates() throws IOException{
         ArrayList<Template> templates = new ArrayList<Template>();
         ArrayList<String> PluginFile = new ArrayList<String>();
-        PluginFile = XMI(pathPlugin);
+        PluginFile = XMIRead(pathPlugin);
         boolean flag;
         for (int i = 0; i < PluginFile.size(); i++) {
             String[] separated = PluginFile.get(i).split(" ");
@@ -229,7 +229,7 @@ public class ProcessElements {
     private static ArrayList<WorkProduct> searchWorkProducts() throws IOException {
         ArrayList<WorkProduct> workproducts = new ArrayList<WorkProduct>();
         ArrayList<String> PluginFile = new ArrayList<String>();
-        PluginFile = XMI(pathPlugin);
+        PluginFile = XMIRead(pathPlugin);
         boolean flag;
         for (int i = 0; i < PluginFile.size(); i++) {
             String[] separated = PluginFile.get(i).split(" ");
@@ -318,7 +318,7 @@ public class ProcessElements {
     private static ArrayList<Task> searchTasks() throws IOException {
         ArrayList<Task> tasks = new ArrayList<Task>();
         ArrayList<String> PluginFile = new ArrayList<String>();
-        PluginFile = XMI(pathPlugin);
+        PluginFile = XMIRead(pathPlugin);
         boolean flag;
         for (int i = 0; i < PluginFile.size(); i++) {
             String[] separated = PluginFile.get(i).split(" ");
@@ -481,7 +481,7 @@ public class ProcessElements {
             String nameTask = pathTasks.get(i).substring(mainFolder.length() + 7).substring(0, pathTasks.get(i).substring(mainFolder.length() + 7).length() - 4);
             ArrayList<Step> stepsTask = new ArrayList<Step>();
             ArrayList<String> TaskFile = new ArrayList<String>();
-            TaskFile = XMI(pathTasks.get(i));            
+            TaskFile = XMIRead(pathTasks.get(i));            
             for (int j = 0; j < TaskFile.size(); j++) {
                 String[] separated = TaskFile.get(j).split(" ");
                 if (separated[0].contentEquals("<sections")) {
@@ -527,7 +527,7 @@ public class ProcessElements {
         String name = new String ();    
         for (int i = 0; i < pathModels.size(); i++) {
             ArrayList<String> ModelFile = new ArrayList<String>();
-            ModelFile = XMI(pathModels.get(i));
+            ModelFile = XMIRead(pathModels.get(i));
             for (int j = 0; j < ModelFile.size(); j++) {
                 String[] separated = ModelFile.get(j).split(" ");
                 if (separated[0].equals("<childPackages")) {
@@ -594,7 +594,7 @@ public class ProcessElements {
         boolean flag;
         for (int i = 0; i < pathModels.size(); i++) {
             ArrayList<String> ModelFile = new ArrayList<String>();
-            ModelFile = XMI(pathModels.get(i));
+            ModelFile = XMIRead(pathModels.get(i));
             String id = new String ();
             String name = new String ();
             ArrayList<Activity> activityProcess = new ArrayList<Activity>();
@@ -654,7 +654,7 @@ public class ProcessElements {
         return processes;
     }
     
-    public static ArrayList<String> XMI(String path) throws FileNotFoundException, IOException {
+    private static ArrayList<String> XMIRead(String path) throws FileNotFoundException, IOException {
         File archive = null;
         FileReader fr = null;
         BufferedReader br = null;
@@ -683,7 +683,7 @@ public class ProcessElements {
         return File;
     }
     
-    public static String cleanLine(String line){
+    private static String cleanLine(String line){
 
         String[] separate = line.split(" ");
         String clean = "";
