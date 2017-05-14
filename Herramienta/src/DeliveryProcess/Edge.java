@@ -19,34 +19,16 @@ public class Edge {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Node getSource() {
         return source;
     }
 
-    public void setSource(Node source) {
-        this.source = source;
-    }
-
     public Node getTarget() {
         return target;
     }
-
-    public void setTarget(Node target) {
-        this.target = target;
-    }
-    
-    
     
 }

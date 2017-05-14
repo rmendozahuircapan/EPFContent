@@ -23,42 +23,22 @@ public class WorkFlow {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-    
-    public void setName(String name) {
-        this.name = name;
     }
 
     public ArrayList<Node> getNodes() {
         return nodes;
     }
 
-    public void setNodes(ArrayList<Node> nodes) {
-        this.nodes = nodes;
-    }
-
     public ArrayList<Edge> getEdges() {
         return edges;
     }
 
-    public void setEdges(ArrayList<Edge> edges) {
-        this.edges = edges;
-    }
-
-    public ArrayList<Position> getPositions() {
+    protected ArrayList<Position> getPositions() {
         return positions;
     }
 
-    public void setPositions(ArrayList<Position> positions) {
-        this.positions = positions;
-    }
-    
     public void getGraph(){
         WorkFlow workflow = new WorkFlow(id, name, nodes, edges, positions);
         Draw(workflow);
@@ -84,7 +64,7 @@ public class WorkFlow {
         return max;
     }
     
-    public static int yMax(WorkFlow workflow) {
+    private static int yMax(WorkFlow workflow) {
         ArrayList<Integer> y = new ArrayList<Integer>();
         for (Position p : workflow.getPositions()) {
             y.add(p.getY());
