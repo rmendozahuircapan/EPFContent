@@ -7,13 +7,13 @@ import java.util.*;
 
 public class ContentElements {
     
-    private static ArrayList<Activity> Activities;
-    private static ArrayList<Process> Processes;
-    private static ArrayList<Role> Roles;
-    private static ArrayList<Step> Steps;
-    private static ArrayList<Task> Tasks;
-    private static ArrayList<Template> Templates;
-    private static ArrayList<WorkProduct> WorkProducts;
+    private static ArrayList<ActivityElement> Activities;
+    private static ArrayList<ProcessElement> Processes;
+    private static ArrayList<RoleElement> Roles;
+    private static ArrayList<StepElement> Steps;
+    private static ArrayList<TaskElement> Tasks;
+    private static ArrayList<TemplateElement> Templates;
+    private static ArrayList<WorkProductElement> WorkProducts;
     
     private static ArrayList<String> pathTasks = new ArrayList<String>();
     private static ArrayList<String> pathModels = new ArrayList<String>();
@@ -33,31 +33,31 @@ public class ContentElements {
         ContentElements.Processes = searchProcesses();
     }
     
-    public static ArrayList<Activity> getActivities() {
+    public static ArrayList<ActivityElement> getActivities() {
         return Activities;
     }
 
-    public static ArrayList<Process> getProcesses() {
+    public static ArrayList<ProcessElement> getProcesses() {
         return Processes;
     }
 
-    public static ArrayList<Role> getRoles() {
+    public static ArrayList<RoleElement> getRoles() {
         return Roles;
     }
 
-    public static ArrayList<Step> getSteps() {
+    public static ArrayList<StepElement> getSteps() {
         return Steps;
     }
 
-    public static ArrayList<Task> getTasks() {
+    public static ArrayList<TaskElement> getTasks() {
         return Tasks;
     }
 
-    public static ArrayList<Template> getTemplates() {
+    public static ArrayList<TemplateElement> getTemplates() {
         return Templates;
     }
 
-    public static ArrayList<WorkProduct> getWorkProducts() {
+    public static ArrayList<WorkProductElement> getWorkProducts() {
         return WorkProducts;
     }
     
@@ -104,8 +104,8 @@ public class ContentElements {
         }
     }
     
-    private static ArrayList<Role> searchRoles() throws IOException {
-        ArrayList<Role> roles = new ArrayList<Role>();
+    private static ArrayList<RoleElement> searchRoles() throws IOException {
+        ArrayList<RoleElement> roles = new ArrayList<RoleElement>();
         ArrayList<String> PluginFile = new ArrayList<String>();
         PluginFile = XMIRead(pathPlugin);
         boolean flag;
@@ -156,7 +156,7 @@ public class ContentElements {
                                 description = description.split("\"")[1];
                             }
                         }
-                        Role r = new Role(id, name, presentationName, description);
+                        RoleElement r = new RoleElement(id, name, presentationName, description);
                         roles.add(r);
                     }
                 }
@@ -165,8 +165,8 @@ public class ContentElements {
         return roles;
     }
     
-    private static ArrayList<Template> searchTemplates() throws IOException{
-        ArrayList<Template> templates = new ArrayList<Template>();
+    private static ArrayList<TemplateElement> searchTemplates() throws IOException{
+        ArrayList<TemplateElement> templates = new ArrayList<TemplateElement>();
         ArrayList<String> PluginFile = new ArrayList<String>();
         PluginFile = XMIRead(pathPlugin);
         boolean flag;
@@ -217,7 +217,7 @@ public class ContentElements {
                                 description = description.split("\"")[1];
                             }
                         }
-                        Template t = new Template(id, name, presentationName, description);
+                        TemplateElement t = new TemplateElement(id, name, presentationName, description);
                         templates.add(t);
                     }
                 }
@@ -226,8 +226,8 @@ public class ContentElements {
         return templates;
     }
     
-    private static ArrayList<WorkProduct> searchWorkProducts() throws IOException {
-        ArrayList<WorkProduct> workproducts = new ArrayList<WorkProduct>();
+    private static ArrayList<WorkProductElement> searchWorkProducts() throws IOException {
+        ArrayList<WorkProductElement> workproducts = new ArrayList<WorkProductElement>();
         ArrayList<String> PluginFile = new ArrayList<String>();
         PluginFile = XMIRead(pathPlugin);
         boolean flag;
@@ -242,7 +242,7 @@ public class ContentElements {
                         String description = new String();
                         String type = new String();
                         String templatesLine = new String();
-                        ArrayList<Template> templates = new ArrayList<Template>();
+                        ArrayList<TemplateElement> templates = new ArrayList<TemplateElement>();
                         for (int k = 0; k < separated.length; k++) {
                             if (separated[k].contains("xmi:id")) {
                                 id = separated[k].split("=")[1].split("\"")[1];
@@ -306,7 +306,7 @@ public class ContentElements {
                                 }
                             }
                         }
-                        WorkProduct wp = new WorkProduct(id, name, presentationName, description, type, templates);
+                        WorkProductElement wp = new WorkProductElement(id, name, presentationName, description, type, templates);
                         workproducts.add(wp);
                     }
                 }
@@ -315,8 +315,8 @@ public class ContentElements {
         return workproducts;
     }
     
-    private static ArrayList<Task> searchTasks() throws IOException {
-        ArrayList<Task> tasks = new ArrayList<Task>();
+    private static ArrayList<TaskElement> searchTasks() throws IOException {
+        ArrayList<TaskElement> tasks = new ArrayList<TaskElement>();
         ArrayList<String> PluginFile = new ArrayList<String>();
         PluginFile = XMIRead(pathPlugin);
         boolean flag;
@@ -333,10 +333,10 @@ public class ContentElements {
                         String collaboratorsLine = new String();
                         String inputsLine = new String();
                         String outputsLine = new String();
-                        ArrayList<Role> producers = new ArrayList<Role>();
-                        ArrayList<Role> collaborators = new ArrayList<Role>();
-                        ArrayList<WorkProduct> inputs = new ArrayList<WorkProduct>();
-                        ArrayList<WorkProduct> outputs = new ArrayList<WorkProduct>();
+                        ArrayList<RoleElement> producers = new ArrayList<RoleElement>();
+                        ArrayList<RoleElement> collaborators = new ArrayList<RoleElement>();
+                        ArrayList<WorkProductElement> inputs = new ArrayList<WorkProductElement>();
+                        ArrayList<WorkProductElement> outputs = new ArrayList<WorkProductElement>();
                         for (int k = 0; k < separated.length; k++) {
                             if (separated[k].contains("xmi:id")) {
                                 id = separated[k].split("=")[1].split("\"")[1];
@@ -463,7 +463,7 @@ public class ContentElements {
                                 }
                             }
                         }
-                        Task t = new Task(id, name, presentationName, description, producers, collaborators, inputs, outputs);
+                        TaskElement t = new TaskElement(id, name, presentationName, description, producers, collaborators, inputs, outputs);
                         tasks.add(t);
                     }
                 }
@@ -472,14 +472,14 @@ public class ContentElements {
         return tasks;
     }
     
-    private static ArrayList<Step> searchSteps() throws IOException{
-        ArrayList<Step> steps = new ArrayList<Step>();
+    private static ArrayList<StepElement> searchSteps() throws IOException{
+        ArrayList<StepElement> steps = new ArrayList<StepElement>();
         boolean flag;
         for (int i = 0; i < pathTasks.size(); i++) {
             String id = new String();
             String name = new String();
             String nameTask = pathTasks.get(i).substring(mainFolder.length() + 7).substring(0, pathTasks.get(i).substring(mainFolder.length() + 7).length() - 4);
-            ArrayList<Step> stepsTask = new ArrayList<Step>();
+            ArrayList<StepElement> stepsTask = new ArrayList<StepElement>();
             ArrayList<String> TaskFile = new ArrayList<String>();
             TaskFile = XMIRead(pathTasks.get(i));            
             for (int j = 0; j < TaskFile.size(); j++) {
@@ -505,12 +505,12 @@ public class ContentElements {
                             name = name.split("\"")[1];
                         }
                     }
-                    Step s = new Step(id, name);
+                    StepElement s = new StepElement(id, name);
                     stepsTask.add(s);
                     steps.add(s);
                 }
             }
-            for (Task task : Tasks) {
+            for (TaskElement task : Tasks) {
                 if (task.getName().endsWith(nameTask)) {
                     task.setSteps(stepsTask);
                 }
@@ -519,10 +519,10 @@ public class ContentElements {
         return steps;
     }
     
-    private static ArrayList<Activity> searchActivities() throws IOException{ 
-        ArrayList<Activity> activities = new ArrayList<Activity>();
+    private static ArrayList<ActivityElement> searchActivities() throws IOException{ 
+        ArrayList<ActivityElement> activities = new ArrayList<ActivityElement>();
         boolean flag;
-        ArrayList<Task> tasksActivity = new ArrayList<Task>();
+        ArrayList<TaskElement> tasksActivity = new ArrayList<TaskElement>();
         String id = new String ();
         String name = new String ();    
         for (int i = 0; i < pathModels.size(); i++) {
@@ -531,7 +531,7 @@ public class ContentElements {
             for (int j = 0; j < ModelFile.size(); j++) {
                 String[] separated = ModelFile.get(j).split(" ");
                 if (separated[0].equals("<childPackages")) {
-                    tasksActivity = new ArrayList<Task>();
+                    tasksActivity = new ArrayList<TaskElement>();
                     for (int k = 0; k < separated.length; k++) {
                         if (separated[k].contains("xmi:id")) {
                             id = separated[k].split("=")[1].split("\"")[1];
@@ -573,7 +573,7 @@ public class ContentElements {
                                 nameTask = nameTask.split("\"")[1];
                             }
                         }
-                        for (Task task : Tasks) {
+                        for (TaskElement task : Tasks) {
                             if (task.getName().equals(nameTask)) {
                                 tasksActivity.add(task);
                             }
@@ -581,7 +581,7 @@ public class ContentElements {
                     }
                 }
                 else if (separated[0].equals("</childPackages>")) {
-                    Activity a = new Activity(id, name, tasksActivity);
+                    ActivityElement a = new ActivityElement(id, name, tasksActivity);
                     activities.add(a);
                 }
             }
@@ -589,15 +589,15 @@ public class ContentElements {
         return activities;
     }
     
-    private static ArrayList<Process> searchProcesses() throws IOException{
-        ArrayList<Process> processes = new ArrayList<Process>();
+    private static ArrayList<ProcessElement> searchProcesses() throws IOException{
+        ArrayList<ProcessElement> processes = new ArrayList<ProcessElement>();
         boolean flag;
         for (int i = 0; i < pathModels.size(); i++) {
             ArrayList<String> ModelFile = new ArrayList<String>();
             ModelFile = XMIRead(pathModels.get(i));
             String id = new String ();
             String name = new String ();
-            ArrayList<Activity> activityProcess = new ArrayList<Activity>();
+            ArrayList<ActivityElement> activityProcess = new ArrayList<ActivityElement>();
             for (int j = 0; j < ModelFile.size(); j++) {
                 String[] separated = ModelFile.get(j).split(" ");
                 if (separated[0].equals("<org.eclipse.epf.uma:ProcessComponent")) {    
@@ -641,14 +641,14 @@ public class ContentElements {
                             nameActivity = nameActivity.split("\"")[1];
                         }
                     }
-                    for (Activity activity : Activities) {
+                    for (ActivityElement activity : Activities) {
                         if (activity.getName().equals(nameActivity)) {
                             activityProcess.add(activity);
                         }
                     }
                 }
             }
-            Process p = new Process(id, name, activityProcess);
+            ProcessElement p = new ProcessElement(id, name, activityProcess);
             processes.add(p);
         }
         return processes;

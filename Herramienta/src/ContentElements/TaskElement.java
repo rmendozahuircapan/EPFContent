@@ -3,18 +3,18 @@ package ContentElements;
 
 import java.util.*;
 
-public class Task {
+public class TaskElement {
     private String id;
     private String name;
     private String presentationName;
     private String description;
-    private ArrayList<Role> producers;
-    private ArrayList<Role> collaborators;
-    private ArrayList<WorkProduct> inputs;
-    private ArrayList<WorkProduct> outputs;
-    private ArrayList<Step> steps;
+    private ArrayList<RoleElement> producers;
+    private ArrayList<RoleElement> collaborators;
+    private ArrayList<WorkProductElement> inputs;
+    private ArrayList<WorkProductElement> outputs;
+    private ArrayList<StepElement> steps;
 
-    public Task(String id, String name, String presentationName, String description, ArrayList<Role> producers, ArrayList<Role> collaborators, ArrayList<WorkProduct> inputs, ArrayList<WorkProduct> outputs) {
+    public TaskElement(String id, String name, String presentationName, String description, ArrayList<RoleElement> producers, ArrayList<RoleElement> collaborators, ArrayList<WorkProductElement> inputs, ArrayList<WorkProductElement> outputs) {
         this.id = id;
         this.name = name;
         this.presentationName = presentationName;
@@ -23,7 +23,7 @@ public class Task {
         this.collaborators = collaborators;
         this.inputs = inputs;
         this.outputs = outputs;
-        this.steps = new ArrayList<Step>();
+        this.steps = new ArrayList<StepElement>();
     }
 
     public String getId() {
@@ -42,27 +42,27 @@ public class Task {
         return description;
     }
 
-    public ArrayList<Role> getProducers() {
+    public ArrayList<RoleElement> getProducers() {
         return producers;
     }
 
-    public ArrayList<Role> getCollaborators() {
+    public ArrayList<RoleElement> getCollaborators() {
         return collaborators;
     }
 
-    public ArrayList<WorkProduct> getInputs() {
+    public ArrayList<WorkProductElement> getInputs() {
         return inputs;
     }
 
-    public ArrayList<WorkProduct> getOutputs() {
+    public ArrayList<WorkProductElement> getOutputs() {
         return outputs;
     }
 
-    public ArrayList<Step> getSteps() {
+    public ArrayList<StepElement> getSteps() {
         return steps;
     }
 
-    protected void setSteps(ArrayList<Step> steps) {
+    protected void setSteps(ArrayList<StepElement> steps) {
         this.steps = steps;
     }
 }

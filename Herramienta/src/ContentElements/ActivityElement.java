@@ -3,15 +3,16 @@ package ContentElements;
 
 import java.util.*;
 
-public class Process {
+public class ActivityElement {
+    
     private String id;
     private String name;
-    private ArrayList<Activity> activities;
+    private ArrayList<TaskElement> tasks;
 
-    public Process(String id, String name, ArrayList<Activity> activities) {
+    public ActivityElement(String id, String name, ArrayList<TaskElement> tasks) {
         this.id = id;
         this.name = name;
-        this.activities = activities;
+        this.tasks = tasks;
     }
 
     public String getId() {
@@ -22,8 +23,8 @@ public class Process {
         return name;
     }
 
-    public ArrayList<Activity> getActivities() {
-        return activities;
+    public ArrayList<TaskElement> getTasks() {
+        return tasks;
     }
     
 }

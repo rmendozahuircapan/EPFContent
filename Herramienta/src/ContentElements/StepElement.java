@@ -1,11 +1,11 @@
 
 package ContentElements;
 
-public class Step {
+public class StepElement {
     private String id;
     private String name;
 
-    public Step(String id, String name) {
+    public StepElement(String id, String name) {
         this.id = id;
         this.name = name;
     }
