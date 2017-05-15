@@ -53,7 +53,7 @@ public class DeliveryProcess {
     
     private static void searchResourceDescriptors() throws IOException{
         ArrayList<String> PluginFile = new ArrayList<String>();
-        PluginFile = XMI(pathPlugin);
+        PluginFile = XMIRead(pathPlugin);
         for (int i = 0; i < PluginFile.size(); i++) {
             String[] separated = PluginFile.get(i).split(" ");
             if (separated[0].contains("resourceDescriptors")) {
@@ -80,7 +80,7 @@ public class DeliveryProcess {
         boolean flag;
         for (int i = 0; i < pathDiagrams.size(); i++) {
             ArrayList<String> DiagramFile = new ArrayList<String>();
-            DiagramFile = XMI(pathDiagrams.get(i));
+            DiagramFile = XMIRead(pathDiagrams.get(i));
             for (int j = 0; j < DiagramFile.size(); j++) {
                 String[] separated = DiagramFile.get(j).split(" ");
                 if (separated[0].equals("<node")) {
@@ -126,7 +126,7 @@ public class DeliveryProcess {
         boolean flag;
         for (int i = 0; i < pathDiagrams.size(); i++) {
             ArrayList<String> DiagramFile = new ArrayList<String>();
-            DiagramFile = XMI(pathDiagrams.get(i));
+            DiagramFile = XMIRead(pathDiagrams.get(i));
             for (int j = 0; j < DiagramFile.size(); j++) {
                 String[] separated = DiagramFile.get(j).split(" ");
                 if (separated[0].equals("<edge")) {
@@ -156,7 +156,6 @@ public class DeliveryProcess {
                             name = name.split("\"")[1];
                         }
                         else if (separated[k].contains("source")) {
-                            //String 
                             idSource = separated[k].split("=")[1].split("\"")[1];
                             for (Node node : Nodes) {
                                 if (node.getId().equals(idSource)) {
@@ -165,7 +164,6 @@ public class DeliveryProcess {
                             }
                         }
                         else if (separated[k].contains("target")) {
-                            //String
                             idTarget = separated[k].split("=")[1].split("\"")[1];
                             for (Node node : Nodes) {
                                 if (node.getId().equals(idTarget)) {
@@ -186,7 +184,7 @@ public class DeliveryProcess {
         ArrayList<Position> positions = new ArrayList<Position>();
         for (int i = 0; i < pathDiagrams.size(); i++) {
             ArrayList<String> DiagramFile = new ArrayList<String>();
-            DiagramFile = XMI(pathDiagrams.get(i));
+            DiagramFile = XMIRead(pathDiagrams.get(i));
             String id = new String();
             int x = -1;
             int y = -1;
@@ -226,7 +224,7 @@ public class DeliveryProcess {
         boolean flag;
         for (int i = 0; i < pathDiagrams.size(); i++) {
             ArrayList<String> DiagramFile = new ArrayList<String>();
-            DiagramFile = XMI(pathDiagrams.get(i));
+            DiagramFile = XMIRead(pathDiagrams.get(i));
             String id = new String();
             String name = new String();
             ArrayList<Node> nodesWorkFlow = new ArrayList<Node>();
@@ -309,7 +307,7 @@ public class DeliveryProcess {
         return workflows;
     }
     
-    private static ArrayList<String> XMI(String path) throws FileNotFoundException, IOException {
+    private static ArrayList<String> XMIRead(String path) throws FileNotFoundException, IOException {
         File archive = null;
         FileReader fr = null;
         BufferedReader br = null;
