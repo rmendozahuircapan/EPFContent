@@ -1,8 +1,15 @@
 package Tool;
 
+import ContentElements.WorkProductElement;
+import ContentElements.TemplateElement;
+import ContentElements.ContentElements;
+import ContentElements.RoleElement;
+import ContentElements.ActivityElement;
+import ContentElements.TaskElement;
+import ContentElements.StepElement;
+import ContentElements.ProcessElement;
+
 import DeliveryProcess.*;
-import ProcessElements.*;
-import ProcessElements.Process;
 
 
 import java.io.*;
@@ -10,90 +17,62 @@ import java.util.*;
 
 
 public class App {
-    
-    static ArrayList<Role> RolesApp = new ArrayList<Role>();
-    static ArrayList<Template> TemplatesApp = new ArrayList<Template>();
-    static ArrayList<WorkProduct> WorkProductsApp = new ArrayList<WorkProduct>();
-    static ArrayList<Task> TasksApp = new ArrayList<Task>();
-    static ArrayList<Step> StepsApp = new ArrayList<Step>();
-    static ArrayList<Activity> ActivitiesApp = new ArrayList<Activity>();
-    static ArrayList<Process> ProcessesApp = new ArrayList<Process>();
-    
-    static ArrayList<Node> Nodes1 = new ArrayList<Node>();
-    static ArrayList<Edge> Edges1 = new ArrayList<Edge>();
-    static ArrayList<Position> Positions1 = new ArrayList<Position>();
-    static ArrayList<WorkFlow> WorkFlows1 = new ArrayList<WorkFlow>();
-    
-    //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso";
-    static String mainFolder1 = "C:\\Users\\Rodrigo\\Desktop\\Library3\\workflow";
-    static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso\\proceso_de_prueba";
-    //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso2\\Prueba final";
-    //static String mainFolder = "C:\\Users\\Rodrigo\\Desktop\\Proceso3\\Prueba2";
-    
-
-
     /*************************************************************************************************************/
     
     public static void main(String[] args) throws IOException {
+
+        String Folder0 = "C:\\Users\\Rodrigo\\Desktop\\Library\\Formalización Proceso";
+        String Folder1 = "C:\\Users\\Rodrigo\\Desktop\\Library3\\workflow";
+        String Folder2 = "C:\\Users\\Rodrigo\\Desktop\\Proceso\\proceso_de_prueba";
+        String Folder3 = "C:\\Users\\Rodrigo\\Desktop\\Proceso2\\Prueba final";
+        String Folder4 = "C:\\Users\\Rodrigo\\Desktop\\Proceso3\\Prueba2";
         
-        //Tool.SearchProcessElements.searchProcessElements();
-        ProcessElements PE = new ProcessElements(mainFolder);
-        RolesApp = PE.getRoles();
-        TemplatesApp = PE.getTemplates();
-        WorkProductsApp = PE.getWorkProducts();
-        TasksApp = PE.getTasks();
-        StepsApp = PE.getSteps();
-        ActivitiesApp = PE.getActivities();
-        ProcessesApp = PE.getProcesses();
+        ContentElements PE = new ContentElements(Folder2);
+
+        DeliveryProcess DP = new DeliveryProcess(Folder2);
         
+        resumeProcessElements(PE);
+        resumeWorkFlow(DP);
         
-        DeliveryProcess DP = new DeliveryProcess(mainFolder);
-        Nodes1 = DP.getNodes();
-        Edges1 = DP.getEdges();
-        WorkFlows1 = DP.getWorkFlows();
-        
-        resumeProcessElements();
-        resumeWorkFlow();
-        
-        showAll();
+        showAll(PE,DP);
     }
     /*************************************************************************************************************/
     
-    public static void resumeProcessElements(){
+    public static void resumeProcessElements(ContentElements PE){
         
         System.out.println("-------------------------------------");
-        System.out.println("Roles: "+RolesApp.size());
-        System.out.println("Templates: "+TemplatesApp.size());
-        System.out.println("WorkProducts: "+WorkProductsApp.size());
-        System.out.println("Tasks: "+TasksApp.size());
-        System.out.println("Steps: "+StepsApp.size());
-        System.out.println("Activities: "+ActivitiesApp.size());
-        System.out.println("Processes: "+ProcessesApp.size());
+        System.out.println("Roles: "+PE.getRoles().size());
+        System.out.println("Templates: "+PE.getTemplates().size());
+        System.out.println("WorkProducts: "+PE.getWorkProducts().size());
+        System.out.println("Tasks: "+PE.getTasks().size());
+        System.out.println("Steps: "+PE.getSteps().size());
+        System.out.println("Activities: "+PE.getActivities().size());
+        System.out.println("Processes: "+PE.getProcesses().size());
         System.out.println("-------------------------------------");
     }
     
-    public static void showAll(){
-        showRoles();
+    public static void showAll(ContentElements pe, DeliveryProcess dp){
+        showRoles(pe.getRoles());
         System.out.println("-------------------------------------");
-        showTemplates();
+        showTemplates(pe.getTemplates());
         System.out.println("-------------------------------------");
-        showWorkProducts();
+        showWorkProducts(pe.getWorkProducts());
         System.out.println("-------------------------------------");
-        showTasks();
+        showTasks(pe.getTasks());
         System.out.println("-------------------------------------");
-        showSteps();
+        showSteps(pe.getSteps());
         System.out.println("-------------------------------------");
-        showActivities();
+        showActivities(pe.getActivities());
         System.out.println("-------------------------------------");
-        showProcesses();
+        showProcesses(pe.getProcesses());
         System.out.println("-------------------------------------");
-        showWorkFlow();
+        showWorkFlow(dp);
         
     }
     
-    public static void showRoles(){
+    public static void showRoles(ArrayList<RoleElement> RolesApp){
         int i = 0;
-        for (Role role : RolesApp) {
+        for (RoleElement role : RolesApp) {
             System.out.println("Role "+(++i));
             System.out.println("PresentationName: "+role.getPresentationName());
             System.out.println("Name: "+role.getName());
@@ -103,9 +82,9 @@ public class App {
         }
     }
     
-    public static void showTemplates(){
+    public static void showTemplates(ArrayList<TemplateElement> TemplatesApp){
         int i = 0;
-        for (Template template : TemplatesApp) {
+        for (TemplateElement template : TemplatesApp) {
             System.out.println("Template "+(++i));
             System.out.println("PresentationName: "+template.getPresentationName());
             System.out.println("Name: "+template.getName());
@@ -115,9 +94,9 @@ public class App {
         }
     }
     
-    public static void showWorkProducts(){
+    public static void showWorkProducts(ArrayList<WorkProductElement> WorkProductsApp){
         int i = 0;
-        for (WorkProduct wp : WorkProductsApp) {
+        for (WorkProductElement wp : WorkProductsApp) {
             System.out.println("WorkProduct "+(++i));
             System.out.println("PresentationName: "+wp.getPresentationName());
             System.out.println("Name: "+wp.getName());
@@ -125,48 +104,48 @@ public class App {
             System.out.println("Type: "+wp.getType());
             System.out.println("Description: "+wp.getDescription());
             System.out.println("Templates: "+wp.getTemplates().size());
-            for (Template template : wp.getTemplates()) {
+            for (TemplateElement template : wp.getTemplates()) {
                 System.out.println("    - "+template.getPresentationName());
             }
             System.out.println("        *******         ");
         }
     }
     
-    public static void showTasks(){
+    public static void showTasks(ArrayList<TaskElement> TasksApp){
         int i = 0;
-        for (Task task : TasksApp) {
+        for (TaskElement task : TasksApp) {
             System.out.println("Task "+(++i));
             System.out.println("PresentationName: "+task.getPresentationName());
             System.out.println("Name: "+task.getName());
             System.out.println("Id: "+task.getId());
             System.out.println("Description: "+task.getDescription());
             System.out.println("Producers: "+task.getProducers().size());
-            for (Role role : task.getProducers()) {
+            for (RoleElement role : task.getProducers()) {
                 System.out.println("    - "+role.getPresentationName());
             }
             System.out.println("Collaborators: "+task.getCollaborators().size());
-            for (Role role : task.getCollaborators()) {
+            for (RoleElement role : task.getCollaborators()) {
                 System.out.println("    - "+role.getPresentationName());
             }
             System.out.println("Inputs: "+task.getInputs().size());
-            for (WorkProduct wp : task.getInputs()) {
+            for (WorkProductElement wp : task.getInputs()) {
                 System.out.println("    - "+wp.getPresentationName());
             }
             System.out.println("Outputs: "+task.getOutputs().size());
-            for (WorkProduct wp : task.getOutputs()) {
+            for (WorkProductElement wp : task.getOutputs()) {
                 System.out.println("    - "+wp.getPresentationName());
             }
             System.out.println("Steps: "+task.getSteps().size());
-            for (Step step : task.getSteps()) {
+            for (StepElement step : task.getSteps()) {
                 System.out.println("    - "+step.getName());
             }
             System.out.println("        *******         ");
         }
     }
     
-    public static void showSteps(){
+    public static void showSteps(ArrayList<StepElement> StepsApp){
         int i = 0;
-        for (Step step : StepsApp) {
+        for (StepElement step : StepsApp) {
             System.out.println("Step "+(++i));
             System.out.println("Name: "+step.getName());
             System.out.println("Id: "+step.getId());
@@ -174,28 +153,28 @@ public class App {
         }
     }
     
-    public static void showActivities(){
+    public static void showActivities(ArrayList<ActivityElement> ActivitiesApp){
         int i = 0;
-        for (Activity activity : ActivitiesApp) {
+        for (ActivityElement activity : ActivitiesApp) {
             System.out.println("Activity "+(++i));
             System.out.println("Name: "+activity.getName());
             System.out.println("Id: "+activity.getId());
             System.out.println("Tasks: ");
-            for (Task task : activity.getTasks()) {
+            for (TaskElement task : activity.getTasks()) {
                 System.out.println("    - "+task.getPresentationName());
             }
             System.out.println("        *******         ");
         }
     }
     
-    public static void showProcesses(){
+    public static void showProcesses(ArrayList<ProcessElement> ProcessesApp){
         int i = 0;
-        for (Process process : ProcessesApp) {
+        for (ProcessElement process : ProcessesApp) {
             System.out.println("Process "+(++i));
             System.out.println("Name: "+process.getName());
             System.out.println("Id: "+process.getId());
             System.out.println("Activities: ");
-            for (Activity activity : process.getActivities()) {
+            for (ActivityElement activity : process.getActivities()) {
                 System.out.println("    - "+activity.getName());
             }
             System.out.println("        *******         ");
@@ -204,18 +183,17 @@ public class App {
     
     /*************************************************************************************************************/
     
-    public static void resumeWorkFlow() {
+    public static void resumeWorkFlow(DeliveryProcess dp) {
         System.out.println("-------------------------------------");
-        System.out.println("Nodes: "+Nodes1.size());
-        System.out.println("Edges: "+Edges1.size());
-        System.out.println("Positions: "+Positions1.size());
-        System.out.println("WorkFlows: "+WorkFlows1.size());
+        System.out.println("Nodes: "+dp.getNodes().size());
+        System.out.println("Edges: "+dp.getEdges().size());
+        System.out.println("WorkFlows: "+dp.getWorkFlows().size());
         System.out.println("-------------------------------------");        
     }
     
-    public static void showWorkFlow() {
+    public static void showWorkFlow(DeliveryProcess dp) {
         System.out.println("-------------------------------------");
-        for (WorkFlow wf : WorkFlows1) {
+        for (WorkFlow wf : dp.getWorkFlows()) {
             System.out.println("name: "+wf.getName());
             System.out.println(wf.getNodes().size()+" nodes "+wf.getEdges().size()+" edges ");
             System.out.println("");
