@@ -594,7 +594,7 @@ class Panel extends JPanel{
         graph.drawString(name, x0, y0);
     }
     
-        private void drawArrowHead(Graphics2D g, double theta, double x0, double y0){
+    private void drawArrowHead(Graphics2D g, double theta, double x0, double y0){
         double x = x0 - barb * Math.cos(theta + phi);
         double y = y0 - barb * Math.sin(theta + phi);
         g.draw(new Line2D.Double(x0, y0, x, y));
@@ -615,7 +615,7 @@ class Panel extends JPanel{
         return (int) x;
     }
     
-    public static int xMin(WorkFlow workflow) {
+    private static int xMin(WorkFlow workflow) {
         ArrayList<Integer> x = new ArrayList<Integer>();
         for (Position p : workflow.getPositions()) {
             x.add(p.getX());
@@ -624,7 +624,7 @@ class Panel extends JPanel{
         return min;
     }
     
-    public static int yMin(WorkFlow workflow) {
+    private static int yMin(WorkFlow workflow) {
         ArrayList<Integer> y = new ArrayList<Integer>();
         for (Position p : workflow.getPositions()) {
             y.add(p.getY());
