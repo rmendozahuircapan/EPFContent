@@ -1,11 +1,11 @@
 
-package ProcessElements;
+package ContentElements;
 
 import java.io.*;
 import java.util.*;
 
 
-public class ProcessElements {
+public class ContentElements {
     
     private static ArrayList<Activity> Activities;
     private static ArrayList<Process> Processes;
@@ -21,16 +21,16 @@ public class ProcessElements {
     private static String pathPlugin;
     private static String mainFolder;
     
-    public ProcessElements(String Folder) throws IOException {
+    public ContentElements(String Folder) throws IOException {
         setMainFolder(Folder);
         searchResourceDescriptors();
-        ProcessElements.Roles = searchRoles();
-        ProcessElements.Templates = searchTemplates();
-        ProcessElements.WorkProducts = searchWorkProducts();
-        ProcessElements.Tasks = searchTasks();
-        ProcessElements.Steps = searchSteps();
-        ProcessElements.Activities = searchActivities();
-        ProcessElements.Processes = searchProcesses();
+        ContentElements.Roles = searchRoles();
+        ContentElements.Templates = searchTemplates();
+        ContentElements.WorkProducts = searchWorkProducts();
+        ContentElements.Tasks = searchTasks();
+        ContentElements.Steps = searchSteps();
+        ContentElements.Activities = searchActivities();
+        ContentElements.Processes = searchProcesses();
     }
     
     public static ArrayList<Activity> getActivities() {
@@ -62,12 +62,12 @@ public class ProcessElements {
     }
     
     private static void setPathPlugin(String pathPlugin) {
-        ProcessElements.pathPlugin = pathPlugin;
+        ContentElements.pathPlugin = pathPlugin;
         
     }
 
     private static void setMainFolder(String mainFolder) {
-        ProcessElements.mainFolder = mainFolder;
+        ContentElements.mainFolder = mainFolder;
         setPathPlugin(mainFolder + "\\plugin.xmi");
     }
    

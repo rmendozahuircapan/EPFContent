@@ -1,17 +1,23 @@
 
-package ProcessElements;
+package ContentElements;
+        
+import java.util.ArrayList;
 
-public class Role {
+public class WorkProduct {
     private String id;
     private String name;
     private String presentationName;
     private String description;
+    private String type;
+    private ArrayList<Template> templates;
 
-    public Role(String id, String name, String presentationName, String description) {
+    public WorkProduct(String id, String name, String presentationName, String description, String type, ArrayList<Template> templates) {
         this.id = id;
         this.name = name;
         this.presentationName = presentationName;
         this.description = description;
+        this.type = type;
+        this.templates = templates;
     }
 
     public String getId() {
@@ -28,6 +34,14 @@ public class Role {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public ArrayList<Template> getTemplates() {
+        return templates;
     }
     
 }

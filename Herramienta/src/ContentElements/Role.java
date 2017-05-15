@@ -1,14 +1,13 @@
 
-package ProcessElements;
+package ContentElements;
 
-public class Template {
-    
+public class Role {
     private String id;
     private String name;
     private String presentationName;
     private String description;
 
-    public Template(String id, String name, String presentationName, String description) {
+    public Role(String id, String name, String presentationName, String description) {
         this.id = id;
         this.name = name;
         this.presentationName = presentationName;
