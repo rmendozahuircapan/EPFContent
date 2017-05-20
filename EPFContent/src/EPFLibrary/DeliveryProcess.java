@@ -5,14 +5,14 @@ import java.util.*;
 
 public class DeliveryProcess {
     
-    private ArrayList<ProcessElement> Processes;
+    private ArrayList<ProcessElement> Process;
 
     public DeliveryProcess(ArrayList<ProcessElement> Processes) {
-        this.Processes = Processes;
+        this.Process = Processes;
     }
 
-    public ArrayList<ProcessElement> getProcesses() {
-        return Processes;
+    public ArrayList<ProcessElement> getProcess() {
+        return Process;
     }
     
 }
