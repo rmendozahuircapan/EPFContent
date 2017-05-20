@@ -1,17 +1,15 @@
 
-package ContentElements;
+package EPFLibrary;
 
-public class RoleElement {
+public class GuidanceElement {
     private String id;
     private String name;
     private String presentationName;
-    private String description;
-
-    public RoleElement(String id, String name, String presentationName, String description) {
+    
+    public GuidanceElement(String id, String name, String presentationName) {
         this.id = id;
         this.name = name;
         this.presentationName = presentationName;
-        this.description = description;
     }
 
     public String getId() {
@@ -24,10 +22,6 @@ public class RoleElement {
 
     public String getPresentationName() {
         return presentationName;
-    }
-
-    public String getDescription() {
-        return description;
     }
     
 }

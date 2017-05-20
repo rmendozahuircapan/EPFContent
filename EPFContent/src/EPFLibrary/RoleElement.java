@@ -1,23 +1,17 @@
 
-package ContentElements;
-        
-import java.util.ArrayList;
+package EPFLibrary;
 
-public class WorkProductElement {
+public class RoleElement {
     private String id;
     private String name;
     private String presentationName;
     private String description;
-    private String type;
-    private ArrayList<TemplateElement> templates;
 
-    public WorkProductElement(String id, String name, String presentationName, String description, String type, ArrayList<TemplateElement> templates) {
+    public RoleElement(String id, String name, String presentationName, String description) {
         this.id = id;
         this.name = name;
         this.presentationName = presentationName;
         this.description = description;
-        this.type = type;
-        this.templates = templates;
     }
 
     public String getId() {
@@ -34,14 +28,6 @@ public class WorkProductElement {
 
     public String getDescription() {
         return description;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public ArrayList<TemplateElement> getTemplates() {
-        return templates;
     }
     
 }

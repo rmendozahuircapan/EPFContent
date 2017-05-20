@@ -1,5 +1,5 @@
 
-package ContentElements;
+package EPFLibrary;
 
 import java.util.*;
 
@@ -23,7 +23,7 @@ public class TaskElement {
         this.collaborators = collaborators;
         this.inputs = inputs;
         this.outputs = outputs;
-        this.steps = new ArrayList<StepElement>();
+        this.steps = new ArrayList<>();
     }
 
     public String getId() {

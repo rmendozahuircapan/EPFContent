@@ -1,5 +1,5 @@
 
-package ContentElements;
+package EPFLibrary;
 
 public class StepElement {
     private String id;
