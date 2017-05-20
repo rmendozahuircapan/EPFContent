@@ -43,12 +43,12 @@ public class MethodContent {
         return WorkProducts;
     }
 
-    public static void setPathPlugin(String pathPlugin) {
+    private static void setPathPlugin(String pathPlugin) {
         MethodContent.pathPlugin = pathPlugin;
         setPathFolder(pathPlugin.substring(0, pathPlugin.length() - 11));
     }
 
-    public static void setPathFolder(String pathFolder) {
+    private static void setPathFolder(String pathFolder) {
         MethodContent.pathFolder = pathFolder;
     }
     
@@ -462,7 +462,7 @@ public class MethodContent {
         return tasks;
     }
     
-    public static ArrayList<StepElement> searchSteps() throws IOException{
+    private static ArrayList<StepElement> searchSteps() throws IOException{
         ArrayList<StepElement> steps = new ArrayList<StepElement>();
         boolean flag;
         for (int i = 0; i < pathTasks.size(); i++) {
@@ -509,7 +509,7 @@ public class MethodContent {
         return steps;
     }
     
-    public static ArrayList<TemplateElement> searchTemplates() throws IOException{
+    private static ArrayList<TemplateElement> searchTemplates() throws IOException{
         ArrayList<TemplateElement> templates = new ArrayList<>();
         ArrayList<GuidanceElement> guidances = searchGuidances();
         for (GuidanceElement g : guidances) {
