@@ -305,7 +305,7 @@ public class MethodContent {
         return workproducts;
     }
     
-    private static ArrayList<TaskElement> searchTasks() throws IOException {
+    protected static ArrayList<TaskElement> searchTasks() throws IOException {
         ArrayList<TaskElement> tasks = new ArrayList<TaskElement>();
         ArrayList<String> PluginFile = new ArrayList<String>();
         PluginFile = XMIRead(pathPlugin);

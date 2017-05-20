@@ -1,7 +1,6 @@
 
 package EPFLibrary;
 
-import DeliveryProcess.WorkFlow;
 import java.util.*;
 
 public class ProcessElement {
