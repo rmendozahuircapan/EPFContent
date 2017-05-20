@@ -1,12 +1,14 @@
 
-package ContentElements;
+package EPFLibrary;
 
+import DeliveryProcess.WorkFlow;
 import java.util.*;
 
 public class ProcessElement {
     private String id;
     private String name;
     private ArrayList<ActivityElement> activities;
+    private WorkFlow workflow;
 
     public ProcessElement(String id, String name, ArrayList<ActivityElement> activities) {
         this.id = id;
@@ -24,6 +26,14 @@ public class ProcessElement {
 
     public ArrayList<ActivityElement> getActivities() {
         return activities;
+    }
+
+    public WorkFlow getWorkflow() {
+        return workflow;
+    }
+
+    public void setWorkflow(WorkFlow workflow) {
+        this.workflow = workflow;
     }
     
 }
