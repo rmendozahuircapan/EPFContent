@@ -11,7 +11,7 @@ public class WorkFlow {
     private ArrayList<Edge> edges;
     private ArrayList<Position> positions;
 
-    public WorkFlow(String id, String name, ArrayList<Node> nodes, ArrayList<Edge> edges, ArrayList<Position> positions) {
+    protected WorkFlow(String id, String name, ArrayList<Node> nodes, ArrayList<Edge> edges, ArrayList<Position> positions) {
         this.id = id;
         this.name = name;
         this.nodes = nodes;
@@ -27,11 +27,11 @@ public class WorkFlow {
         return name;
     }
 
-    public ArrayList<Node> getNodes() {
+    protected ArrayList<Node> getNodes() {
         return nodes;
     }
 
-    public ArrayList<Edge> getEdges() {
+    protected ArrayList<Edge> getEdges() {
         return edges;
     }
 
@@ -55,7 +55,7 @@ public class WorkFlow {
     }
     
     private static int xMax(WorkFlow workflow) {
-        ArrayList<Integer> x = new ArrayList<Integer>();
+        ArrayList<Integer> x = new ArrayList<>();
         for (Position p : workflow.getPositions()) {
             x.add(p.getX());
         }
@@ -65,7 +65,7 @@ public class WorkFlow {
     }
     
     private static int yMax(WorkFlow workflow) {
-        ArrayList<Integer> y = new ArrayList<Integer>();
+        ArrayList<Integer> y = new ArrayList<>();
         for (Position p : workflow.getPositions()) {
             y.add(p.getY());
         }

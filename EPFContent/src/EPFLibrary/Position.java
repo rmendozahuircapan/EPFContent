@@ -2,26 +2,26 @@
 package EPFLibrary;
 
 
-public class Position {
+class Position {
     private String id;
     private int x;
     private int y;
 
-    public Position(String id, int x, int y) {
+    protected Position(String id, int x, int y) {
         this.id = id;
         this.x = x;
         this.y = y;
     }
 
-    public String getId() {
+    protected String getId() {
         return id;
     }
 
-    public int getX() {
+    protected int getX() {
         return x;
     }
 
-    public int getY() {
+    protected int getY() {
         return y;
     }
 

@@ -18,7 +18,7 @@ class Panel extends JPanel{
     WorkFlow workflow;
     
     
-    public Panel(WorkFlow workflow){
+    protected Panel(WorkFlow workflow){
         sideNode = 30;
         sideStartEnd = 20;
         sideDecisionMerge = 55;
@@ -616,7 +616,7 @@ class Panel extends JPanel{
     }
     
     private static int xMin(WorkFlow workflow) {
-        ArrayList<Integer> x = new ArrayList<Integer>();
+        ArrayList<Integer> x = new ArrayList<>();
         for (Position p : workflow.getPositions()) {
             x.add(p.getX());
         }
@@ -625,7 +625,7 @@ class Panel extends JPanel{
     }
     
     private static int yMin(WorkFlow workflow) {
-        ArrayList<Integer> y = new ArrayList<Integer>();
+        ArrayList<Integer> y = new ArrayList<>();
         for (Position p : workflow.getPositions()) {
             y.add(p.getY());
         }

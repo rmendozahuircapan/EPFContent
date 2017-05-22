@@ -25,6 +25,7 @@ public class MethodContent {
         MethodContent.Guidances = searchGuidances();
         MethodContent.WorkProducts = searchWorkProducts();
         MethodContent.Tasks = searchTasks();
+        searchSteps();
     }
 
     public static ArrayList<GuidanceElement> getGuidances() {
@@ -53,7 +54,7 @@ public class MethodContent {
     }
     
     private static void searchResourceDescriptors() throws IOException{
-        ArrayList<String> PluginFile = new ArrayList<String>();
+        ArrayList<String> PluginFile = new ArrayList<>();
         PluginFile = XMIRead(pathPlugin);
         for (int i = 0; i < PluginFile.size(); i++) {
             String[] separated = PluginFile.get(i).split(" ");
@@ -77,8 +78,8 @@ public class MethodContent {
     }
     
     private static ArrayList<RoleElement> searchRoles() throws IOException {
-        ArrayList<RoleElement> roles = new ArrayList<RoleElement>();
-        ArrayList<String> PluginFile = new ArrayList<String>();
+        ArrayList<RoleElement> roles = new ArrayList<>();
+        ArrayList<String> PluginFile = new ArrayList<>();
         PluginFile = XMIRead(pathPlugin);
         boolean flag;
         for (int i = 0; i < PluginFile.size(); i++) {
@@ -306,8 +307,8 @@ public class MethodContent {
     }
     
     protected static ArrayList<TaskElement> searchTasks() throws IOException {
-        ArrayList<TaskElement> tasks = new ArrayList<TaskElement>();
-        ArrayList<String> PluginFile = new ArrayList<String>();
+        ArrayList<TaskElement> tasks = new ArrayList<>();
+        ArrayList<String> PluginFile = new ArrayList<>();
         PluginFile = XMIRead(pathPlugin);
         boolean flag;
         for (int i = 0; i < PluginFile.size(); i++) {
@@ -323,10 +324,10 @@ public class MethodContent {
                         String collaboratorsLine = new String();
                         String inputsLine = new String();
                         String outputsLine = new String();
-                        ArrayList<RoleElement> producers = new ArrayList<RoleElement>();
-                        ArrayList<RoleElement> collaborators = new ArrayList<RoleElement>();
-                        ArrayList<WorkProductElement> inputs = new ArrayList<WorkProductElement>();
-                        ArrayList<WorkProductElement> outputs = new ArrayList<WorkProductElement>();
+                        ArrayList<RoleElement> producers = new ArrayList<>();
+                        ArrayList<RoleElement> collaborators = new ArrayList<>();
+                        ArrayList<WorkProductElement> inputs = new ArrayList<>();
+                        ArrayList<WorkProductElement> outputs = new ArrayList<>();
                         for (int k = 0; k < separated.length; k++) {
                             if (separated[k].contains("xmi:id")) {
                                 id = separated[k].split("=")[1].split("\"")[1];
@@ -462,16 +463,14 @@ public class MethodContent {
         return tasks;
     }
     
-    private static ArrayList<StepElement> searchSteps() throws IOException{
-        ArrayList<StepElement> steps = new ArrayList<StepElement>();
+    private static void searchSteps() throws IOException{
         boolean flag;
         for (int i = 0; i < pathTasks.size(); i++) {
             String id = new String();
             String name = new String();
             String nameTask = pathTasks.get(i).substring(pathFolder.length() + 7).substring(0, pathTasks.get(i).substring(pathFolder.length() + 7).length() - 4);
-            ArrayList<StepElement> stepsTask = new ArrayList<StepElement>();
-            ArrayList<String> TaskFile = new ArrayList<String>();
-            TaskFile = XMIRead(pathTasks.get(i));            
+            ArrayList<StepElement> stepsTask = new ArrayList<>();
+            ArrayList<String> TaskFile = XMIRead(pathTasks.get(i));            
             for (int j = 0; j < TaskFile.size(); j++) {
                 String[] separated = TaskFile.get(j).split(" ");
                 if (separated[0].contentEquals("<sections")) {
@@ -497,7 +496,6 @@ public class MethodContent {
                     }
                     StepElement s = new StepElement(id, name);
                     stepsTask.add(s);
-                    steps.add(s);
                 }
             }
             for (TaskElement task : Tasks) {
@@ -506,7 +504,6 @@ public class MethodContent {
                 }
             }
         }
-        return steps;
     }
     
     private static ArrayList<TemplateElement> searchTemplates() throws IOException{
@@ -525,7 +522,7 @@ public class MethodContent {
         File archive = null;
         FileReader fr = null;
         BufferedReader br = null;
-        ArrayList<String> File = new ArrayList<String>();
+        ArrayList<String> File = new ArrayList<>();
         try {
             archive = new File (path);
             fr = new FileReader (archive);
@@ -536,14 +533,14 @@ public class MethodContent {
                 File.add(cleanLine(line));
             }
         }
-        catch(Exception e){
+        catch(IOException e){
             System.out.println("ERROR: "+e.getMessage());
         }finally{
             try{
                 if( null != fr ){   
                     fr.close();     
                }                  
-            }catch (Exception e2){
+            }catch (IOException e2){
                 e2.printStackTrace();
             }
         }

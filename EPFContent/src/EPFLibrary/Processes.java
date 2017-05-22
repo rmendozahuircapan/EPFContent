@@ -25,12 +25,12 @@ public class Processes {
     }
     
     
-    public static void setPathPlugin(String pathPlugin) {
+    protected static void setPathPlugin(String pathPlugin) {
         Processes.pathPlugin = pathPlugin;
         setPathFolder(pathPlugin.substring(0, pathPlugin.length() - 11));
     }
 
-    public static void setPathFolder(String pathFolder) {
+    protected static void setPathFolder(String pathFolder) {
         Processes.pathFolder = pathFolder;
     }
     

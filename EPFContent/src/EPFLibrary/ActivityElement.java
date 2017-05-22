@@ -32,7 +32,7 @@ public class ActivityElement {
         return workflow;
     }
 
-    public void setWorkflow(WorkFlow workflow) {
+    protected void setWorkflow(WorkFlow workflow) {
         this.workflow = workflow;
     }
     

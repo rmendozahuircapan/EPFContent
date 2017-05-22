@@ -2,26 +2,26 @@
 package EPFLibrary;
 
 
-public class Node {
+class Node {
     private String id;
     private String name;
     private String type;
 
-    public Node(String id, String name, String type) {
+    protected Node(String id, String name, String type) {
         this.id = id;
         this.name = name;
         this.type = type;
     }
 
-    public String getId() {
+    protected String getId() {
         return id;
     }
 
-    public String getName() {
+    protected String getName() {
         return name;
     }
 
-    public String getType() {
+    protected String getType() {
         return type;
     }
     
