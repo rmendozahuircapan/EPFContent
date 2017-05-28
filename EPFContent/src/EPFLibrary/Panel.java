@@ -3,7 +3,6 @@ package EPFLibrary;
 
 import java.awt.*;
 import java.awt.geom.*;
-import java.util.*;
 import javax.swing.*;
 
 class Panel extends JPanel{
@@ -41,6 +40,14 @@ class Panel extends JPanel{
         
         drawNodes(graph, workflow);
         drawEdges(graph, workflow);
+        int side_x = WorkFlow.widthWorkflow(workflow);
+        int side_y = WorkFlow.highWorkflow(workflow);
+        for (int i = 0; i < side_x; i++) {
+            graph.drawString(".", i, side_y);
+        }
+        for (int i = 0; i < side_y; i++) {
+            graph.drawString(".", side_x, i);
+        }
     }
     
     private void drawNodes(Graphics2D graph, WorkFlow workflow){
@@ -54,8 +61,8 @@ class Panel extends JPanel{
                     
                     if (node.getType().equals("StructuredActivityNode") || node.getType().equals("ActivityParameterNode")) {
                         
-                        xPosition = position.getX() - xMin(workflow) + sideNode ;
-                        yPosition = position.getY() - yMin(workflow) ;
+                        xPosition = position.getX() + sideNode ;
+                        yPosition = position.getY() ;
                         yPositionName = yPosition + sideNode + border ;
                         ImageIcon Img;
                         if (node.getType().equals("StructuredActivityNode")) {
@@ -70,8 +77,8 @@ class Panel extends JPanel{
                     }
                     else if (node.getType().equals("InitialNode") || node.getType().equals("ActivityFinalNode")) {
                         
-                        xPosition = position.getX() - xMin(workflow) + sideStartEnd ;
-                        yPosition = position.getY() - yMin(workflow) ;
+                        xPosition = position.getX() + sideStartEnd ;
+                        yPosition = position.getY() ;
                         ImageIcon Img;
                         if (node.getType().equals("InitialNode")) {
                             Img = new ImageIcon(getClass().getResource("/Icons/StartNode.png"));
@@ -84,8 +91,8 @@ class Panel extends JPanel{
                     }
                     else if (node.getType().equals("ForkNode") || node.getType().equals("JoinNode")) {
                         
-                        xPosition = position.getX() - xMin(workflow) + widthForkJoin;
-                        yPosition = position.getY() - yMin(workflow) ;
+                        xPosition = position.getX() + widthForkJoin;
+                        yPosition = position.getY() ;
                         
                         ImageIcon Img = new ImageIcon(getClass().getResource("/Icons/ForkJoinNode.png"));
                         graph.drawImage(Img.getImage(), xPosition, yPosition, highForkJoin, widthForkJoin, null);
@@ -93,8 +100,8 @@ class Panel extends JPanel{
                     }
                     else if (node.getType().equals("DecisionNode") || node.getType().equals("MergeNode")) {
                         
-                        xPosition = position.getX() - xMin(workflow) ;
-                        yPosition = position.getY() - yMin(workflow) ;
+                        xPosition = position.getX() ;
+                        yPosition = position.getY() ;
                         yPositionName = yPosition + sideDecisionMerge/2 ;
                         ImageIcon Img;
                         if (node.getType().equals("DecisionNode")) {
@@ -130,41 +137,41 @@ class Panel extends JPanel{
                     Node node = edge.getSource();
                     typeSource = node.getType();
                     if (node.getType().equals("StructuredActivityNode") || node.getType().equals("ActivityParameterNode")) {
-                        x1 = position.getX() - xMin(workflow) + sideNode + sideNode/2;
-                        y1 = position.getY() - yMin(workflow) + sideNode/2;
+                        x1 = position.getX() + sideNode + sideNode/2;
+                        y1 = position.getY() + sideNode/2;
                     }
                     else if (node.getType().equals("InitialNode") || node.getType().equals("ActivityFinalNode")) {
-                        x1 = position.getX() - xMin(workflow) + sideStartEnd + sideStartEnd/2;
-                        y1 = position.getY() - yMin(workflow) + sideStartEnd/2;
+                        x1 = position.getX() + sideStartEnd + sideStartEnd/2;
+                        y1 = position.getY() + sideStartEnd/2;
                         
                     }
                     else if (node.getType().equals("ForkNode") || node.getType().equals("JoinNode")) {
-                        x1 = position.getX() - xMin(workflow) + widthForkJoin + highForkJoin/2;
-                        y1 = position.getY() - yMin(workflow) + widthForkJoin/2;
+                        x1 = position.getX() + widthForkJoin + highForkJoin/2;
+                        y1 = position.getY() + widthForkJoin/2;
                     }
                     else if (node.getType().equals("DecisionNode") || node.getType().equals("MergeNode")) {
-                        x1 = position.getX() - xMin(workflow) + sideDecisionMerge/2;
-                        y1 = position.getY() - yMin(workflow) + sideDecisionMerge/2;
+                        x1 = position.getX() + sideDecisionMerge/2;
+                        y1 = position.getY() + sideDecisionMerge/2;
                     }
                 }
                 else if (edge.getTarget().getId().equals(position.getId())) {
                     Node node = edge.getTarget();
                     typeTarget = node.getType();
                     if (node.getType().equals("StructuredActivityNode") || node.getType().equals("ActivityParameterNode")) {
-                        x2 = position.getX() - xMin(workflow) + sideNode + sideNode/2;
-                        y2 = position.getY() - yMin(workflow) + sideNode/2;
+                        x2 = position.getX() + sideNode + sideNode/2;
+                        y2 = position.getY() + sideNode/2;
                     }
                     else if (node.getType().equals("InitialNode") || node.getType().equals("ActivityFinalNode")) {
-                        x2 = position.getX() - xMin(workflow) + sideStartEnd + sideStartEnd/2;
-                        y2 = position.getY() - yMin(workflow) + sideStartEnd/2;
+                        x2 = position.getX() + sideStartEnd + sideStartEnd/2;
+                        y2 = position.getY() + sideStartEnd/2;
                     }
                     else if (node.getType().equals("ForkNode") || node.getType().equals("JoinNode")) {
-                        x2 = position.getX() - xMin(workflow) + widthForkJoin + highForkJoin/2;
-                        y2 = position.getY() - yMin(workflow) + widthForkJoin/2;
+                        x2 = position.getX() + widthForkJoin + highForkJoin/2;
+                        y2 = position.getY() + widthForkJoin/2;
                     }
                     else if (node.getType().equals("DecisionNode") || node.getType().equals("MergeNode")) {
-                        x2 = position.getX() - xMin(workflow) + sideDecisionMerge/2;
-                        y2 = position.getY() - yMin(workflow) + sideDecisionMerge/2;
+                        x2 = position.getX() + sideDecisionMerge/2;
+                        y2 = position.getY() + sideDecisionMerge/2;
                     }
                 }
                 
@@ -615,21 +622,4 @@ class Panel extends JPanel{
         return (int) x;
     }
     
-    private static int xMin(WorkFlow workflow) {
-        ArrayList<Integer> x = new ArrayList<>();
-        for (Position p : workflow.getPositions()) {
-            x.add(p.getX());
-        }
-        int min = (int) x.stream().mapToDouble(i -> i).min().getAsDouble();
-        return min;
-    }
-    
-    private static int yMin(WorkFlow workflow) {
-        ArrayList<Integer> y = new ArrayList<>();
-        for (Position p : workflow.getPositions()) {
-            y.add(p.getY());
-        }
-        int min = (int) y.stream().mapToDouble(i -> i).min().getAsDouble();
-        return min;
-    }
 }

@@ -48,29 +48,29 @@ public class WorkFlow {
         JFrame f = new JFrame();
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.getContentPane().add(new Panel(workflow));
-        f.setSize(xMax(workflow),yMax(workflow));
+        f.setSize(widthWorkflow(workflow) + 18,highWorkflow(workflow) + 39);
         f.setLocationByPlatform(true);
         f.setVisible(true);
         f.setTitle("WorkFlow of \"" + workflow.getName() + "\"");
     }
     
-    private static int xMax(WorkFlow workflow) {
+    protected static int widthWorkflow(WorkFlow workflow) {
         ArrayList<Integer> x = new ArrayList<>();
         for (Position p : workflow.getPositions()) {
             x.add(p.getX());
         }
         int max = (int) x.stream().mapToDouble(i -> i).max().getAsDouble();
-        max = max + 39;
+        max = max + 120;
         return max;
     }
     
-    private static int yMax(WorkFlow workflow) {
+    protected static int highWorkflow(WorkFlow workflow) {
         ArrayList<Integer> y = new ArrayList<>();
         for (Position p : workflow.getPositions()) {
             y.add(p.getY());
         }
         int max = (int) y.stream().mapToDouble(i -> i).max().getAsDouble();
-        max = max + 18;
+        max = max + 60;
         return max;
     }
     
