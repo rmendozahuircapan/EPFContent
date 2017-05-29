@@ -9,8 +9,8 @@ class Panel extends JPanel{
     int sideNode;
     int sideStartEnd;
     int sideDecisionMerge;
-    int highForkJoin;
     int widthForkJoin;
+    int highForkJoin;
     int border;
     int barb;
     double phi;
@@ -21,8 +21,8 @@ class Panel extends JPanel{
         sideNode = 30;
         sideStartEnd = 20;
         sideDecisionMerge = 55;
-        highForkJoin = 105;
-        widthForkJoin = 15;
+        widthForkJoin = 105;
+        highForkJoin = 15;
         border = 10;
         barb = 5;
         phi = Math.PI/6;
@@ -38,8 +38,12 @@ class Panel extends JPanel{
         graph.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
         graph.setFont(font);
         
+        ImageIcon Img = new ImageIcon(getClass().getResource("/Icons/Background.jpg"));
+        
+        graph.drawImage(Img.getImage(), 0, 0, WorkFlow.widthWorkflow(workflow), WorkFlow.highWorkflow(workflow), null);
         drawNodes(graph, workflow);
         drawEdges(graph, workflow);
+        
         int side_x = WorkFlow.widthWorkflow(workflow);
         int side_y = WorkFlow.highWorkflow(workflow);
         for (int i = 0; i < side_x; i++) {
@@ -91,11 +95,11 @@ class Panel extends JPanel{
                     }
                     else if (node.getType().equals("ForkNode") || node.getType().equals("JoinNode")) {
                         
-                        xPosition = position.getX() + widthForkJoin;
+                        xPosition = position.getX() + highForkJoin;
                         yPosition = position.getY() ;
                         
                         ImageIcon Img = new ImageIcon(getClass().getResource("/Icons/ForkJoinNode.png"));
-                        graph.drawImage(Img.getImage(), xPosition, yPosition, highForkJoin, widthForkJoin, null);
+                        graph.drawImage(Img.getImage(), xPosition, yPosition, widthForkJoin, highForkJoin, null);
                         
                     }
                     else if (node.getType().equals("DecisionNode") || node.getType().equals("MergeNode")) {
@@ -146,8 +150,8 @@ class Panel extends JPanel{
                         
                     }
                     else if (node.getType().equals("ForkNode") || node.getType().equals("JoinNode")) {
-                        x1 = position.getX() + widthForkJoin + highForkJoin/2;
-                        y1 = position.getY() + widthForkJoin/2;
+                        x1 = position.getX() + highForkJoin + widthForkJoin/2;
+                        y1 = position.getY() + highForkJoin/2;
                     }
                     else if (node.getType().equals("DecisionNode") || node.getType().equals("MergeNode")) {
                         x1 = position.getX() + sideDecisionMerge/2;
@@ -166,8 +170,8 @@ class Panel extends JPanel{
                         y2 = position.getY() + sideStartEnd/2;
                     }
                     else if (node.getType().equals("ForkNode") || node.getType().equals("JoinNode")) {
-                        x2 = position.getX() + widthForkJoin + highForkJoin/2;
-                        y2 = position.getY() + widthForkJoin/2;
+                        x2 = position.getX() + highForkJoin + widthForkJoin/2;
+                        y2 = position.getY() + highForkJoin/2;
                     }
                     else if (node.getType().equals("DecisionNode") || node.getType().equals("MergeNode")) {
                         x2 = position.getX() + sideDecisionMerge/2;
@@ -208,7 +212,7 @@ class Panel extends JPanel{
                     yDelta1 = sideStartEnd/2; 
                 }
                 else if (typeSource.equals("ForkNode") || typeSource.equals("JoinNode")) {
-                    yDelta1 = widthForkJoin/2;
+                    yDelta1 = highForkJoin/2;
                 }
                 else if (typeSource.equals("DecisionNode") || typeSource.equals("MergeNode")) {
                     yDelta1 = sideDecisionMerge/2;
@@ -221,7 +225,7 @@ class Panel extends JPanel{
                     yDelta2 = sideStartEnd/2;
                 }
                 else if (typeTarget.equals("ForkNode") || typeTarget.equals("JoinNode")) {
-                    yDelta2 = widthForkJoin/2;
+                    yDelta2 = highForkJoin/2;
                 }
                 else if (typeTarget.equals("DecisionNode") || typeTarget.equals("MergeNode")) {
                     yDelta2 = sideDecisionMerge/2;
@@ -248,7 +252,7 @@ class Panel extends JPanel{
                     yDelta1 = sideStartEnd/2;
                 }
                 else if (typeSource.equals("ForkNode") || typeSource.equals("JoinNode")) {
-                    yDelta1 = widthForkJoin/2;
+                    yDelta1 = highForkJoin/2;
                 }
                 else if (typeSource.equals("DecisionNode") || typeSource.equals("MergeNode")) {
                     yDelta1 = sideDecisionMerge/2;
@@ -261,7 +265,7 @@ class Panel extends JPanel{
                     yDelta2 = sideStartEnd/2;
                 }
                 else if (typeTarget.equals("ForkNode") || typeTarget.equals("JoinNode")) {
-                    yDelta2 = widthForkJoin/2;
+                    yDelta2 = highForkJoin/2;
                 }
                 else if (typeTarget.equals("DecisionNode") || typeTarget.equals("MergeNode")) {
                     yDelta2 = sideDecisionMerge/2;
@@ -290,7 +294,7 @@ class Panel extends JPanel{
                     xDelta1 = sideStartEnd/2;
                 }
                 else if (typeSource.equals("ForkNode") || typeSource.equals("JoinNode")) {
-                    xDelta1 = highForkJoin/2;
+                    xDelta1 = widthForkJoin/2;
                 }
                 else if (typeSource.equals("DecisionNode") || typeSource.equals("MergeNode")) {
                     xDelta1 = sideDecisionMerge/2;
@@ -303,7 +307,7 @@ class Panel extends JPanel{
                     xDelta2 = sideStartEnd/2;
                 }
                 else if (typeTarget.equals("ForkNode") || typeTarget.equals("JoinNode")) {
-                    xDelta2 = highForkJoin/2;
+                    xDelta2 = widthForkJoin/2;
                 }
                 else if (typeTarget.equals("DecisionNode") || typeTarget.equals("MergeNode")) {
                     xDelta2 = sideDecisionMerge/2;
@@ -333,8 +337,8 @@ class Panel extends JPanel{
                     yDelta1 = sideStartEnd/2;
                 }
                 else if (typeSource.equals("ForkNode") || typeSource.equals("JoinNode")) {
-                    xDelta1 = widthForkJoin/2;
-                    yDelta1 = widthForkJoin/2;
+                    xDelta1 = highForkJoin/2;
+                    yDelta1 = highForkJoin/2;
                 }
                 else if (typeSource.equals("DecisionNode") || typeSource.equals("MergeNode")) {
                     xDelta1 = sideDecisionMerge/2;
@@ -350,8 +354,8 @@ class Panel extends JPanel{
                     yDelta2 = sideStartEnd/2;
                 }
                 else if (typeTarget.equals("ForkNode") || typeTarget.equals("JoinNode")) {
-                    xDelta2 = widthForkJoin/2;
-                    yDelta2 = widthForkJoin/2;
+                    xDelta2 = highForkJoin/2;
+                    yDelta2 = highForkJoin/2;
                 }
                 else if (typeTarget.equals("DecisionNode") || typeTarget.equals("MergeNode")) {
                     xDelta2 = sideDecisionMerge/2;
@@ -390,8 +394,8 @@ class Panel extends JPanel{
                     yDelta1 = sideStartEnd/2;
                 }
                 else if (typeSource.equals("ForkNode") || typeSource.equals("JoinNode")) {
-                    xDelta1 = widthForkJoin/2;
-                    yDelta1 = widthForkJoin/2;
+                    xDelta1 = highForkJoin/2;
+                    yDelta1 = highForkJoin/2;
                 }
                 else if (typeSource.equals("DecisionNode") || typeSource.equals("MergeNode")) {
                     xDelta1 = sideDecisionMerge/2;
@@ -407,8 +411,8 @@ class Panel extends JPanel{
                     yDelta2 = sideStartEnd/2;
                 }
                 else if (typeTarget.equals("ForkNode") || typeTarget.equals("JoinNode")) {
-                    xDelta2 = widthForkJoin/2;
-                    yDelta2 = widthForkJoin/2;
+                    xDelta2 = highForkJoin/2;
+                    yDelta2 = highForkJoin/2;
                 }
                 else if (typeTarget.equals("DecisionNode") || typeTarget.equals("MergeNode")) {
                     xDelta2 = sideDecisionMerge/2;
@@ -447,7 +451,7 @@ class Panel extends JPanel{
                     xDelta1 = sideStartEnd/2;
                 }
                 else if (typeSource.equals("ForkNode") || typeSource.equals("JoinNode")) {
-                    xDelta1 = highForkJoin/2;
+                    xDelta1 = widthForkJoin/2;
                 }
                 else if (typeSource.equals("DecisionNode") || typeSource.equals("MergeNode")) {
                     xDelta1 = sideDecisionMerge/2;
@@ -460,7 +464,7 @@ class Panel extends JPanel{
                     xDelta2 = sideStartEnd/2;
                 }
                 else if (typeTarget.equals("ForkNode") || typeTarget.equals("JoinNode")) {
-                    xDelta2 = highForkJoin/2;
+                    xDelta2 = widthForkJoin/2;
                 }
                 else if (typeTarget.equals("DecisionNode") || typeTarget.equals("MergeNode")) {
                     xDelta2 = sideDecisionMerge/2;
@@ -490,8 +494,8 @@ class Panel extends JPanel{
                     yDelta1 = sideStartEnd/2;
                 }
                 else if (typeSource.equals("ForkNode") || typeSource.equals("JoinNode")) {
-                    xDelta1 = widthForkJoin/2;
-                    yDelta1 = widthForkJoin/2;
+                    xDelta1 = highForkJoin/2;
+                    yDelta1 = highForkJoin/2;
                 }
                 else if (typeSource.equals("DecisionNode") || typeSource.equals("MergeNode")) {
                     xDelta1 = sideDecisionMerge/2;
@@ -507,8 +511,8 @@ class Panel extends JPanel{
                     yDelta2 = sideStartEnd/2;
                 }
                 else if (typeTarget.equals("ForkNode") || typeTarget.equals("JoinNode")) {
-                    xDelta2 = widthForkJoin/2;
-                    yDelta2 = widthForkJoin/2;
+                    xDelta2 = highForkJoin/2;
+                    yDelta2 = highForkJoin/2;
                 }
                 else if (typeTarget.equals("DecisionNode") || typeTarget.equals("MergeNode")) {
                     xDelta2 = sideDecisionMerge/2;
@@ -547,8 +551,8 @@ class Panel extends JPanel{
                     yDelta1 = sideStartEnd/2;
                 }
                 else if (typeSource.equals("ForkNode") || typeSource.equals("JoinNode")) {
-                    xDelta1 = widthForkJoin/2;
-                    yDelta1 = widthForkJoin/2;
+                    xDelta1 = highForkJoin/2;
+                    yDelta1 = highForkJoin/2;
                 }
                 else if (typeSource.equals("DecisionNode") || typeSource.equals("MergeNode")) {
                     xDelta1 = sideDecisionMerge/2;
@@ -564,8 +568,8 @@ class Panel extends JPanel{
                     yDelta2 = sideStartEnd/2;
                 }
                 else if (typeTarget.equals("ForkNode") || typeTarget.equals("JoinNode")) {
-                    xDelta2 = widthForkJoin/2;
-                    yDelta2 = widthForkJoin/2;
+                    xDelta2 = highForkJoin/2;
+                    yDelta2 = highForkJoin/2;
                 }
                 else if (typeTarget.equals("DecisionNode") || typeTarget.equals("MergeNode")) {
                     xDelta2 = sideDecisionMerge/2;
