@@ -4,7 +4,10 @@ package EPFLibrary;
 import java.io.*;
 import java.util.*;
 
-
+/**
+ * Corresponds to all the content of method framed in the elements of a software process.
+ * @author Rodrigo
+ */
 public class MethodContent {
     
     private static ArrayList<GuidanceElement> Guidances;
@@ -17,7 +20,11 @@ public class MethodContent {
     private static String pathPlugin;
     private static String pathFolder;
     
-
+    /**
+     *
+     * @param pathPlugin it is the path of the archive xmi of plugin
+     * @throws IOException
+     */
     public MethodContent(String pathPlugin) throws IOException {
         setPathPlugin(pathPlugin);
         searchResourceDescriptors();
@@ -28,18 +35,34 @@ public class MethodContent {
         searchSteps();
     }
 
+    /**
+     *
+     * @return returns all guidances of plugin
+     */
     public static ArrayList<GuidanceElement> getGuidances() {
         return Guidances;
     }
 
+    /**
+     *
+     * @return returns all roles of plugin
+     */
     public static ArrayList<RoleElement> getRoles() {
         return Roles;
     }
 
+    /**
+     *
+     * @return returns all taks of plugin
+     */
     public static ArrayList<TaskElement> getTasks() {
         return Tasks;
     }
 
+    /**
+     *
+     * @return returns all workproducts of plugin
+     */
     public static ArrayList<WorkProductElement> getWorkProducts() {
         return WorkProducts;
     }

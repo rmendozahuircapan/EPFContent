@@ -4,6 +4,10 @@ package EPFLibrary;
 import java.io.*;
 import java.util.*;
 
+/**
+ * It corresponds to all processes framed in the elements of a software process.
+ * @author Rodrigo
+ */
 public class Processes {
     
     private static DeliveryProcess DeliveryProcess;
@@ -14,12 +18,21 @@ public class Processes {
     private static String pathPlugin;
     private static String pathFolder;
 
+    /**
+     *
+     * @param pathPlugin it is the path of the archive xmi of plugin.
+     * @throws IOException
+     */
     public Processes(String pathPlugin) throws IOException {
         setPathPlugin(pathPlugin);
         searchResourceDescriptors();
         Processes.DeliveryProcess = new DeliveryProcess(searchProcesses());
     }
 
+    /**
+     *
+     * @return returns the delivery process.
+     */
     public static DeliveryProcess getDeliveryProcess() {
         return DeliveryProcess;
     }
@@ -29,7 +42,7 @@ public class Processes {
         Processes.pathPlugin = pathPlugin;
         setPathFolder(pathPlugin.substring(0, pathPlugin.length() - 11));
     }
-
+    
     protected static void setPathFolder(String pathFolder) {
         Processes.pathFolder = pathFolder;
     }

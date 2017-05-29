@@ -4,6 +4,10 @@ package EPFLibrary;
 import java.util.*;
 import javax.swing.*;
 
+/**
+ * It corresponds a workflow or activity diagram, framed in the elements of a software process.
+ * @author Rodrigo
+ */
 public class WorkFlow {
     private String id;
     private String name;
@@ -11,6 +15,14 @@ public class WorkFlow {
     private ArrayList<Edge> edges;
     private ArrayList<Position> positions;
 
+    /**
+     *
+     * @param id workflow identifier
+     * @param name name of workflow
+     * @param nodes set of nodes of workflow
+     * @param edges set of edges of workflow
+     * @param positions set of positions of workflow
+     */
     protected WorkFlow(String id, String name, ArrayList<Node> nodes, ArrayList<Edge> edges, ArrayList<Position> positions) {
         this.id = id;
         this.name = name;
@@ -19,10 +31,18 @@ public class WorkFlow {
         this.positions = positions;
     }
 
+    /**
+     *
+     * @return returns identifier of workflow
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     *
+     * @return returns name of workflow
+     */
     public String getName() {
         return name;
     }
@@ -39,6 +59,10 @@ public class WorkFlow {
         return positions;
     }
 
+    /**
+     *
+     * @param path it is the path for save the image of workflow in format jpg
+     */
     public void getGraph(String path){
         WorkFlow workflow = new WorkFlow(id, name, nodes, edges, positions);
         Draw(workflow, path);
