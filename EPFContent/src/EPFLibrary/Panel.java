@@ -3,6 +3,9 @@ package EPFLibrary;
 
 import java.awt.*;
 import java.awt.geom.*;
+import java.awt.image.*;
+import java.io.*;
+import javax.imageio.*;
 import javax.swing.*;
 
 class Panel extends JPanel{
@@ -15,9 +18,10 @@ class Panel extends JPanel{
     int barb;
     double phi;
     WorkFlow workflow;
+    String path;
     
     
-    protected Panel(WorkFlow workflow){
+    protected Panel(WorkFlow workflow, String path){
         sideNode = 30;
         sideStartEnd = 20;
         sideDecisionMerge = 55;
@@ -27,9 +31,8 @@ class Panel extends JPanel{
         barb = 5;
         phi = Math.PI/6;
         this.workflow = workflow;
-        setBackground(Color.white);
+        this.path = path;
     }
-
 
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
@@ -37,20 +40,22 @@ class Panel extends JPanel{
         Font font = new Font("Arial", Font.PLAIN, 10);
         graph.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
         graph.setFont(font);
-        
         ImageIcon Img = new ImageIcon(getClass().getResource("/Icons/Background.jpg"));
-        
         graph.drawImage(Img.getImage(), 0, 0, WorkFlow.widthWorkflow(workflow), WorkFlow.highWorkflow(workflow), null);
         drawNodes(graph, workflow);
         drawEdges(graph, workflow);
-        
-        int side_x = WorkFlow.widthWorkflow(workflow);
-        int side_y = WorkFlow.highWorkflow(workflow);
-        for (int i = 0; i < side_x; i++) {
-            graph.drawString(".", i, side_y);
-        }
-        for (int i = 0; i < side_y; i++) {
-            graph.drawString(".", side_x, i);
+
+        try {
+            BufferedImage bi = new BufferedImage(WorkFlow.widthWorkflow(workflow), WorkFlow.highWorkflow(workflow), BufferedImage.TYPE_INT_RGB);
+            Graphics2D image = bi.createGraphics();
+            image.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+            image.setFont(font);
+            image.drawImage(Img.getImage(), 0, 0, WorkFlow.widthWorkflow(workflow), WorkFlow.highWorkflow(workflow), null);
+            drawNodes(image, workflow);
+            drawEdges(image, workflow);
+            ImageIO.write(bi, "JPG", new File(path+"\\"+workflow.getName()+".jpg"));
+        } catch (IOException e) {
+            System.out.println("ERROR: "+e.getMessage());
         }
     }
     

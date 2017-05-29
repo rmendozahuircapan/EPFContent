@@ -39,15 +39,15 @@ public class WorkFlow {
         return positions;
     }
 
-    public void getGraph(){
+    public void getGraph(String path){
         WorkFlow workflow = new WorkFlow(id, name, nodes, edges, positions);
-        Draw(workflow);
+        Draw(workflow, path);
     }
     
-    private static void Draw(WorkFlow workflow){  
+    private static void Draw(WorkFlow workflow, String path){  
         JFrame f = new JFrame();
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.getContentPane().add(new Panel(workflow));
+        f.getContentPane().add(new Panel(workflow, path));
         f.setSize(widthWorkflow(workflow) + 18,highWorkflow(workflow) + 39);
         f.setLocationByPlatform(true);
         f.setVisible(true);
