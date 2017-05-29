@@ -40,6 +40,7 @@ class Panel extends JPanel{
         Font font = new Font("Arial", Font.PLAIN, 10);
         graph.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
         graph.setFont(font);
+        graph.setColor(Color.BLACK);
         ImageIcon Img = new ImageIcon(getClass().getResource("/Icons/Background.jpg"));
         graph.drawImage(Img.getImage(), 0, 0, WorkFlow.widthWorkflow(workflow), WorkFlow.highWorkflow(workflow), null);
         drawNodes(graph, workflow);
@@ -50,6 +51,7 @@ class Panel extends JPanel{
             Graphics2D image = bi.createGraphics();
             image.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
             image.setFont(font);
+            image.setColor(Color.BLACK);
             image.drawImage(Img.getImage(), 0, 0, WorkFlow.widthWorkflow(workflow), WorkFlow.highWorkflow(workflow), null);
             drawNodes(image, workflow);
             drawEdges(image, workflow);
