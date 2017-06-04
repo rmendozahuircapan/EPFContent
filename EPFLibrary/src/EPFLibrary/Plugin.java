@@ -1,12 +1,8 @@
 
 package EPFLibrary;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.io.*;
+import java.util.*;
 
 /**
  * It corresponds a plugin framed in the elements of a software process.
@@ -18,9 +14,9 @@ public class Plugin {
     private MethodContent MethodContent;
     private Processes Processes;
     
-    private ArrayList<String> pathTasks = new ArrayList<>();
-    private ArrayList<String> pathDiagrams = new ArrayList<>();
-    private ArrayList<String> pathModels = new ArrayList<>();
+    private ArrayList<String> pathsTasks = new ArrayList<>();
+    private ArrayList<String> pathsDiagrams = new ArrayList<>();
+    private ArrayList<String> pathsModels = new ArrayList<>();
     
     private String pathPlugin = new String();
     private String pathFolder = new String();
@@ -31,13 +27,16 @@ public class Plugin {
      * @throws IOException
      */
     public Plugin(String path) throws IOException {
+        
         setPaths(path);
         searchResourceDescriptors();
+        
         ArrayList<GuidanceElement> Guidances = searchGuidances();
         ArrayList<RoleElement> Roles = searchRoles();
         ArrayList<TemplateElement> Templates = searchTemplates(Guidances);
         ArrayList<WorkProductElement> WorkProducts = searchWorkProducts(Templates);
         ArrayList<TaskElement> Tasks = searchTasks(Roles, WorkProducts);
+        
         searchSteps(Tasks);
         
         ArrayList<Node> Nodes = searchNodes();
@@ -46,6 +45,7 @@ public class Plugin {
         ArrayList<WorkFlow> Workflows = searchWorkFlows(Nodes, Edges, Positions);
         ArrayList<ActivityElement> Activities = searchActivities(Tasks, Workflows);
         ArrayList<ProcessElement> Process = searchProcesses(Activities, Workflows);
+        
         DeliveryProcess DeliveryProcess = new DeliveryProcess(Process);
         
         this.name = path.replace("\\", "%").split("%")[path.replace("\\", "%").split("%").length - 2];
@@ -86,8 +86,8 @@ public class Plugin {
 /********************************************************************************************************/
     
     private void searchResourceDescriptors() throws IOException{
-        ArrayList<String> PluginFile = new ArrayList<>();
-        PluginFile = XMIRead(pathPlugin);
+        
+        ArrayList<String> PluginFile = XMIRead(pathPlugin);
         for (int i = 0; i < PluginFile.size(); i++) {
             String[] separated = PluginFile.get(i).split(" ");
             if (separated[0].contains("resourceDescriptors")) {
@@ -101,15 +101,18 @@ public class Plugin {
                                 String part = uri.split("/")[k].replace("%20", " ");
                                 path = path + "\\" + part;
                             }
-                            pathTasks.add(path);
+                            pathsTasks.add(path);
                         }
                         else if (uriType.equals("deliveryprocesses")) {
                             for (int k = 0; k < uri.split("/").length; k++) {
                                 String part = uri.split("/")[k].replace("%20", " ");
                                 path = path + "\\" + part;
                             }
-                            pathModels.add(path);
-                            pathDiagrams.add(path.replace("model.xmi", "diagram.xmi"));
+                            pathsModels.add(path);
+                            File file = new File(path.replace("model.xmi", "diagram.xmi"));
+                            if (file.exists()) {
+                                pathsDiagrams.add(path.replace("model.xmi", "diagram.xmi"));
+                            }
                         }
                     }
                 }
@@ -120,6 +123,7 @@ public class Plugin {
 /********************************************************************************************************/    
     
     private ArrayList<RoleElement> searchRoles() throws IOException {
+        
         ArrayList<RoleElement> roles = new ArrayList<>();
         ArrayList<String> PluginFile = new ArrayList<>();
         PluginFile = XMIRead(pathPlugin);
@@ -181,6 +185,7 @@ public class Plugin {
     }
     
     private ArrayList<GuidanceElement> searchGuidances() throws IOException{
+        
         ArrayList<GuidanceElement> guidances = new ArrayList<>();
         ArrayList<String> PluginFile = XMIRead(pathPlugin);
         boolean flag;
@@ -260,6 +265,7 @@ public class Plugin {
     }
     
     private ArrayList<WorkProductElement> searchWorkProducts(ArrayList<TemplateElement> Templates) throws IOException {
+        
         ArrayList<WorkProductElement> workproducts = new ArrayList<>();
         ArrayList<String> PluginFile = XMIRead(pathPlugin);
         boolean flag;
@@ -348,6 +354,7 @@ public class Plugin {
     }
     
     private ArrayList<TaskElement> searchTasks(ArrayList<RoleElement> Roles, ArrayList<WorkProductElement> WorkProducts) throws IOException {
+        
         ArrayList<TaskElement> tasks = new ArrayList<>();
         ArrayList<String> PluginFile = new ArrayList<>();
         PluginFile = XMIRead(pathPlugin);
@@ -505,13 +512,14 @@ public class Plugin {
     }
     
     private void searchSteps(ArrayList<TaskElement> Tasks) throws IOException{
+        
         boolean flag;
-        for (int i = 0; i < pathTasks.size(); i++) {
+        for (int i = 0; i < pathsTasks.size(); i++) {
             String id = new String();
             String nameStep = new String();
-            String nameTask = pathTasks.get(i).substring(pathFolder.length() + 7).substring(0, pathTasks.get(i).substring(pathFolder.length() + 7).length() - 4);
+            String nameTask = pathsTasks.get(i).substring(pathFolder.length() + 7).substring(0, pathsTasks.get(i).substring(pathFolder.length() + 7).length() - 4);
             ArrayList<StepElement> stepsTask = new ArrayList<>();
-            ArrayList<String> TaskFile = XMIRead(pathTasks.get(i));            
+            ArrayList<String> TaskFile = XMIRead(pathsTasks.get(i));            
             for (int j = 0; j < TaskFile.size(); j++) {
                 String[] separated = TaskFile.get(j).split(" ");
                 if (separated[0].contentEquals("<sections")) {
@@ -548,6 +556,7 @@ public class Plugin {
     }
     
     private ArrayList<TemplateElement> searchTemplates(ArrayList<GuidanceElement> Guidances) throws IOException{
+        
         ArrayList<TemplateElement> templates = new ArrayList<>();
         for (GuidanceElement g : Guidances) {
             if (g.getClass().getSimpleName().equals("TemplateElement")) {
@@ -560,13 +569,14 @@ public class Plugin {
 /********************************************************************************************************/
     
     private ArrayList<ActivityElement> searchActivities(ArrayList<TaskElement> Tasks, ArrayList<WorkFlow> Workflows) throws IOException{ 
+        
         ArrayList<ActivityElement> activities = new ArrayList<>();
-        boolean flag;
         ArrayList<TaskElement> tasksActivity = new ArrayList<>();
         String id = new String ();
         String nameActivity = new String ();    
-        for (int i = 0; i < pathModels.size(); i++) {
-            ArrayList<String> ModelFile = XMIRead(pathModels.get(i));
+        boolean flag;
+        for (int i = 0; i < pathsModels.size(); i++) {
+            ArrayList<String> ModelFile = XMIRead(pathsModels.get(i));
             for (int j = 0; j < ModelFile.size(); j++) {
                 String[] separated = ModelFile.get(j).split(" ");
                 if (separated[0].equals("<childPackages")) {
@@ -636,10 +646,11 @@ public class Plugin {
     }
     
     private ArrayList<ProcessElement> searchProcesses(ArrayList<ActivityElement> Activities, ArrayList<WorkFlow> Workflows) throws IOException{
+        
         ArrayList<ProcessElement> processes = new ArrayList<>();
         boolean flag;
-        for (int i = 0; i < pathModels.size(); i++) {
-            ArrayList<String> ModelFile = XMIRead(pathModels.get(i));
+        for (int i = 0; i < pathsModels.size(); i++) {
+            ArrayList<String> ModelFile = XMIRead(pathsModels.get(i));
             String id = new String ();
             String nameProcess = new String ();
             ArrayList<ActivityElement> activityProcess = new ArrayList<>();
@@ -707,10 +718,11 @@ public class Plugin {
     }
     
     private ArrayList<Node> searchNodes() throws IOException{
+        
         ArrayList<Node> nodes = new ArrayList<>();
         boolean flag;
-        for (int i = 0; i < pathDiagrams.size(); i++) {
-            ArrayList<String> DiagramFile = XMIRead(pathDiagrams.get(i));
+        for (int i = 0; i < pathsDiagrams.size(); i++) {
+            ArrayList<String> DiagramFile = XMIRead(pathsDiagrams.get(i));
             for (int j = 0; j < DiagramFile.size(); j++) {
                 String[] separated = DiagramFile.get(j).split(" ");
                 if (separated[0].equals("<node")) {
@@ -752,10 +764,11 @@ public class Plugin {
     }
     
     private ArrayList<Edge> searchEdges(ArrayList<Node> Nodes) throws IOException{
+        
         ArrayList<Edge> edges = new ArrayList<>();
         boolean flag;
-        for (int i = 0; i < pathDiagrams.size(); i++) {
-            ArrayList<String> DiagramFile = XMIRead(pathDiagrams.get(i));
+        for (int i = 0; i < pathsDiagrams.size(); i++) {
+            ArrayList<String> DiagramFile = XMIRead(pathsDiagrams.get(i));
             for (int j = 0; j < DiagramFile.size(); j++) {
                 String[] separated = DiagramFile.get(j).split(" ");
                 if (separated[0].equals("<edge")) {
@@ -808,9 +821,10 @@ public class Plugin {
     }
     
     private ArrayList<Position> searchPositions() throws IOException{
+        
         ArrayList<Position> positions = new ArrayList<>();
-        for (int i = 0; i < pathDiagrams.size(); i++) {
-            ArrayList<String> DiagramFile = XMIRead(pathDiagrams.get(i));
+        for (int i = 0; i < pathsDiagrams.size(); i++) {
+            ArrayList<String> DiagramFile = XMIRead(pathsDiagrams.get(i));
             String id = new String();
             int x = -1;
             int y = -1;
@@ -846,10 +860,11 @@ public class Plugin {
     }
     
     private ArrayList<WorkFlow> searchWorkFlows(ArrayList<Node> Nodes, ArrayList<Edge> Edges, ArrayList<Position> Positions) throws IOException{
+        
         ArrayList<WorkFlow> workflows = new ArrayList<>();
         boolean flag;
-        for (int i = 0; i < pathDiagrams.size(); i++) {
-            ArrayList<String> DiagramFile = XMIRead(pathDiagrams.get(i));
+        for (int i = 0; i < pathsDiagrams.size(); i++) {
+            ArrayList<String> DiagramFile = XMIRead(pathsDiagrams.get(i));
             String id = new String();
             String nameWorkflow = new String();
             ArrayList<Node> nodesWorkFlow = new ArrayList<>();
@@ -936,6 +951,7 @@ public class Plugin {
 /********************************************************************************************************/
     
     private ArrayList<String> XMIRead(String path) throws FileNotFoundException, IOException {
+        
         File archive = null;
         FileReader fr = null;
         BufferedReader br = null;
