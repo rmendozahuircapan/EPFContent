@@ -621,13 +621,13 @@ class Panel extends JPanel{
         g.draw(new Line2D.Double(x0, y0, x, y));
     }   
     
-    private static int function(double x, double x1, double y1, double x2, double y2){
+    private int function(double x, double x1, double y1, double x2, double y2){
         double m = (y2 - y1)/(x2 - x1);
         double y = m*x - m*x1 + y1;
         return (int)  y;
     }
     
-    private static int reverseFunction(double y, double x1, double y1, double x2, double y2){
+    private int reverseFunction(double y, double x1, double y1, double x2, double y2){
         double m = (x2 - x1)/(y2 - y1);
         double x = m*y - m*y1 + x1;
         return (int) x;

@@ -68,7 +68,7 @@ public class WorkFlow {
         Draw(workflow, path);
     }
     
-    private static void Draw(WorkFlow workflow, String path){  
+    private void Draw(WorkFlow workflow, String path){  
         JFrame f = new JFrame();
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.getContentPane().add(new Panel(workflow, path));
