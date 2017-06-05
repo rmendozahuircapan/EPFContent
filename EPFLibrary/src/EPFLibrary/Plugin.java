@@ -5,7 +5,7 @@ import java.io.*;
 import java.util.*;
 
 /**
- * It corresponds a plugin framed in the elements of a software process.
+ * Corresponds to a plugin that contains the elements of a software process.
  * @author Rodrigo
  */
 public class Plugin {
@@ -125,8 +125,7 @@ public class Plugin {
     private ArrayList<RoleElement> searchRoles() throws IOException {
         
         ArrayList<RoleElement> roles = new ArrayList<>();
-        ArrayList<String> PluginFile = new ArrayList<>();
-        PluginFile = XMIRead(pathPlugin);
+        ArrayList<String> PluginFile = XMIRead(pathPlugin);
         boolean flag;
         for (int i = 0; i < PluginFile.size(); i++) {
             String[] separated = PluginFile.get(i).split(" ");
@@ -997,4 +996,6 @@ public class Plugin {
         return clean;
     }
     
+/********************************************************************************************************/
+/********************************************************************************************************/    
 }
