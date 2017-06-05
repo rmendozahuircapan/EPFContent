@@ -70,12 +70,12 @@ public class WorkFlow {
     
     private void Draw(WorkFlow workflow, String path){  
         JFrame f = new JFrame();
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.getContentPane().add(new Panel(workflow, path));
         f.setSize(widthWorkflow(workflow) + 18,highWorkflow(workflow) + 39);
         f.setLocationByPlatform(true);
         f.setVisible(true);
         f.setTitle("WorkFlow of \"" + workflow.getName() + "\"");
+        f.dispose();
     }
     
     protected static int widthWorkflow(WorkFlow workflow) {
