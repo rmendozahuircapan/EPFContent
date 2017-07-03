@@ -15,6 +15,16 @@ public class Library {
     
     private String pathLibrary = new String();
     private String pathExport = new String();
+
+    /**
+     *
+     * @param name it is the name of library
+     * @param Plugins it is the list of plugins of library
+     */
+    public Library(String name, ArrayList<Plugin> Plugins) {
+        this.name = name;
+        this.Plugins = Plugins;
+    }
     
     /**
      *

@@ -23,6 +23,19 @@ public class Plugin {
 
     /**
      *
+     * @param name it is the name of plugin
+     * @param MethodContent it is the method content of plugin
+     * @param Processes it is the processes of plugin
+     */
+    
+    public Plugin(String name, MethodContent MethodContent, Processes Processes) {
+        this.name = name;
+        this.MethodContent = MethodContent;
+        this.Processes = Processes;
+    }
+    
+    /**
+     *
      * @param path it is the path of the archive xmi of plugin
      * @throws IOException
      */
