@@ -55,7 +55,11 @@ class Panel extends JPanel{
             image.drawImage(Img.getImage(), 0, 0, WorkFlow.widthWorkflow(workflow), WorkFlow.highWorkflow(workflow), null);
             drawNodes(image, workflow);
             drawEdges(image, workflow);
-            ImageIO.write(bi, "JPG", new File(path+"\\"+workflow.getName()+".jpg"));
+            File file = new File(path+workflow.getName()+".jpg");
+            file.mkdir();
+            File folder = new File(path);
+            folder.mkdirs();
+            ImageIO.write(bi, "JPG", file );
         } catch (IOException e) {
             System.out.println("ERROR: "+e.getMessage());
         }
